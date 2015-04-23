@@ -1,0 +1,37 @@
+// Path alias
+$assetPath:                '';
+$uiImgPath:                '#{$assetPath}img';
+
+// Colors
+// -------------------------
+$primary-color:				red !default;
+$grey-color:                green !default;
+
+$body-font-color:           black !default;
+
+// Type
+// --------------------------------------------------
+// Font weights
+$thin:                      100;
+$light:                     300;
+$regular:                   400;
+$semibold:                  600;
+$bold:                      700;
+$thick:                     800;
+
+// Base Font
+$baseline:                  1.5rem !default;
+$base-font-family:          sans-serif !default;
+$base-font-weight:          $regular !default;
+$base-font-size:            16px !default;
+$base-line-height:          1.5 !default;
+
+$body-font-family:       	$base-font-family !default;
+$header-font-family:       	sans-serif !default;
+
+
+// Layout
+// --------------------------------------------------
+$gutter-h:					4% !default;
+
+

@@ -1,0 +1,54 @@
+// mediaquery
+// usage: @include mediaquery(480);
+@mixin mediaquery($bp, $orientation:false) {
+	@if $orientation {
+    	@media screen and (min-width: #{$bp}) and (orientation:$orientation){@content;}
+	}
+	@else {
+		@media screen and (min-width: #{$bp}){@content;}
+	}
+}
+
+// placeholder
+// usage: @include placeholder(#000);
+@mixin placeholder($color) {
+    ::-webkit-input-placeholder {color:$color;}
+    ::-moz-placeholder {color:$color;} /* FF 19+ */
+    :-moz-placeholder {color:$color;} /* FF 18- */
+    :-ms-input-placeholder {color:$color;}
+    .placeholder {color:$color;} /* for the polyfill */
+}
+
+// transition
+// usage: @include transition(all, 0.2s, ease-in-out);
+@mixin transition($transition-property, $transition-time, $method) {
+    -webkit-transition: $transition-property $transition-time $method;
+    -moz-transition: $transition-property $transition-time $method;
+    -ms-transition: $transition-property $transition-time $method;
+    -o-transition: $transition-property $transition-time $method;
+    transition: $transition-property $transition-time $method;
+}
+
+
+// clearfix
+// usage: @include clearfix;
+@mixin clearfix {
+    overflow: none;
+    *zoom: 1;
+    &:before,
+    &:after {
+        content: " ";
+        display: table;
+    }
+    &:after {
+        clear: both;
+    }
+}
+
+// image replacement
+// usage: @include ir;
+@mixin ir {
+    font: 0/0 a;
+    text-shadow: none;
+    color: transparent;
+}

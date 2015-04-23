@@ -1,0 +1,25 @@
+/* Reset
+-------------------------------------------------------------- */
+*,
+*:before,
+*:after {margin:0;padding:0;box-sizing:border-box;}
+footer,
+header,
+nav,
+section,
+main { display:block; }
+body {line-height: 1;color: black;background: white;}
+ol,
+ul {list-style: none;}
+
+html { overflow-y: scroll;}
+ol { list-style-type: decimal; }
+small { font-size: 85%; }
+b,
+strong { font-weight: 900; }
+em,
+i {font-style:italic;}
+input {font-size:1rem;}
+button {background:transparent;border:0 none;padding:0;
+	&:focus {outline:none}
+}
