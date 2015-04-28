@@ -1,3 +1,4 @@
+/* Require the gulp and node packages */
 var gulp = require('gulp'),
 	pkg = require('./package.json'),
 	del = require('del'),
@@ -18,12 +19,12 @@ var gulp = require('gulp'),
 	sourcemaps = require('gulp-sourcemaps'),
     browserSync = require('browser-sync'),
     reload = browserSync.reload,
-    path = require('path');
+    path = require('path'),
+    cache = require('gulp-cache'),
+    imagemin = require('gulp-imagemin');
 
-var publicUrl = 'www.google.com';
 
-var psiStrategy = 'mobile';
-
+/* Set up the banner */
 var banner = [
     '/**',
     ' * @name <%= pkg.name %>: <%= pkg.description %>',
@@ -34,6 +35,7 @@ var banner = [
     ' */'
 ].join('\n');
 
+/* Autoprefixer settings */
 var AUTOPREFIXER_BROWSERS = [
   'ie >= 9',
   'ie_mob >= 10',
@@ -46,20 +48,33 @@ var AUTOPREFIXER_BROWSERS = [
   'bb >= 10'
 ];
 
+/* Source files for the pipe */
 var srcFiles = {
-	css : './src/scss/',
-	js : ['src/js/libs/fastclick.js',
+	css: './src/scss/',
+	js: ['src/js/libs/fastclick.js',
 		  'src/js/libs/ender.js',
 		  'src/js/app.js'],
-	html : './src/templates/views/'
+	html: './src/templates/views/',
+    img: './src/img/'
 };
 
+/* Destination for the build */
 var dest = {
 	css: './build/css/',
 	js: 'build/js/',
-	html: './build/'
+	html: './build/',
+    img: './build/img/'
 };
 
+/* Set the PSI variables */
+var publicUrl = 'www.google.com',
+    psiStrategy = 'mobile';
+
+
+/************************
+ *  Task definitions 
+ ************************/
+/* Concat the js */
 gulp.task('js', function() {
   gulp.src(srcFiles.js)
     .pipe(sourcemaps.init())
@@ -68,8 +83,9 @@ gulp.task('js', function() {
     .pipe(gulp.dest(dest.js));
 });
 
+/* Build the flat html */
 gulp.task('html', function(){
-    gulp.src(srcFiles.html + '**/*.html')
+    return gulp.src(srcFiles.html + '**/*.html')
       .pipe(frontMatter({ property: 'data' }))/*
       .pipe(data(function(file) {
         //return require(path.basename(file.path) + '.json');
@@ -78,14 +94,16 @@ gulp.task('html', function(){
       .pipe(gulp.dest(dest.html));
 });
 
+/* Page speed insights */
 gulp.task('psi', function(cb) {
   pagespeed.output(publicUrl, {
     strategy: psiStrategy,
   }, cb);
 });
 
+/* Build CSS from scss, prefix and add px values */
 gulp.task('sass', function () {
-    gulp.src(srcFiles.css + '**/*.scss')
+    return gulp.src(srcFiles.css + '**/*.scss')
       .pipe(sourcemaps.init())
       .pipe(sass())
       .pipe(autoprefixer(AUTOPREFIXER_BROWSERS))
@@ -95,26 +113,39 @@ gulp.task('sass', function () {
 });
 gulp.task('css', ['sass']);
 
+
+/* Optimize images */
+gulp.task('img', function () {
+  return gulp.src(srcFiles.img + '*')
+    .pipe(cache(imagemin({
+      progressive: true,
+      interlaced: true
+    })))
+    .pipe(gulp.dest(dest.img));
+});
+
+
+/* Compress js */
 gulp.task('compress:js', function() {
-	gulp.src(dest.js + 'app.js')
+	return gulp.src(dest.js + 'app.js')
 		.pipe(uglify())
 		.pipe(rename('app.min.js'))
 		.pipe(gulp.dest(dest.js))
 		.pipe(connect.reload());
 });
 
+/* Compress CSS */
 gulp.task('compress:css', function() {
-	gulp.src(dest.css + 'styles.css')
+	return gulp.src(dest.css + 'styles.css')
 		.pipe(csso())
         .pipe(rename('styles.min.css'))
 		.pipe(gulp.dest(dest.css))
 		.pipe(connect.reload());
 });
 
-gulp.task('compress', ['compress:css', 'compress:js']);
-
+/* Server with auto reload and browersync */
 gulp.task('serve', ['css'], function () {
-  browserSync({
+  return browserSync({
     notify: false,
     // https: true,
     server: ['build']
@@ -123,15 +154,18 @@ gulp.task('serve', ['css'], function () {
   gulp.watch([srcFiles.html + '**/*.html'], ['html', reload]);
   gulp.watch([srcFiles.css + '**/*.scss'], ['css', reload]);
   gulp.watch([srcFiles.js + '*.js', srcFiles.js + '**/*.js'], ['js', reload]);
-  //gulp.watch(['app/images/**/*'], reload);
+  gulp.watch([srcFiles.js + '**/*'], reload);
 });
 
 
-//gulp.task('watch', function () {
-  //  gulp.watch([srcFiles.js + '*.js', srcFiles.js + '**/*.js'], ['js', 'compress:js']);
- // 	gulp.watch(srcFiles.css + '**/*.scss', ['css', 'compress:css']);
-//});
-
-
+/************************
+ *  Task collections 
+ ************************/
+/* Default 'refresh' task */
 gulp.task('default', ['html', 'css', 'js']);
+
+/* Final build task including compression */
 gulp.task('build', ['html', 'css', 'js', 'compress']);
+
+/* The compress task */
+gulp.task('compress', ['compress:css', 'compress:js']);
