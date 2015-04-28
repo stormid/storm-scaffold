@@ -1,6 +1,5 @@
 var gulp = require('gulp'),
 	pkg = require('./package.json'),
-	browserify = require('gulp-browserify'),
 	gutil = require('gulp-util'),
 	del = require('del'),
 	sass = require('gulp-sass'),
@@ -17,6 +16,7 @@ var gulp = require('gulp'),
     data = require('gulp-data'),
 	pagespeed = require('psi'),
 	extname = require('gulp-extname'),
+	sourcemaps = require('gulp-sourcemaps'),
     path = require('path');
 
 var publicUrl = 'www.google.com';
@@ -59,7 +59,9 @@ var dest = {
 
 gulp.task('js', function() {
   gulp.src(srcFiles.js)
+    .pipe(sourcemaps.init())
     .pipe(concat('app.js'))
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest(dest.js));
 });
 
@@ -81,10 +83,12 @@ gulp.task('psi', function(cb) {
 
 gulp.task('sass', function () {
     gulp.src(srcFiles.css + '**/*.scss')
-        .pipe(sass())
-    	.pipe(autoprefixer(AUTOPREFIXER_BROWSERS))
-    	.pipe(pixrem())
-        .pipe(gulp.dest(dest.css));
+      .pipe(sourcemaps.init())
+      .pipe(sass())
+      .pipe(autoprefixer(AUTOPREFIXER_BROWSERS))
+      .pipe(pixrem())
+      .pipe(sourcemaps.write())
+      .pipe(gulp.dest(dest.css));
 });
 gulp.task('css', ['sass']);
 
@@ -118,4 +122,4 @@ gulp.task('watch', function () {
   	gulp.watch(srcFiles.css + '**/*.scss', ['css', 'compress:css']);
 });
 
-gulp.task('default', ['webserver', 'css', 'js', 'compress', 'watch']);
+gulp.task('default', ['webserver', 'html', 'css', 'js', 'compress', 'watch']);
