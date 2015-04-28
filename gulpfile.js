@@ -12,9 +12,11 @@ var gulp = require('gulp'),
 	rename = require('gulp-rename'),
 	csso = require('gulp-csso'),
 	connect = require('gulp-connect'),
-	assemble = require('assemble'),
-	gulpAssemble = require('gulp-assemble'),
-	extname = require('gulp-extname');
+    swig = require('gulp-swig'),
+    frontMatter = require('gulp-front-matter'),
+    data = require('gulp-data'),
+	extname = require('gulp-extname'),
+    path = require('path');
 
 
 var banner = [
@@ -44,7 +46,7 @@ var srcFiles = {
 	js : ['src/js/libs/fastclick.js',
 		  'src/js/libs/ender.js',
 		  'src/js/app.js'],
-	html : './src/templates/'
+	html : './src/templates/views/'
 };
 
 var dest = {
@@ -59,16 +61,15 @@ gulp.task('js', function() {
     .pipe(gulp.dest(dest.js));
 });
 
-/*
-gulp.task('js', function () {
-	 gulp.src(srcFiles.js + 'app.js')
-        .pipe(browserify({
-          insertGlobals : true,
-          debug : true
-        }))
-        .pipe(gulp.dest(dest.js));
+gulp.task('html', function(){
+    gulp.src(srcFiles.html + '**/*.html')
+      .pipe(frontMatter({ property: 'data' }))/*
+      .pipe(data(function(file) {
+        //return require(path.basename(file.path) + '.json');
+      }))*/
+      .pipe(swig())
+      .pipe(gulp.dest(dest.html));
 });
-*/
 
 gulp.task('sass', function () {
     gulp.src(srcFiles.css + '**/*.scss')
