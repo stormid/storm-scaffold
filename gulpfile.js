@@ -15,9 +15,11 @@ var gulp = require('gulp'),
     swig = require('gulp-swig'),
     frontMatter = require('gulp-front-matter'),
     data = require('gulp-data'),
+	pagespeed = require('psi'),
 	extname = require('gulp-extname'),
     path = require('path');
 
+var publicUrl = 'www.google.com';
 
 var banner = [
     '/**',
@@ -69,6 +71,12 @@ gulp.task('html', function(){
       }))*/
       .pipe(swig())
       .pipe(gulp.dest(dest.html));
+});
+
+gulp.task('psi', function(cb) {
+  pagespeed.output(publicUrl, {
+    strategy: 'mobile',
+  }, cb);
 });
 
 gulp.task('sass', function () {

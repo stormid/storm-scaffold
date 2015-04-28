@@ -25,7 +25,8 @@
     "gulp-util": "^3.0.4",
     "gulp-watch": "^0.6.9",
     "gulp-wrap": "^0.11.0",
-    "http-server": "^0.6.1"
+    "http-server": "^0.6.1",
+    "psi": "^1.0.6"
   },
   "dependencies": {
     "assemble": "^0.6.0-beta.5"
