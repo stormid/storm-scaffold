@@ -1,6 +1,5 @@
 var gulp = require('gulp'),
 	pkg = require('./package.json'),
-	gutil = require('gulp-util'),
 	del = require('del'),
 	sass = require('gulp-sass'),
 	autoprefixer = require('gulp-autoprefixer'),
@@ -17,9 +16,13 @@ var gulp = require('gulp'),
 	pagespeed = require('psi'),
 	extname = require('gulp-extname'),
 	sourcemaps = require('gulp-sourcemaps'),
+    browserSync = require('browser-sync'),
+    reload = browserSync.reload,
     path = require('path');
 
 var publicUrl = 'www.google.com';
+
+var psiStrategy = 'mobile';
 
 var banner = [
     '/**',
@@ -77,7 +80,7 @@ gulp.task('html', function(){
 
 gulp.task('psi', function(cb) {
   pagespeed.output(publicUrl, {
-    strategy: 'mobile',
+    strategy: psiStrategy,
   }, cb);
 });
 
@@ -110,16 +113,25 @@ gulp.task('compress:css', function() {
 
 gulp.task('compress', ['compress:css', 'compress:js']);
 
-gulp.task('webserver', function() {
-  connect.server({
-    livereload: true,
-	root: 'build',
+gulp.task('serve', ['css'], function () {
+  browserSync({
+    notify: false,
+    // https: true,
+    server: ['build']
   });
+
+  gulp.watch([srcFiles.html + '**/*.html'], ['html', reload]);
+  gulp.watch([srcFiles.css + '**/*.scss'], ['css', reload]);
+  gulp.watch([srcFiles.js + '*.js', srcFiles.js + '**/*.js'], ['js', reload]);
+  //gulp.watch(['app/images/**/*'], reload);
 });
 
-gulp.task('watch', function () {
-    gulp.watch([srcFiles.js + '*.js', srcFiles.js + '**/*.js'], ['js', 'compress:js']);
-  	gulp.watch(srcFiles.css + '**/*.scss', ['css', 'compress:css']);
-});
 
-gulp.task('default', ['webserver', 'html', 'css', 'js', 'compress', 'watch']);
+//gulp.task('watch', function () {
+  //  gulp.watch([srcFiles.js + '*.js', srcFiles.js + '**/*.js'], ['js', 'compress:js']);
+ // 	gulp.watch(srcFiles.css + '**/*.scss', ['css', 'compress:css']);
+//});
+
+
+gulp.task('default', ['html', 'css', 'js']);
+gulp.task('build', ['html', 'css', 'js', 'compress']);
