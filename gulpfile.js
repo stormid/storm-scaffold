@@ -21,7 +21,9 @@ var gulp = require('gulp'),
     reload = browserSync.reload,
     path = require('path'),
     cache = require('gulp-cache'),
-    imagemin = require('gulp-imagemin');
+    imagemin = require('gulp-imagemin'),
+    jshint = require('gulp-jshint'),
+    jshintConfig = pkg.jshintConfig;
 
 
 /* Set up the banner */
@@ -49,7 +51,7 @@ var AUTOPREFIXER_BROWSERS = [
 ];
 
 /* Source files for the pipe */
-var srcFiles = {
+var srcs = {
 	css: './src/scss/',
 	js: ['src/js/libs/fastclick.js',
 		  'src/js/libs/ender.js',
@@ -74,9 +76,17 @@ var publicUrl = 'www.google.com',
 /************************
  *  Task definitions 
  ************************/
+
+/* Lint JS */
+gulp.task('lint', function() {
+    return gulp.src(srcs.js)
+      .pipe(jshint(jshintConfig))
+      .pipe(jshint.reporter('default'));
+});
+
 /* Concat the js */
 gulp.task('js', function() {
-  gulp.src(srcFiles.js)
+  gulp.src(srcs.js)
     .pipe(sourcemaps.init())
     .pipe(concat('app.js'))
     .pipe(sourcemaps.write())
@@ -85,7 +95,7 @@ gulp.task('js', function() {
 
 /* Build the flat html */
 gulp.task('html', function(){
-    return gulp.src(srcFiles.html + '**/*.html')
+    return gulp.src(srcs.html + '**/*.html')
       .pipe(frontMatter({ property: 'data' }))/*
       .pipe(data(function(file) {
         //return require(path.basename(file.path) + '.json');
@@ -103,7 +113,7 @@ gulp.task('psi', function(cb) {
 
 /* Build CSS from scss, prefix and add px values */
 gulp.task('sass', function () {
-    return gulp.src(srcFiles.css + '**/*.scss')
+    return gulp.src(srcs.css + '**/*.scss')
       .pipe(sourcemaps.init())
       .pipe(sass())
       .pipe(autoprefixer(AUTOPREFIXER_BROWSERS))
@@ -116,7 +126,7 @@ gulp.task('css', ['sass']);
 
 /* Optimize images */
 gulp.task('img', function () {
-  return gulp.src(srcFiles.img + '*')
+  return gulp.src(srcs.img + '*')
     .pipe(cache(imagemin({
       progressive: true,
       interlaced: true
@@ -145,16 +155,16 @@ gulp.task('compress:css', function() {
 
 /* Server with auto reload and browersync */
 gulp.task('serve', ['css'], function () {
-  return browserSync({
+  browserSync({
     notify: false,
     // https: true,
     server: ['build']
   });
 
-  gulp.watch([srcFiles.html + '**/*.html'], ['html', reload]);
-  gulp.watch([srcFiles.css + '**/*.scss'], ['css', reload]);
-  gulp.watch([srcFiles.js + '*.js', srcFiles.js + '**/*.js'], ['js', reload]);
-  gulp.watch([srcFiles.js + '**/*'], reload);
+  gulp.watch([srcs.html + '**/*.html'], ['html', reload]);
+  gulp.watch([srcs.css + '**/*.scss'], ['css', reload]);
+  gulp.watch([srcs.js + '*.js', srcs.js + '**/*.js'], ['js', reload]);
+  gulp.watch([srcs.js + '**/*'], reload);
 });
 
 

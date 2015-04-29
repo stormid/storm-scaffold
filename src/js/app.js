@@ -1,4 +1,3 @@
-/*global $, window, document, console, FastClick*/
 var APP = (function(w, d) {
 	'use strict';
 	
