@@ -22,6 +22,8 @@ var gulp = require('gulp'),
     path = require('path'),
     cache = require('gulp-cache'),
     imagemin = require('gulp-imagemin'),
+    iconfont = require('gulp-iconfont'),
+    iconfontCss = require('gulp-iconfont-css'),
     jshint = require('gulp-jshint'),
     jshintConfig = pkg.jshintConfig;
 
@@ -57,7 +59,8 @@ var srcs = {
 		  'src/js/libs/ender.js',
 		  'src/js/app.js'],
 	html: './src/templates/views/',
-    img: './src/img/'
+    img: './src/img/',
+    iconfont: './src/iconfonts/'
 };
 
 /* Destination for the build */
@@ -65,8 +68,12 @@ var dest = {
 	css: './build/css/',
 	js: 'build/js/',
 	html: './build/',
-    img: './build/img/'
+    img: './build/img/',
+    iconfonts: './build/fonts/'
 };
+
+/* Icon font name */
+var iconfontName = 'Icons';
 
 /* Set the PSI variables */
 var publicUrl = 'www.google.com',
@@ -104,12 +111,6 @@ gulp.task('html', function(){
       .pipe(gulp.dest(dest.html));
 });
 
-/* Page speed insights */
-gulp.task('psi', function(cb) {
-  pagespeed.output(publicUrl, {
-    strategy: psiStrategy,
-  }, cb);
-});
 
 /* Build CSS from scss, prefix and add px values */
 gulp.task('sass', function () {
@@ -134,6 +135,33 @@ gulp.task('img', function () {
     .pipe(gulp.dest(dest.img));
 });
 
+/* Iconfonts */
+gulp.task('iconfont', function(){
+  gulp.src(srcs.iconfont + '**/SVG/*.svg')
+    .pipe(iconfont({
+      fontName: iconfontName
+    }))
+    .on('codepoints', function(codepoints, options) {
+      gulp.src(srcs.html + 'asset/fonts.scss')
+        .pipe(data(function(file) {
+          return {
+            glyphs: codepoints,
+            fontName: 'myfont',
+            fontPath: dest.iconfonts,
+            className: 'icons'
+          }
+        }))/*
+        .pipe(consolidate('lodash', {
+          glyphs: codepoints,
+          fontName: 'myfont',
+          fontPath: '../fonts/',
+          className: 's'
+        }))*/
+        .pipe(swig())
+        .pipe(gulp.dest(dest.css + 'icons.css'));
+    })
+    .pipe(gulp.dest(dest.iconfonts));
+});
 
 /* Compress js */
 gulp.task('compress:js', function() {
@@ -165,6 +193,14 @@ gulp.task('serve', ['css'], function () {
   gulp.watch([srcs.css + '**/*.scss'], ['css', reload]);
   gulp.watch([srcs.js + '*.js', srcs.js + '**/*.js'], ['js', reload]);
   gulp.watch([srcs.js + '**/*'], reload);
+});
+
+
+/* Page speed insights */
+gulp.task('psi', function(cb) {
+  pagespeed.output(publicUrl, {
+    strategy: psiStrategy,
+  }, cb);
 });
 
 

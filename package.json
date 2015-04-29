@@ -18,6 +18,8 @@
     "gulp-extname": "^0.2.0",
     "gulp-front-matter": "^1.2.2",
     "gulp-header": "^1.2.2",
+    "gulp-iconfont": "^1.0.0",
+    "gulp-iconfont-css": "0.0.9",
     "gulp-imagemin": "^2.2.1",
     "gulp-jshint": "^1.10.0",
     "gulp-pixrem": "0.1.1",
@@ -30,7 +32,10 @@
     "http-server": "^0.6.1",
     "psi": "^1.0.6"
   },
-  "jshintConfig" : {
-    "predef": ["document", "window"]
+  "jshintConfig": {
+    "predef": [
+      "document",
+      "window"
+    ]
   }
 }
