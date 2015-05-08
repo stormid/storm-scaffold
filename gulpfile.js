@@ -73,7 +73,7 @@ var dest = {
 };
 
 /* Icon font name */
-var iconfontName = 'Icons';
+var iconFontName = 'icons';
 
 /* Set the PSI variables */
 var publicUrl = 'www.google.com',
@@ -157,43 +157,27 @@ gulp.task('iconfont', function(){
   return gulp.src(srcs.iconfonts + '**/SVG/*.svg')
             .pipe(plumber({errorHandler: onError}))
             .pipe(iconfont({
-                fontName: iconfontName,
+                  fontName: iconFontName,
                   appendCodepoints: true,
                   normalize: false
             }))
             .on('codepoints', function(codepoints, options) {
-                console.log(codepoints);
-                return gulp.src(srcs.html + 'asset/fonts.scss')
-                /*.pipe(data(function(file) {
-                  return {
-                    glyphs: codepoints,
-                    fontName: 'myfont',
-                    fontPath: dest.iconfonts,
-                    className: 'icons'
-                  };
-                }))
-                .pipe(consolidate('lodash', {
-                  glyphs: codepoints,
-                  fontName: 'myfont',
-                  fontPath: '../fonts/',
-                  className: 's'
-                }))*/
+                return gulp.src(srcs.html + 'asset/iconfont.scss')
                 .pipe(swig({
                     data: {
-                        icons: codepoints.map(function(icon) {
+                        glyphs: codepoints.map(function(icon) {
                           return {
                             name: icon.name,
                             code: icon.codepoint.toString(16)
                           };
                         }),
-
-                        fontName: 'myfont',
+                        fontName: iconFontName,
                         fontPath: dest.iconfonts,
-                        className: 'icon-test'
+                        className: iconFontName
                     }
                 }))
-                .pipe(rename('icons.css'))
-                .pipe(gulp.dest(dest.css));
+                .pipe(rename('_iconfont.scss'))
+                .pipe(gulp.dest(srcs.css + 'base/'));
             })
             .pipe(gulp.dest(dest.iconfonts));
 });

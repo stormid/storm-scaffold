@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="no"?> 
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
+<svg xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <font id="icons" horiz-adv-x="24">
+    <font-face font-family="icons"
+      units-per-em="24" ascent="24"
+      descent="0" />
+    <missing-glyph horiz-adv-x="0" />
+    <glyph glyph-name="done"
+      unicode="&#xE001;"
+      horiz-adv-x="24" d=" M9 7.83L4.83 12L3.415 10.585L9 5L21 17L19.585 18.415z" />
+    <glyph glyph-name="exit-to-app"
+      unicode="&#xE002;"
+      horiz-adv-x="24" d=" M10.085 8.415L11.5 7L16.5 12L11.5 17L10.085 15.585L12.67 13H3V11H12.67L10.085 8.415zM19 21H5C3.895 21 3 20.105 3 19V15H5V19H19V5H5V9H3V5C3 3.895 3.895 3 5 3H19C20.105 3 21 3.895 21 5V19C21 20.105 20.105 21 19 21z" />
+    <glyph glyph-name="favorite"
+      unicode="&#xE003;"
+      horiz-adv-x="24" d=" M12 2.65L10.55 3.965C5.4 8.64 2 11.725 2 15.5C2 18.585 4.415 21 7.5 21C9.24 21 10.91 20.19 12 18.915C13.09 20.19 14.76 21 16.5 21C19.585 21 22 18.585 22 15.5C22 11.725 18.6 8.64 13.45 3.965L12 2.65z" />
+    <glyph glyph-name="https"
+      unicode="&#xE004;"
+      horiz-adv-x="24" d=" M18 16H17V18C17 20.76 14.76 23 12 23S7 20.76 7 18V16H6C4.895 16 4 15.105 4 14V4C4 2.895 4.895 2 6 2H18C19.105 2 20 2.895 20 4V14C20 15.105 19.105 16 18 16zM12 7C10.895 7 10 7.895 10 9S10.895 11 12 11S14 10.105 14 9S13.105 7 12 7zM15.1 16H8.9V18C8.9 19.71 10.29 21.1 12 21.1S15.1 19.71 15.1 18V16z" />
+  </font>
+</defs>
+</svg>
