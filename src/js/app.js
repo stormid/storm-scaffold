@@ -16,3 +16,10 @@ var APP = (function(w, d) {
 $(document).ready(function () {
   APP.init();
 });
+
+/*
+Or, modern browser only...
+
+window.addEventListener('DOMContentLoaded', APP.init, false);
+
+*/

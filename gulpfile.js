@@ -21,8 +21,10 @@ var gulp = require('gulp'),
     path = require('path'),
     cache = require('gulp-cache'),
     imagemin = require('gulp-imagemin'),
+    favicons = require('gulp-favicons'),
     notify = require('gulp-notify'),
     plumber = require('gulp-plumber'),
+    Pageres = require('pageres'),
     iconfont = require('gulp-iconfont'),
     iconfontCss = require('gulp-iconfont-css'),
     jshint = require('gulp-jshint'),
@@ -60,7 +62,8 @@ var srcs = {
 	js: './src/js/',
 	html: './src/templates/',
     img: './src/img/',
-    iconfonts: './src/iconfonts/'
+    iconfonts: './src/iconfonts/',
+    favicon: './src/favicon/schooner.svg'
 };
 
 /* Destination for the build */
@@ -143,13 +146,30 @@ gulp.task('css', ['sass']);
 
 /* Optimize images */
 gulp.task('img', function () {
-    return gulp.src([srcs.img + '**/*'])
+    return gulp.src([dest.html.img + '**/*'])
         .pipe(imagemin({
           progressive: true,
           interlaced: true,
           svgoPlugins: [{removeViewBox: true}]
         }))
         .pipe(gulp.dest(dest.img));
+});
+
+/* 
+ * Cannot add favicon links to the head partial and create the favicon files
+ * to do: limit number of icons produced
+ *
+*/
+gulp.task('favicons', function () {
+    return gulp.src(dest.html + '**/*.html')
+        .pipe(favicons({
+            files: {
+                src: srcs.favicon,
+                dest: './',
+                iconsPath: '/'
+            }
+        }))
+        .pipe(gulp.dest(dest.html));
 });
 
 /* Iconfonts */
@@ -205,7 +225,8 @@ gulp.task('serve', ['css'], function () {
       browserSync({
         notify: false,
         // https: true,
-        server: ['build']
+        server: ['build'],
+        tunnel: true
       });
 
       gulp.watch([srcs.html + '**/*.html'], ['html', reload]);
@@ -214,6 +235,7 @@ gulp.task('serve', ['css'], function () {
       gulp.watch([srcs.js], ['js', reload]);
 });
 
+
 /* Page speed insights */
 gulp.task('psi', function(cb) {
   pagespeed.output(publicUrl, {
@@ -221,6 +243,26 @@ gulp.task('psi', function(cb) {
   }, cb);
 });
 
+/* Responsive screenshots
+ * to do: run once, close server
+ *
+gulp.task('responsive', ['serve'], function () {
+    var resolutions = ['1920x1080', '1680x1050', '768x1024', '320x480'];
+    if (resolutions.length > 0) {
+        browserSync.emitter.on('service:running', function (data) {
+            var pageres = new Pageres()
+                .src(data.tunnel, resolutions, { crop: true })
+                .dest('test/screenshots/');
+            pageres.run(function (error) {
+                if (error) {
+                    throw error;
+                }
+                browserSync.exit();
+            });
+        });
+    }
+});
+ */
 
 /************************
  *  Task collections 
