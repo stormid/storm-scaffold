@@ -73,7 +73,7 @@ var dest = {
 };
 
 /* Icon font name */
-var iconFontName = 'icons';
+var iconFontName = 'icon';
 
 /* Set the PSI variables */
 var publicUrl = 'www.google.com',
@@ -154,12 +154,14 @@ gulp.task('img', function () {
 
 /* Iconfonts */
 gulp.task('iconfont', function(){
-  return gulp.src(srcs.iconfonts + '**/SVG/*.svg')
+  return gulp.src(srcs.iconfonts + '**/*.svg', {
+                buffer: false
+            })
             .pipe(plumber({errorHandler: onError}))
             .pipe(iconfont({
-                  fontName: iconFontName,
-                  appendCodepoints: true,
-                  normalize: false
+              fontName: 'icon',
+              appendCodepoints: true,
+              normalize: true
             }))
             .on('codepoints', function(codepoints, options) {
                 return gulp.src(srcs.html + 'asset/iconfont.scss')
@@ -172,7 +174,7 @@ gulp.task('iconfont', function(){
                           };
                         }),
                         fontName: iconFontName,
-                        fontPath: dest.iconfonts,
+                        fontPath: assetPath + '/iconfonts/',
                         className: iconFontName
                     }
                 }))
