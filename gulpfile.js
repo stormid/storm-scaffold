@@ -27,6 +27,11 @@ var gulp = require('gulp'),
     Pageres = require('pageres'),
     iconfont = require('gulp-iconfont'),
     iconfontCss = require('gulp-iconfont-css'),
+    inlinesource = require('gulp-inline-source'),
+    critical = require('critical'),
+    criticalcss = require('criticalcss'),
+    debug = require('gulp-debug'),
+    runSequence = require('run-sequence'),
     jshint = require('gulp-jshint'),
     jshintConfig = pkg.jshintConfig;
 
@@ -106,7 +111,7 @@ gulp.task('lint', function() {
 
 /* Concat the js */
 gulp.task('js', function() {
-	return gulp.src([srcs.js + '**/!(app)*.js', srcs.js + 'app.js'])
+	return gulp.src([srcs.js + '!(inline)**/!(app)*.js', srcs.js + 'app.js'])
 		.pipe(plumber({errorHandler: onError}))
 		.pipe(sourcemaps.init())
 		.pipe(concat('app.js'))
@@ -130,7 +135,12 @@ gulp.task('html', function(){
       .pipe(gulp.dest(dest.html));
 });
 
-/* Build CSS from scss, prefix and add px values */
+
+/* 
+ * SASS > CSS
+ * Build CSS from scss, prefix and add px values 
+ *
+ */
 gulp.task('sass', function () {
 	return gulp.src(srcs.css + '**/*.scss')
 		.pipe(plumber({errorHandler: onError}))
@@ -146,7 +156,7 @@ gulp.task('css', ['sass']);
 
 /* Optimize images */
 gulp.task('img', function () {
-    return gulp.src([dest.html.img + '**/*'])
+    return gulp.src([dest.img + '**/*'])
         .pipe(imagemin({
           progressive: true,
           interlaced: true,
@@ -155,22 +165,69 @@ gulp.task('img', function () {
         .pipe(gulp.dest(dest.img));
 });
 
+/*
+ * Critical CSS 
+ * compile HTML, copy CSS file and inline critical CSS
+ * ISSUES: only spits it out for the homepage
+ */
+gulp.task('copystyles', function () {
+    return gulp.src(dest.css + 'styles.css')
+        .pipe(rename({
+            basename: "all"
+        }))
+        .pipe(gulp.dest(dest.css));
+});
+
+gulp.task('critical', ['html', 'copystyles'], function () {
+    critical.generate({
+        base: 'build/',
+        src: 'index.html',
+        dest: './assets/css/styles.css',
+        width: 260,
+        height: 480
+    });
+});
+
+gulp.task('inlinesource', function(){
+    var inlineoptions = {
+        rootpath: './'
+    };
+    return gulp.src(dest.html + '**/*.html')
+        .pipe(inlinesource(inlineoptions))//inline everything marked with inline attribiute
+        .pipe(gulp.dest(dest.html));
+});
+
+
+gulp.task('inline', ['critical', 'inlinesource']);
+
+
 /* 
  * Cannot add favicon links to the head partial and create the favicon files
  * to do: limit number of icons produced
  *
-*/
+ */
 gulp.task('favicons', function () {
     return gulp.src(dest.html + '**/*.html')
         .pipe(favicons({
             files: {
                 src: srcs.favicon,
-                dest: './',
-                iconsPath: '/'
+                dest: './'
+            },
+            icons: {
+                android: true,
+                appleIcon: true,
+                appleStartup: true,
+                coast: true,
+                favicons: true,
+                firefox: false,
+                opengraph: true,
+                windows: true,
+                yandex: false
             }
         }))
         .pipe(gulp.dest(dest.html));
 });
+
 
 /* Iconfonts */
 gulp.task('iconfont', function(){
