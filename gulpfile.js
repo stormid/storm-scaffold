@@ -1,3 +1,4 @@
+/*global require*/
 /* Require the gulp and node packages */
 var gulp = require('gulp'),
     pkg = require('./package.json'),
@@ -138,11 +139,12 @@ gulp.task('html', function(){
 
 /* 
  * SASS > CSS
- * Build CSS from scss, prefix and add px values 
+ * Build CSS from scss, prefix and add px values from rem
  *
  */
-gulp.task('sass', function () {
-	return gulp.src(srcs.css + '**/*.scss')
+gulp.task('sass:main', function () {
+	//return gulp.src(srcs.css + '**!(fonts)/*.scss')
+    return gulp.src([srcs.css + '**/*.scss', '!' + srcs.css + 'fonts/*.scss'])
 		.pipe(plumber({errorHandler: onError}))
 		.pipe(sourcemaps.init())
 		.pipe(sass())
@@ -152,7 +154,17 @@ gulp.task('sass', function () {
 		.pipe(header(banner, {pkg : pkg}))
 		.pipe(gulp.dest(dest.css));
 });
-gulp.task('css', ['sass']);
+
+gulp.task('sass:fonts', function () {
+	return gulp.src(srcs.css + 'fonts/*.scss')
+		.pipe(plumber({errorHandler: onError}))
+		.pipe(sass())
+		.pipe(autoprefixer(AUTOPREFIXER_BROWSERS))
+		.pipe(pixrem())
+        .pipe(concat('fonts.css'))
+		.pipe(gulp.dest(dest.css));
+});
+gulp.task('css', ['sass:main', 'sass:fonts']);
 
 /* Optimize images */
 gulp.task('img', function () {
@@ -167,8 +179,9 @@ gulp.task('img', function () {
 
 /*
  * Critical CSS 
- * compile HTML, copy CSS file and inline critical CSS
- * ISSUES: only spits it out for the homepage
+ * copy full CSS file to all.css
+ * inline critical CSS for the homepage based on viewport dimensions
+ * inline stylesheet based on 'inline' attribute 
  */
 gulp.task('copystyles', function () {
     return gulp.src(dest.css + 'styles.css')
@@ -178,33 +191,34 @@ gulp.task('copystyles', function () {
         .pipe(gulp.dest(dest.css));
 });
 
-gulp.task('critical', ['html', 'copystyles'], function () {
+gulp.task('critical', function () {
     critical.generate({
         base: 'build/',
         src: 'index.html',
         dest: './assets/css/styles.css',
-        width: 260,
-        height: 480
+        width: 1300,
+        height: 800
     });
 });
 
 gulp.task('inlinesource', function(){
     var inlineoptions = {
-        rootpath: './'
+        rootpath: './',
+        compress: false
     };
     return gulp.src(dest.html + '**/*.html')
         .pipe(inlinesource(inlineoptions))//inline everything marked with inline attribiute
         .pipe(gulp.dest(dest.html));
 });
 
-
-gulp.task('inline', ['critical', 'inlinesource']);
-
+gulp.task('inline', function() {
+    runSequence('html', 'copystyles', 'critical', 'inlinesource');
+});
 
 /* 
  * Cannot add favicon links to the head partial and create the favicon files
  * to do: limit number of icons produced
- *
+ * bug: duplicate output
  */
 gulp.task('favicons', function () {
     return gulp.src(dest.html + '**/*.html')
@@ -229,8 +243,12 @@ gulp.task('favicons', function () {
 });
 
 
-/* Iconfonts */
-gulp.task('iconfont', function(){
+/* 
+ * Iconfonts
+ * Creates font files from SVGs
+ * Creates font SCSS file
+ */
+gulp.task('iconfonts', function(){
   return gulp.src(srcs.iconfonts + '**/*.svg', {
                 buffer: false
             })
@@ -255,11 +273,12 @@ gulp.task('iconfont', function(){
                         className: iconFontName
                     }
                 }))
-                .pipe(rename('_iconfont.scss'))
-                .pipe(gulp.dest(srcs.css + 'base/'));
+                .pipe(rename('iconfonts.scss'))
+                .pipe(gulp.dest(srcs.css + 'fonts/'));
             })
             .pipe(gulp.dest(dest.iconfonts));
 });
+
 
 /* Compress js */
 gulp.task('compress:js', function() {
@@ -322,7 +341,7 @@ gulp.task('responsive', ['serve'], function () {
  */
 
 /************************
- *  Task collections 
+ *  Task collection API
  ************************/
 /* Default 'refresh' task */
 gulp.task('default', ['html', 'css', 'js']);
