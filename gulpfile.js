@@ -1,3 +1,4 @@
+/*global require*/
 /* Require the gulp and node packages */
 var gulp = require('gulp'),
     pkg = require('./package.json'),
@@ -27,6 +28,11 @@ var gulp = require('gulp'),
     Pageres = require('pageres'),
     iconfont = require('gulp-iconfont'),
     iconfontCss = require('gulp-iconfont-css'),
+    inlinesource = require('gulp-inline-source'),
+    critical = require('critical'),
+    criticalcss = require('criticalcss'),
+    debug = require('gulp-debug'),
+    runSequence = require('run-sequence'),
     jshint = require('gulp-jshint'),
     jshintConfig = pkg.jshintConfig;
 
@@ -106,7 +112,7 @@ gulp.task('lint', function() {
 
 /* Concat the js */
 gulp.task('js', function() {
-	return gulp.src([srcs.js + '**/!(app)*.js', srcs.js + 'app.js'])
+	return gulp.src([srcs.js + '!(inline)**/!(app)*.js', srcs.js + 'app.js'])
 		.pipe(plumber({errorHandler: onError}))
 		.pipe(sourcemaps.init())
 		.pipe(concat('app.js'))
@@ -130,9 +136,15 @@ gulp.task('html', function(){
       .pipe(gulp.dest(dest.html));
 });
 
-/* Build CSS from scss, prefix and add px values */
-gulp.task('sass', function () {
-	return gulp.src(srcs.css + '**/*.scss')
+
+/* 
+ * SASS > CSS
+ * Build CSS from scss, prefix and add px values from rem
+ *
+ */
+gulp.task('sass:main', function () {
+	//return gulp.src(srcs.css + '**!(fonts)/*.scss')
+    return gulp.src([srcs.css + '**/*.scss', '!' + srcs.css + 'fonts/*.scss'])
 		.pipe(plumber({errorHandler: onError}))
 		.pipe(sourcemaps.init())
 		.pipe(sass())
@@ -142,11 +154,21 @@ gulp.task('sass', function () {
 		.pipe(header(banner, {pkg : pkg}))
 		.pipe(gulp.dest(dest.css));
 });
-gulp.task('css', ['sass']);
+
+gulp.task('sass:fonts', function () {
+	return gulp.src(srcs.css + 'fonts/*.scss')
+		.pipe(plumber({errorHandler: onError}))
+		.pipe(sass())
+		.pipe(autoprefixer(AUTOPREFIXER_BROWSERS))
+		.pipe(pixrem())
+        .pipe(concat('fonts.css'))
+		.pipe(gulp.dest(dest.css));
+});
+gulp.task('css', ['sass:main', 'sass:fonts']);
 
 /* Optimize images */
 gulp.task('img', function () {
-    return gulp.src([dest.html.img + '**/*'])
+    return gulp.src([dest.img + '**/*'])
         .pipe(imagemin({
           progressive: true,
           interlaced: true,
@@ -155,25 +177,78 @@ gulp.task('img', function () {
         .pipe(gulp.dest(dest.img));
 });
 
+/*
+ * Critical CSS 
+ * copy full CSS file to all.css
+ * inline critical CSS for the homepage based on viewport dimensions
+ * inline stylesheet based on 'inline' attribute 
+ */
+gulp.task('copystyles', function () {
+    return gulp.src(dest.css + 'styles.css')
+        .pipe(rename({
+            basename: "all"
+        }))
+        .pipe(gulp.dest(dest.css));
+});
+
+gulp.task('critical', function () {
+    critical.generate({
+        base: 'build/',
+        src: 'index.html',
+        dest: './assets/css/styles.css',
+        width: 1300,
+        height: 800
+    });
+});
+
+gulp.task('inlinesource', function(){
+    var inlineoptions = {
+        rootpath: './',
+        compress: false
+    };
+    return gulp.src(dest.html + '**/*.html')
+        .pipe(inlinesource(inlineoptions))//inline everything marked with inline attribiute
+        .pipe(gulp.dest(dest.html));
+});
+
+gulp.task('inline', function() {
+    runSequence('html', 'copystyles', 'critical', 'inlinesource');
+});
+
 /* 
  * Cannot add favicon links to the head partial and create the favicon files
  * to do: limit number of icons produced
- *
-*/
+ * bug: duplicate output
+ */
 gulp.task('favicons', function () {
     return gulp.src(dest.html + '**/*.html')
         .pipe(favicons({
             files: {
                 src: srcs.favicon,
-                dest: './',
-                iconsPath: '/'
+                dest: './'
+            },
+            icons: {
+                android: true,
+                appleIcon: true,
+                appleStartup: true,
+                coast: true,
+                favicons: true,
+                firefox: false,
+                opengraph: true,
+                windows: true,
+                yandex: false
             }
         }))
         .pipe(gulp.dest(dest.html));
 });
 
-/* Iconfonts */
-gulp.task('iconfont', function(){
+
+/* 
+ * Iconfonts
+ * Creates font files from SVGs
+ * Creates font SCSS file
+ */
+gulp.task('iconfonts', function(){
   return gulp.src(srcs.iconfonts + '**/*.svg', {
                 buffer: false
             })
@@ -198,11 +273,12 @@ gulp.task('iconfont', function(){
                         className: iconFontName
                     }
                 }))
-                .pipe(rename('_iconfont.scss'))
-                .pipe(gulp.dest(srcs.css + 'base/'));
+                .pipe(rename('iconfonts.scss'))
+                .pipe(gulp.dest(srcs.css + 'fonts/'));
             })
             .pipe(gulp.dest(dest.iconfonts));
 });
+
 
 /* Compress js */
 gulp.task('compress:js', function() {
@@ -265,7 +341,7 @@ gulp.task('responsive', ['serve'], function () {
  */
 
 /************************
- *  Task collections 
+ *  Task collection API
  ************************/
 /* Default 'refresh' task */
 gulp.task('default', ['html', 'css', 'js']);
