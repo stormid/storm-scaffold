@@ -1,7 +1,7 @@
 {
   "name": "scaffold",
   "version": "0.1.0",
-  "description": "New project scaffold file",
+  "description": "Poject scaffolder",
   "author": "mjbp",
   "license": "ISC",
   "devDependencies": {
