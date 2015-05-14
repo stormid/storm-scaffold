@@ -1,3 +1,4 @@
 /node_modules/
 /build/
 .bowerrc
+.DS_Store
