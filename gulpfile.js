@@ -203,7 +203,7 @@ gulp.task('critical', function () {
 
 gulp.task('inlinesource', function(){
     var inlineoptions = {
-        rootpath: './',
+        rootpath: 'build/',
         compress: false
     };
     return gulp.src(dest.html + '**/*.html')

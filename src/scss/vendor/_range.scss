@@ -1,0 +1,37 @@
+.range {
+    width: calc(100% - 19px);
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+}
+.range:before {
+    content : ' ';
+    vertical-align: middle;
+    display: inline-block;
+    height : 4px;
+    width:calc(100% + 19px);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background-color: #fff;
+    margin-top: -4px;
+}
+.range > .slider,
+.range > .slider:after {
+    background-color: $light-color;
+}
+.range > .slider {
+    height: 19px;
+    border-bottom: none;
+    position: absolute;
+    top: 1px;
+    width: 19px;
+    cursor:pointer;
+}
+.range > .slider:after {
+    height: 0;
+    width:0;
+    display:block;
+    content : '';
+    top: 12px;
+}

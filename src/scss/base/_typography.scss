@@ -1,0 +1,200 @@
+/* Type
+-------------------------------------------------------------- */
+body,
+button,
+input {
+    font:$base-font-weight $base-font-size $body-font-family, sans-serif;
+    line-height:$base-line-height;
+    color:$body-font-color;
+}
+
+//general headings
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family:$header-font-family;
+    margin-bottom:0;
+    font-weight:$regular;
+    letter-spacing:1px;
+}
+h1 {
+    font-family:$header-font-family;
+    font-size:1.375rem;
+    @include mediaquery($bp-medium) {
+        font-size:1.75rem;
+    }
+}
+h2 {
+    font-size:1.1rem;
+        @include mediaquery($bp-medium) {
+            font-size:1.5rem;
+        }
+}
+
+//general links
+a,
+a:visited {
+    color:$medium-color;
+}
+a:hover,
+a:focus {
+    outline:none;
+}
+
+b,
+strong {
+    font-family:$bold-font-family;
+}
+
+//utility inline styles
+.highlight {
+    color:$light-color;
+}
+.nl {
+    display:block;
+}
+.text-sm {
+    font-size:.875rem
+}
+
+//headings
+.heading-section {
+    margin:$gutter-small;
+    font-size:1.25rem;
+    position:relative;
+    @include mediaquery($bp-medium) {
+        font-size:1.65rem;
+        margin:0 0 $gutter-small 0;
+    }
+}
+.heading-subsection {
+    font:1.25rem $bold-font-family;
+    margin-bottom:1.5rem;
+    padding:0 $gutter-small;
+        @include mediaquery($bp-medium) {
+            padding:0;
+        }
+}
+.heading-page {
+    font-size:1.4rem;
+    margin-bottom:1rem;
+    padding:0 $gutter-small;
+        @include mediaquery($bp-medium) {
+            padding:0;
+        }
+}
+
+//definition lists
+.heading-def {
+    font:1.25rem $bold-font-family;
+    margin-bottom:.5rem;
+    letter-spacing:1px;
+}
+dd {
+    margin-bottom:1.5rem;
+    li {
+        line-height:1.75rem;
+    }
+}
+
+//css columns
+.columnise-half {
+    @include mediaquery($bp-medium) {
+        @include columnise(2, $gutter-large); 
+    }
+}
+.columnise-third {
+    @include mediaquery($bp-medium) {
+        @include columnise(3, $gutter-large); 
+    }
+}
+
+//Lists
+.list-arrowed-item {
+    margin-bottom:.5rem;
+    a,
+    a:visited {
+        color:$light-color;
+    }
+}
+.list-arrowed-item:before {
+    content:'';
+    display:inline-block;
+    vertical-align:middle;
+    position:relative;
+    height:8px;
+    width:8px;
+    margin-top:-1px;
+    border-top:2px solid currentColor;
+    border-right:2px solid currentColor;
+    transform:rotate(45deg);
+    margin-right:.5rem;
+}
+.list-plain {
+    padding-left:0;
+    margin-left:0;
+    li {
+        list-style:none;
+    }
+}
+
+//body list for links to sharepoint epic subsection lists
+.list-body-list {
+    padding:0 $gutter-small;
+    margin-bottom:2rem;
+        @include mediaquery($bp-medium) {
+            padding:0;
+        }
+    a,
+    a:visited {
+        color:$light-color;
+        font-family:$semibold-font-family;
+    }
+}
+
+//links 
+.link-arrow:before {
+    content:'';
+    display:inline-block;
+    vertical-align:middle;
+    position:relative;
+    height:8px;
+    width:8px;
+    margin-top:-1px;
+    border-top:2px solid currentColor;
+    border-right:2px solid currentColor;
+    transform:rotate(45deg);
+    margin-right:.5rem;
+}
+.link-arrow--after:after {
+    content:'';
+    display:inline-block;
+    vertical-align:middle;
+    position:relative;
+    height:8px;
+    width:8px;
+    margin-top:-1px;
+    border-top:2px solid currentColor;
+    border-right:2px solid currentColor;
+    transform:rotate(45deg);
+    margin-left:.5rem;
+}
+.link-pale {
+    color:$light-color;
+}
+.see-more {
+    position: absolute;
+    right:0;
+    bottom:.25rem;
+    font-size:.9rem;
+    letter-spacing:0;
+    color:$light-color; 
+}
+
+//img
+.img-crop {
+    border-radius:50%;
+}

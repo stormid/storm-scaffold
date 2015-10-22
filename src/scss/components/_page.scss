@@ -1,0 +1,232 @@
+/* Page
+-------------------------------------------------------------- */
+.page {
+    overflow:hidden;
+    padding-bottom:2rem;
+}
+.page-headline {
+    color:$dark-color;
+    font:3rem/1.2 $base-font-family;
+    margin-bottom:3rem;
+    padding:0 $gutter-small;
+    position: relative;
+    @include mediaquery($bp-medium) {
+        padding:0;
+    }
+}
+.page-subheadline {
+    color:$medium-color;
+    font:1.25rem $bold-font-family
+}
+.figure {
+    width:100%;
+    img {    
+        width:100%;
+        max-width:100%;
+        height:auto;
+            @include mediaquery($bp-medium) {
+                width:auto;
+            }
+    }
+}
+.figure--left {
+    margin:0 30px 3rem 0;
+    @include mediaquery($bp-medium) {
+        float:left;
+    }
+}
+.editor {
+    padding-bottom:3rem;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    ul,
+    ol {
+        padding:0 $gutter-small;
+            @include mediaquery($bp-medium) {
+                padding:0;
+            }
+    }
+    p,
+    li {
+        font-size:.875rem;
+    }
+    li {
+        list-style: disc outside;
+        margin:0 0 .5rem 1.6rem;
+    }
+    ol li {
+        list-style:decimal outside;
+    }
+    h2 {
+        font:1.125rem $bold-font-family;
+        margin-bottom:1.5rem
+    }
+    ul,
+    ol,
+    p {
+        margin-bottom:1.5rem;
+        &+ h1,
+        &+ h2,
+        &+ h3,
+        &+ h4,
+        &+ h5,
+        &+ h6 {
+            padding-top:1.5rem
+        }
+    }
+    a,
+    a:visited {
+        color:$light-color;
+    }
+}
+.page-section {
+    overflow:hidden;
+    padding-bottom: 2rem;
+    p {
+        margin-bottom:1rem;
+        font-size:.875rem;
+    }
+    a,
+    a:visited {
+        color:$light-color;
+    }
+    li {
+        list-style: disc outside;
+        margin:0 0 .5rem 1rem;
+        font-size:.875rem;
+    }
+    .list-plain li {margin-left:0;
+    list-style:none;}
+}
+.page-section--lined {
+        @include mediaquery($bp-medium) {
+            padding:3em 0;
+            border-top:1px solid $light-color;
+            border-bottom:1px solid $light-color;
+        }
+}
+.heading-page-subsection {
+    color:$light-color;
+    font:1.25rem $bold-font-family;
+    margin-bottom:1rem;
+}
+
+.page-meta {
+    padding:0 $gutter-small;
+    margin-bottom:2rem;
+        @include mediaquery($bp-medium) {
+            padding:0;
+        }
+    font:1.15rem $base-font-family;
+    b {
+        font-family: $bold-font-family
+    }
+}
+
+.page-actions {
+    padding:10px $gutter-small 0 $gutter-small;
+    margin-bottom:2.5rem;
+        @include mediaquery($bp-medium) {
+            padding:0;
+        }
+}
+.page-actions-item,
+.page-actions-item:visited {
+    display:block;
+    font-family:$menu-font-family;
+    height:39px;
+    padding-left:50px;
+    color:$light-color;
+    line-height:39px;
+    margin-bottom:10px;
+}
+
+
+.related {
+    margin-bottom:0;
+    padding-bottom:0;
+    ul {
+        margin-bottom:1.5rem
+    }
+}
+.related-heading {
+    font:1.5rem $bold-font-family;
+    margin-bottom:1.5rem;
+}
+.related-subheading {
+    font:1.15rem $bold-font-family;
+    color:$medium-color;
+    margin-bottom:1rem;
+}
+.related-item {
+    font-size:.875rem;
+    margin-bottom:.5rem;
+    a,
+    a:visited {
+        color:$light-color;
+    }
+}
+.related-item--document {
+    font-size:.875rem;
+    margin-bottom:1rem;
+    display: block;
+    height:72px;
+    padding-left:55px;
+    a {
+        display:block;
+    }
+}
+
+.page-next,
+.page-next:visited {
+    display:block;
+    margin:0 $gutter-small 4rem $gutter-small;
+    text-align: right;
+    padding-left:33%;
+    width:auto;
+        @include mediaquery($bp-small){
+            margin:0;
+            padding:$gutter-large;
+            float: right
+        }
+}
+.page-next--label {
+        color:$light-color;
+        font-size: 1.4rem;
+        display: block;
+}
+.page-next--title {
+    color:$body-font-color;
+}
+
+.page-footer {
+    clear: both;
+    padding-top:0;
+    @include mediaquery($bp-medium) {
+        padding-top:2rem;
+    }
+}
+.binary-options {
+    font-family:$bold-font-family;
+    padding-bottom:2rem;
+    span {
+        margin-left:15px;
+    }
+    a {
+        color:$light-color;
+    }
+}
+.binary-options--list {
+    font-size:1.1rem;
+    padding-left:$gutter-small;
+    padding-right:$gutter-small;
+        @include mediaquery($bp-medium){
+            padding-left:0;
+            padding-right:0;
+        }
+}

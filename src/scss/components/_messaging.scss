@@ -1,0 +1,99 @@
+/* Messaging
+-------------------------------------------------------------- */
+.messaging {
+    display:inline-block;
+    position: absolute;
+    right:85px;
+    padding-right:$gutter-small;
+    top:0;
+    @include mediaquery($bp-medium) {
+        right:0;
+        top:6px;
+    }
+}
+.m-dropdown-heading {
+    vertical-align:bottom;
+    display:inline-block;
+    cursor: pointer;
+    position: relative;
+    font-size: .875rem;
+    color: #fff;
+    @include mediaquery($bp-medium, $max:true) {
+        @include hidden;
+    }
+}
+.dropdown:hover .dropdown-window--m {
+    right:auto;
+    left:-125px;
+}
+.m-menu {
+    display:inline-block;
+    margin-right:12px;
+    vertical-align:middle;
+    position:relative;
+}
+.m-avatar {
+    display:inline-block;
+    vertical-align:middle;
+    position:relative;
+    width:42px;
+    height:42px;
+    img {
+        width:100%;
+        height:auto;
+    }
+    @include mediaquery($bp-medium) {
+        width:52px;
+        height:53px;
+    }
+}
+.m-messages {
+    position: absolute;
+    top: -5px;
+    right: -6px;
+    display: inline-block;
+    width:20px;
+    height:20px;
+    background:$highlight-color;
+    border-radius:50%;
+    text-align:center;
+    color:#fff;
+    font:.875rem/20px $bold-font-family;
+}
+.m-login {
+    display:inline-block;
+    vertical-align:middle;
+    padding-left:16px;
+    font-size:.875rem;
+    line-height:1.4;
+    @include mediaquery($bp-medium, $max:true) {
+        @include hidden;
+    }
+    span {
+        display:block;
+        color:#fff;
+    }
+    a {
+        color:#fff;
+    }
+}
+.m-login-u {font-size: 1rem;}
+
+//instant messager
+.message {}
+.message-contact {
+    margin-bottom:1.5rem;
+    font-size:.875rem;
+    line-height:1rem;
+}
+.message-status {
+    @include ir;
+    display:inline-block;
+    line-height:1rem;
+    vertical-align:middle;
+    margin-right: 10px;
+    width:16px;
+    height:16px;
+    background-color:#8CC63F;
+    border-radius:50%;
+}

@@ -1,0 +1,38 @@
+/* Meetings
+-------------------------------------------------------------- */
+.meeting-list dd:last-of-type {
+    margin-bottom:0;
+}
+.meeting-list-heading {
+    font:1.4rem $bold-font-family;
+    margin-bottom:1.5rem;
+    padding-bottom:1.5rem;
+    border-bottom:1px solid $light-color
+}
+.mt-i-time {
+    vertical-align: inherit;
+        time {
+            font-family:$bold-font-family;
+            display:block;
+            letter-spacing:1px;
+            padding-bottom:.25rem;
+        }
+}
+.mt-i-time time:nth-child(2) {
+        position:relative;
+        padding-top:.75rem;
+        &:before {
+            content:'';
+            line-height:1;
+            display:inline-block;
+            height:6px;
+            width:6px;
+            position:absolute;
+            top:0;
+            left:50%;
+            margin-left:-3px;
+            border-top:2px solid #fff;
+            border-right:2px solid #fff;
+            transform:rotate(135deg);
+        }
+}

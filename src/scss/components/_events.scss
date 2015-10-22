@@ -1,0 +1,27 @@
+/* Events
+-------------------------------------------------------------- */
+.event-list {
+    padding:$gutter-small;
+}
+.event-time {
+    width:100px;
+    color:$light-color;
+}
+.event-time-day {
+    display:table-cell;
+    vertical-align:top;
+    padding-right:5px;
+    font:2.5rem/1 $bold-font-family;
+}
+.event-time-month {
+    display:table-cell;
+    vertical-align: top;
+    font-family:$header-font-family;
+    text-transform:uppercase;
+}
+.event-details-name,
+.event-details-name a,
+.event-details-name a:visited {
+    display:block;
+    color:$light-color;
+}

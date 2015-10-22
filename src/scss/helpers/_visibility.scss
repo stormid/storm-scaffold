@@ -1,0 +1,12 @@
+/* Utility classes
+--------------------------------------------------------------*/
+.js-hidden,
+.hidden {
+    @include hidden;
+}
+.mobile-hidden,
+.js-mobile-hidden {
+    @include mediaquery($bp-medium, $max:true) {
+        @include hidden;
+    }
+}

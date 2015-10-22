@@ -1,0 +1,126 @@
+/* Media objects
+-------------------------------------------------------------- */
+.media-list {
+    padding:0;
+}
+.media-item {
+    list-style:none;
+    overflow:hidden;
+    display:block;
+    margin:0 0 20px 0;
+    padding:0 0 20px 0;
+    border-bottom:1px solid $light-color;
+        &:last-of-type {
+            border:0 none;
+            margin-bottom:0;
+        }
+}
+.m-i-media {
+    display:table-cell;
+    padding-right:25px;
+    vertical-align:top;
+}
+.m-i-media--right {
+    padding-right:0;
+}
+.m-i-img {
+    display: block;
+}
+.m-i-bd {
+    width:10000px;
+    display:table-cell;
+    padding-right:20px;
+}
+m-i-bd--right {
+    padding-right:0;
+}
+.m-i-heading {
+    font:1rem $bold-font-family;
+    color:$body-font-color;
+    margin-bottom:.125rem;
+}
+.m-i-sub {
+    font:.875rem $bold-font-family;
+    color:$light-color;
+    margin-bottom:.25rem;
+    letter-spacing:0;
+    display:block;
+}
+.m-i-meta {
+    font:.875rem $body-font-family;
+    display:block;
+    margin-bottom:.25rem;
+}
+
+//Profiles
+.profile-item {
+    padding:0 0 3rem 0;
+    margin:0 0 3rem 0;
+}
+.p-i-media {
+    display:table-row;
+    margin-bottom:1rem;
+    padding-right: 0;
+        @include mediaquery($bp-medium) {
+            display: table-cell;
+        }
+    img {
+        margin-bottom:1rem;
+    }
+}
+.p-i-bd {
+        @include mediaquery($bp-medium){
+            padding-left:25px;
+        }
+}
+.p-i-heading {
+    font:1.3rem $bold-font-family;
+    color:$dark-color;
+    margin-bottom:.5rem;
+    a,
+    a:visited {
+        color:$dark-color;
+    }
+}
+.p-i-sub {
+    margin-bottom:.5rem;
+}
+
+.media-item--profile {
+    border:0 none
+}
+.m-i--profile-heading {
+    font-size:1.3rem;
+    a,
+    a:visited {
+        color:$light-color
+    }
+}
+
+//Documents
+.document-list {
+    border-top:1px solid $light-color;
+    padding-top: 1.5rem;
+}
+.document-item {
+    padding-bottom: 1.5rem;
+    min-height:65px;
+    margin-bottom:1.5rem;
+    border-bottom:1px solid $light-color;
+}
+
+//reponsive map embed
+.google-map {
+    position: relative;
+    padding-bottom: 80%;
+    height: 0;
+    overflow: hidden;
+    display:block;
+    iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        height: 100% !important;
+    }
+}

@@ -1,0 +1,107 @@
+/* Directory
+-------------------------------------------------------------- */
+.directory-section {
+    border-top:1px solid $light-color;
+    overflow:hidden;
+    padding:$gutter-small;
+        @include mediaquery($bp-medium) {
+            padding:3rem 0;
+        }
+    .m-i-media {
+        display:table-row;
+        margin-bottom:2rem;
+        @include mediaquery($bp-medium) {
+            display:table-cell;
+        }
+    }
+    .google-map {
+        display:block;
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100% !important;
+            height: 100% !important;
+        }
+            @include mediaquery($bp-medium){
+                display:table-cell;
+                padding-bottom:0;
+                iframe {
+                    position:relative;
+                    width: 360px !important;
+                    height: 360px !important;
+                }
+            }
+    }
+    li {
+        margin-bottom:.5rem;
+    }
+    .m-i--profile-heading {
+        font:1.15rem $bold-font-family;
+    }
+    .document-list,
+    .document-item {
+        border:0 none;
+    }
+}
+.directory-section--full {
+    padding-left:0;
+    padding-right:0;
+    .directory-heading {
+        padding:0 $gutter-small;
+            @include mediaquery($bp-medium){
+                padding:0;
+            }
+    }
+    .m-i-bd {
+        padding-left:$gutter-small;
+        padding-right:$gutter-small;
+        @include mediaquery($bp-medium){
+            padding-left:0;
+        }
+    }
+}
+.directory-heading {
+    position:relative;
+    font:1.3rem $bold-font-family;
+    margin-bottom:1.5rem;
+}
+.directory-edit,
+.directory-edit:visited {
+    position:absolute;
+    right:0;
+    top:-1.5rem;
+    font:1rem $bold-font-family;
+    color:$light-color;
+    min-width:50px;
+    min-height:23px;
+    padding-left:30px; 
+        @include mediaquery($bp-medium){
+            top:1.5rem;
+            right:2rem;
+        }
+}
+.directory-details--label,
+.directory-details--value {
+    font-size: .875rem;
+    display:inline-block;
+    vertical-align: top;
+    width:45%;
+}
+.directory-details--value,
+.directory-details--value a,
+.directory-details--value a:visited {
+    width:50%;
+    font-family:$bold-font-family;
+    color:$body-font-color;
+}
+.directory-follow,
+.directory-follow:visited {
+    position:absolute;
+    right:$gutter-small;
+    font:1.15rem $bold-font-family;
+    color:$light-color;
+    min-width:50px;
+    min-height:23px;
+    padding-left:30px; 
+}
