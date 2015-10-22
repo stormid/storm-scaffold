@@ -1,17 +1,24 @@
 @charset "UTF-8";
 
-@import 'utils/variables',
-		'utils/mixins';
+@import 'globals/variables';
 
-@import 'base/reset',
-		'base/type';
+@import 'utils/mixins';
 
-@import 'layout/grid',
-		'layout/header',
-		'layout/navigation',
-		'layout/footer',
-		'layout/forms',
-		'layout/lists',
-		'layout/tables';
+@import 'globals/normalise',
+        'globals/webfonts',
+		'globals/typography',
+		'globals/webfonts';
 
-@import 'components/buttons';
+@import 'shared/grid',
+		'shared/header',
+		'shared/navigation',
+		'shared/footer',
+		'shared/lists',
+		'shared/links',
+		'shared/forms',
+		'shared/mediaobjects';
+
+//@import 'vendor/';
+
+@import 'components/buttons',
+        'components/icons';

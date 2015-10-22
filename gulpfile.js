@@ -10,7 +10,7 @@ var gulp = require('gulp'),
     pixrem = require('gulp-pixrem'),
     uglify = require('gulp-uglify'),
     rename = require('gulp-rename'),
-    csso = require('gulp-csso'),
+    minifyCss = require('gulp-minify-css'),
     swig = require('gulp-swig'),
     frontMatter = require('gulp-front-matter'),
     data = require('gulp-data'),
@@ -20,19 +20,16 @@ var gulp = require('gulp'),
     browserSync = require('browser-sync'),
     reload = browserSync.reload,
     path = require('path'),
+    browserify = require('browserify'),
+    watchify = require('watchify'),
     cache = require('gulp-cache'),
     imagemin = require('gulp-imagemin'),
-    favicons = require('gulp-favicons'),
     notify = require('gulp-notify'),
     plumber = require('gulp-plumber'),
-    Pageres = require('pageres'),
-    iconfont = require('gulp-iconfont'),
-    iconfontCss = require('gulp-iconfont-css'),
-    inlinesource = require('gulp-inline-source'),
-    critical = require('critical'),
-    criticalcss = require('criticalcss'),
     debug = require('gulp-debug'),
     runSequence = require('run-sequence'),
+    source = require('vinyl-source-stream'),
+    buffer = require('vinyl-buffer'),
     jshint = require('gulp-jshint'),
     jshintConfig = pkg.jshintConfig;
 
@@ -60,33 +57,32 @@ var AUTOPREFIXER_BROWSERS = [
   'bb >= 10'
 ];
 
-var assetPath = '/assets';
+/* Build destination */
+var outputDir = './build/';
+
+/* Where CSS, JS, imgs are piped */
+var assetPath = outputDir + '/content';
 
 /* Source files for the pipe */
-var srcs = {
+var src = {
 	css: './src/scss/',
 	js: './src/js/',
 	html: './src/templates/',
-    img: './src/img/',
-    iconfonts: './src/iconfonts/',
-    favicon: './src/favicon/schooner.svg'
+    img: './src/img/'
 };
 
 /* Destination for the build */
 var dest = {
-	css: './build' + assetPath + '/css/',
-	js: './build' + assetPath + '/js/',
-	html: './build/',
-    img: './build' + assetPath + '/img/',
-    iconfonts: './build' + assetPath + '/iconfonts/'
+	css: assetPath + '/css/',
+	js:  assetPath + '/js/',
+	html: outputDir,
+    img: assetPath + '/img/',
+    fonts: assetPath + '/fonts/'
 };
 
-/* Icon font name */
-var iconFontName = 'icon';
-
 /* Set the PSI variables */
-var publicUrl = 'www.google.com',
-    psiStrategy = 'mobile';
+var publicUrl = '', //publicly accessible URL on your local machine, demo, staging, live...
+    psiStrategy = 'mobile'; //'mobile' or 'desktop'
 
 /* Error notificaton*/
 var onError = function(err) {
@@ -105,25 +101,39 @@ var onError = function(err) {
  ************************/
 /* Lint JS */
 gulp.task('lint', function() {
-	return gulp.src(srcs.js)
+	return gulp.src(src.js)
 		.pipe(jshint(jshintConfig))
 		.pipe(jshint.reporter('default'));
 });
 
-/* Concat the js */
-gulp.task('js', function() {
-	return gulp.src([srcs.js + '!(inline)**/!(app)*.js', srcs.js + 'app.js'])
-		.pipe(plumber({errorHandler: onError}))
-		.pipe(sourcemaps.init())
-		.pipe(concat('app.js'))
-		.pipe(sourcemaps.write())
-		.pipe(header(banner, {pkg : pkg}))
-		.pipe(gulp.dest(dest.js));
+
+gulp.task('js:browserify', function () {
+  var b = browserify({
+    entries: src.js + 'app.js',
+    debug: true
+  });
+
+  return b.bundle()
+    .pipe(source('app.js'))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({loadMaps: true}))
+    // Add transformation tasks to the pipeline here.
+    .pipe(uglify())
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest(dest.js));
 });
+
+gulp.task('js:async', function () {
+    return gulp.src(src.js + 'async/**/*')
+  		.pipe(uglify())
+  		.pipe(rename({suffix: '.min'}))
+  		.pipe(gulp.dest(dest.js + 'libs/'));
+});
+gulp.task('js', ['js:browserify', 'js:async']);
 
 /* Build the flat html */
 gulp.task('html', function(){
-    return gulp.src(srcs.html + 'views/**/*.html')
+    return gulp.src(src.html + 'views/**/*.html')
       .pipe(frontMatter({ property: 'data' }))
       .pipe(data(function(file) {
         return {'assetPath': assetPath};
@@ -142,33 +152,23 @@ gulp.task('html', function(){
  * Build CSS from scss, prefix and add px values from rem
  *
  */
-gulp.task('sass:main', function () {
-	//return gulp.src(srcs.css + '**!(fonts)/*.scss')
-    return gulp.src([srcs.css + '**/*.scss', '!' + srcs.css + 'fonts/*.scss'])
+gulp.task('sass', function () {
+    return gulp.src([src.css + '**/*.scss', '!' + src.css + '{fonts,kss}/*.*'])
 		.pipe(plumber({errorHandler: onError}))
 		.pipe(sourcemaps.init())
 		.pipe(sass())
 		.pipe(autoprefixer(AUTOPREFIXER_BROWSERS))
 		.pipe(pixrem())
-		.pipe(sourcemaps.write())
 		.pipe(header(banner, {pkg : pkg}))
+		.pipe(sourcemaps.write())
 		.pipe(gulp.dest(dest.css));
 });
 
-gulp.task('sass:fonts', function () {
-	return gulp.src(srcs.css + 'fonts/*.scss')
-		.pipe(plumber({errorHandler: onError}))
-		.pipe(sass())
-		.pipe(autoprefixer(AUTOPREFIXER_BROWSERS))
-		.pipe(pixrem())
-        .pipe(concat('fonts.css'))
-		.pipe(gulp.dest(dest.css));
-});
-gulp.task('css', ['sass:main', 'sass:fonts']);
+gulp.task('css', ['sass']);
 
 /* Optimize images */
 gulp.task('img', function () {
-    return gulp.src([dest.img + '**/*'])
+    return gulp.src([src.img + '**/*'])
         .pipe(imagemin({
           progressive: true,
           interlaced: true,
@@ -177,108 +177,11 @@ gulp.task('img', function () {
         .pipe(gulp.dest(dest.img));
 });
 
-/*
- * Critical CSS 
- * copy full CSS file to all.css
- * inline critical CSS for the homepage based on viewport dimensions
- * inline stylesheet based on 'inline' attribute 
- */
-gulp.task('copystyles', function () {
-    return gulp.src(dest.css + 'styles.css')
-        .pipe(rename({
-            basename: "all"
-        }))
-        .pipe(gulp.dest(dest.css));
+/* Fonts */
+gulp.task('font', function() {
+    return gulp.src(src.fonts + '**/*.*')
+        .pipe(gulp.dest(dest.fonts));
 });
-
-gulp.task('critical', function () {
-    critical.generate({
-        base: 'build/',
-        src: 'index.html',
-        dest: './assets/css/styles.css',
-        width: 1300,
-        height: 800
-    });
-});
-
-gulp.task('inlinesource', function(){
-    var inlineoptions = {
-        rootpath: 'build/',
-        compress: false
-    };
-    return gulp.src(dest.html + '**/*.html')
-        .pipe(inlinesource(inlineoptions))//inline everything marked with inline attribiute
-        .pipe(gulp.dest(dest.html));
-});
-
-gulp.task('inline', function() {
-    runSequence('html', 'copystyles', 'critical', 'inlinesource');
-});
-
-/* 
- * Cannot add favicon links to the head partial and create the favicon files
- * to do: limit number of icons produced
- * bug: duplicate output
- */
-gulp.task('favicons', function () {
-    return gulp.src(dest.html + '**/*.html')
-        .pipe(favicons({
-            files: {
-                src: srcs.favicon,
-                dest: './'
-            },
-            icons: {
-                android: true,
-                appleIcon: true,
-                appleStartup: true,
-                coast: true,
-                favicons: true,
-                firefox: false,
-                opengraph: true,
-                windows: true,
-                yandex: false
-            }
-        }))
-        .pipe(gulp.dest(dest.html));
-});
-
-
-/* 
- * Iconfonts
- * Creates font files from SVGs
- * Creates font SCSS file
- */
-gulp.task('iconfonts', function(){
-  return gulp.src(srcs.iconfonts + '**/*.svg', {
-                buffer: false
-            })
-            .pipe(plumber({errorHandler: onError}))
-            .pipe(iconfont({
-              fontName: 'icon',
-              appendCodepoints: true,
-              normalize: true
-            }))
-            .on('codepoints', function(codepoints, options) {
-                return gulp.src(srcs.html + 'asset/iconfont.scss')
-                .pipe(swig({
-                    data: {
-                        glyphs: codepoints.map(function(icon) {
-                          return {
-                            name: icon.name,
-                            code: icon.codepoint.toString(16)
-                          };
-                        }),
-                        fontName: iconFontName,
-                        fontPath: assetPath + '/iconfonts/',
-                        className: iconFontName
-                    }
-                }))
-                .pipe(rename('iconfonts.scss'))
-                .pipe(gulp.dest(srcs.css + 'fonts/'));
-            })
-            .pipe(gulp.dest(dest.iconfonts));
-});
-
 
 /* Compress js */
 gulp.task('compress:js', function() {
@@ -290,9 +193,9 @@ gulp.task('compress:js', function() {
 
 /* Compress CSS */
 gulp.task('compress:css', function() {
-	return gulp.src(dest.css + 'styles.css')
-		.pipe(csso())
-        .pipe(rename('styles.min.css'))
+	return gulp.src(dest.css + 'style.css')
+		.pipe(minifyCss())
+        .pipe(rename('style.min.css'))
 		.pipe(gulp.dest(dest.css));
 });
 
@@ -305,12 +208,19 @@ gulp.task('serve', ['css'], function () {
         tunnel: true
       });
 
-      gulp.watch([srcs.html + '**/*.html'], ['html', reload]);
-      gulp.watch([srcs.css + '**/*.scss'], ['css', reload]);
-      gulp.watch([srcs.img + '*'], ['img', reload]);
-      gulp.watch([srcs.js], ['js', reload]);
+      gulp.watch([src.html + '**/*.html'], ['html', reload]);
+      gulp.watch([src.css + '**/*.scss'], ['css', reload]);
+      gulp.watch([src.img + '*'], ['img', reload]);
+      gulp.watch([src.js], ['js', reload]);
 });
 
+/* Watch */
+gulp.task('watch', function () {
+      gulp.watch([src.html + '**/*.html'], ['html']);
+      gulp.watch([src.css + '**/*.scss'], ['css']);
+      gulp.watch([src.img + '**/*'], ['img']);
+      gulp.watch([src.js], ['js']);
+});
 
 /* Page speed insights */
 gulp.task('psi', function(cb) {
@@ -319,35 +229,18 @@ gulp.task('psi', function(cb) {
   }, cb);
 });
 
-/* Responsive screenshots
- * to do: run once, close server
- *
-gulp.task('responsive', ['serve'], function () {
-    var resolutions = ['1920x1080', '1680x1050', '768x1024', '320x480'];
-    if (resolutions.length > 0) {
-        browserSync.emitter.on('service:running', function (data) {
-            var pageres = new Pageres()
-                .src(data.tunnel, resolutions, { crop: true })
-                .dest('test/screenshots/');
-            pageres.run(function (error) {
-                if (error) {
-                    throw error;
-                }
-                browserSync.exit();
-            });
-        });
-    }
-});
- */
 
 /************************
  *  Task collection API
  ************************/
-/* Default 'refresh' task */
-gulp.task('default', ['html', 'css', 'js']);
+/* Start task */
+gulp.task('start', ['html', 'css', 'js', 'img', 'font', 'watch']);
 
 /* Final build task including compression */
 gulp.task('build', ['html', 'css', 'js', 'compress']);
 
 /* The compress task */
-gulp.task('compress', ['compress:css', 'compress:js']);
+gulp.task('compress', ['compress:css']);
+
+/* Default 'refresh' task */
+gulp.task('default', ['start']);

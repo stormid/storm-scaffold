@@ -1,0 +1,53 @@
+//Lists
+ul,
+ol {
+    padding-left:1.2rem;
+    margin-bottom: $baseline;
+}
+li {
+    list-style:disc outside;
+    padding-bottom:.5rem;
+}
+.list,
+.list li {
+    list-style-type: none;
+}
+.list--inline {
+    padding:0;
+        li {
+            list-style: none;
+            display: inline;
+        }
+}
+.list__item {
+    margin-bottom:0;
+    padding-bottom:0;
+}
+.list-arrowed-item {
+    margin-bottom:.5rem;
+    a,
+    a:visited {
+    }
+}
+.list-arrowed-item:before {
+    content:'';
+    display:inline-block;
+    vertical-align:middle;
+    position:relative;
+    height:8px;
+    width:8px;
+    margin-top:-1px;
+    border-top:2px solid currentColor;
+    border-right:2px solid currentColor;
+    transform:rotate(45deg);
+    margin-right:.5rem;
+}
+.list--plain,
+.list--footer {
+    padding-left:0;
+    margin-left:0;
+    display:block;
+    li {
+        list-style:none;
+    }
+}

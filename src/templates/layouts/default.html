@@ -1,3 +1,7 @@
-{% include "../partials/head.html" %}
-{% block content %}{% endblock %}
-{% include "../partials/foot.html" %}
+{% include "../partials/doc-head.html" %}
+    {% include "../partials/ui-header.html" %}
+    {% include "../partials/ui-navigation.html" %}
+    <main id="content">
+        {% block content %}{% endblock %}
+    </main>
+{% include "../partials/doc-foot.html" %}

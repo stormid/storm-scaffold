@@ -1,0 +1,51 @@
+/* Grid
+-------------------------------------------------------------- */
+@function column-calc($num, $spacing:$gutter){
+	$multiplier: $num / $columns;
+    @return ((100 / $columns) * $num) - ($spacing);
+}
+@function calcer($num, $spacing:$gutter){
+	$multiplier: $num / $columns;
+    @return calc(((100% / #{$columns}) * #{$num}) - (#{$spacing}));
+}
+
+@mixin column($num) {
+	width: column-calc($num);
+}
+
+.row {
+    clear:both;
+    margin-left:-$gutter;
+        &:after {
+            content:'';
+            display: table;
+        }
+}
+.col {
+	float:left;
+    margin-left:#{$gutter};
+}
+.xsmall_6,
+.xmedium_half {
+    @media (max-width:$bp-xsmall) {
+        @include column(6);
+    }
+}
+.small_6,
+.small_half {
+    @media (max-width:$bp-medium) {
+        @include column(6);
+    }
+}
+.large_6,
+.slarge_half {
+    @media (min-width:$bp-large) {
+	   @include column(6);
+    }
+}
+.medium_2,
+.medium_half {
+    @media (min-width:$bp-medium) {
+        @include column(2);
+    }
+}

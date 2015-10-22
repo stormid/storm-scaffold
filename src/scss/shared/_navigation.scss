@@ -1,0 +1,104 @@
+/* Navigation
+-------------------------------------------------------------- */
+//skip to content
+.nav-skip {
+    position: absolute;
+    visibility: hidden;
+        &:focus {
+            position: fixed;
+            visibility: visible;
+            background:#fff;
+            display:block;
+            left:0;
+            right:0;
+            top:0;
+            outline:0;
+            z-index:3;
+            text-align: center;
+        }
+}
+//primary nav
+.nav-primary {
+    opacity:0;
+    visibility: hidden;
+    overflow-y:scroll;
+        @media (min-width:$bp-medium){
+            overflow-y:inherit;
+            visibility: visible;
+            opacity:1;
+            position:relative;
+            width:auto;
+            padding:0;
+            display:block;
+        }
+}
+.nav-primary__item {}
+.nav-primary__link {
+    &.active {}
+}
+
+//mobile nav on
+.on--primary-navigation {
+    @media (max-width:$bp-medium){
+        overflow:hidden;
+        .nav-primary {
+            backface-visibility: hidden;
+            visibility: visible;
+        }
+    }
+}
+//no js on mobile
+.no-js .nav-primary {
+    @media (max-width:$bp-medium){
+        opacity:1;
+        visibility: visible;
+    }
+}
+.animating--primary-navigation {
+    @media (max-width:$bp-medium){
+        .nav-primary {
+            opacity:0;
+        }
+    }
+}
+
+//breadcrumb
+.nav-breadcrumb {
+}
+.nav-breadcrumb__list {
+}
+.nav-breadcrumb__item {
+    display:inline-block;
+    padding:0 .25rem 0 0;
+        &+ .nav-breadcrumb__item {
+            &:before {
+                content:' / ';
+                padding-right:.25rem;
+            }
+            &:first-child:before {
+                padding-right:0;
+            }
+        }
+}
+
+//pagination
+.nav-pagination {
+}
+.nav-pagination__item {
+    display: inline-block;
+    margin-bottom: 0;
+    padding-bottom:0;
+    min-width:32px;
+    text-align: center;
+}
+.nav-pagination__link {
+    display: inline-block;
+    padding:0;
+    height:32px;
+    width:32px;
+    text-align: center;
+    border:$border-width solid $border-color;
+    border-radius:$border-radius;
+        &:hover {
+        }
+}

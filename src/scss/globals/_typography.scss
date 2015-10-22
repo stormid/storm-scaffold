@@ -1,0 +1,73 @@
+/* Type
+-------------------------------------------------------------- */
+body,
+button,
+input,
+select,
+textarea {
+    font:$base-font-weight $base-font-size $body-font-family;
+    line-height:$base-line-height;
+    color:$body-font-color;
+}
+
+input,
+select,
+textarea {
+    font-size:.99rem;
+    line-height:1rem;
+}
+
+b,
+strong {
+    font-family: $bold-font-family;
+}
+
+//general headings
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-bottom:0;
+    font-weight:$regular;
+    letter-spacing:1px;
+    line-height:1.2;
+}
+h1 {
+    font-size:1.75rem;
+    margin-bottom:$baseline;
+}
+h2 {
+    font-size:1.2rem;
+    margin-bottom:$baseline;
+}
+h3 {
+    font-size:1.35rem;
+    margin-bottom:$baseline/2;
+}
+h4 {
+    margin-bottom:$baseline/2;}
+h5 {
+    margin-bottom:$baseline/2;
+}
+h6 {
+    margin-bottom:$baseline/2;
+}
+p {
+    margin-bottom:$baseline/2;
+}
+
+//general links
+a,
+.link {
+    color:$body-font-color;
+}
+a:hover {
+    outline:none;
+}
+
+//font-fallback
+.no-webfonts:not(.no-js) * {
+    font-family:sans-serif;
+}

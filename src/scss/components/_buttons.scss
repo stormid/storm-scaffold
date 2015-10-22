@@ -1,2 +1,21 @@
 /* Buttons
 -------------------------------------------------------------- */
+.btn {
+	display: inline-block;
+	font-size:1rem;
+	outline: none;
+	padding: .5rem 1rem;
+	position: relative;
+	text-decoration: none;
+    width:auto;
+    margin:0;
+    border:0 none;
+    color:#fff;
+    border-radius:$border-radius;
+    cursor:pointer;
+    text-align:center;
+        &:focus {
+        }
+        &:hover {
+        }
+}
