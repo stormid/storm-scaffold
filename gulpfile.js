@@ -58,10 +58,10 @@ var AUTOPREFIXER_BROWSERS = [
 ];
 
 /* Build destination */
-var outputDir = './build/';
+var outputDir = './build';
 
 /* Where CSS, JS, imgs are piped */
-var assetPath = outputDir + '/content';
+var assetPath = '/content';
 
 /* Source files for the pipe */
 var src = {
@@ -73,11 +73,11 @@ var src = {
 
 /* Destination for the build */
 var dest = {
-	css: assetPath + '/css/',
-	js:  assetPath + '/js/',
+	css: outputDir + assetPath + '/css/',
+	js:  outputDir + assetPath + '/js/',
 	html: outputDir,
-    img: assetPath + '/img/',
-    fonts: assetPath + '/fonts/'
+    img: outputDir + assetPath + '/img/',
+    fonts: outputDir + assetPath + '/fonts/'
 };
 
 /* Set the PSI variables */
@@ -106,7 +106,6 @@ gulp.task('lint', function() {
 		.pipe(jshint.reporter('default'));
 });
 
-
 gulp.task('js:browserify', function () {
   var b = browserify({
     entries: src.js + 'app.js',
@@ -117,9 +116,9 @@ gulp.task('js:browserify', function () {
     .pipe(source('app.js'))
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))
-    // Add transformation tasks to the pipeline here.
     .pipe(uglify())
     .pipe(sourcemaps.write('./'))
+    // Add transformation tasks to the pipeline here.
     .pipe(gulp.dest(dest.js));
 });
 
@@ -134,18 +133,18 @@ gulp.task('js', ['js:browserify', 'js:async']);
 /* Build the flat html */
 gulp.task('html', function(){
     return gulp.src(src.html + 'views/**/*.html')
-      .pipe(frontMatter({ property: 'data' }))
-      .pipe(data(function(file) {
-        return {'assetPath': assetPath};
-      }))
-      .pipe(swig({
-        defaults: {
-          cache: false
-        }
-      }))
+        .pipe(plumber({errorHandler: onError}))
+        .pipe(frontMatter({ property: 'data' }))
+        .pipe(data(function(file) {
+            return {'assetPath': assetPath};
+        }))
+        .pipe(swig({
+            defaults: {
+                cache: false
+            }
+        }))
       .pipe(gulp.dest(dest.html));
 });
-
 
 /* 
  * SASS > CSS
@@ -200,11 +199,11 @@ gulp.task('compress:css', function() {
 });
 
 /* Server with auto reload and browersync */
-gulp.task('serve', ['css'], function () {
+gulp.task('serve', ['build'], function () {
       browserSync({
         notify: false,
         // https: true,
-        server: ['build'],
+        server: [outputDir],
         tunnel: true
       });
 
@@ -231,7 +230,7 @@ gulp.task('psi', function(cb) {
 
 
 /************************
- *  Task collection API
+ *  Task API
  ************************/
 /* Start task */
 gulp.task('start', ['html', 'css', 'js', 'img', 'font', 'watch']);

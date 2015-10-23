@@ -33,11 +33,6 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 	display:block;
 }
 
-body {
-	@media (max-width:$bp-medium){
-		padding-top:120px;
-	}
-}
 
 strong, 
 b {
@@ -162,7 +157,7 @@ select {
 input, 
 button, 
 select {
-	border: 0;
+	border: 1px solid #000;
 	border-radius: 0;
 	outline: 0;
 	padding: 0;
@@ -219,6 +214,7 @@ button,
 input[type="button"],
 input[type="reset"],
 input[type="submit"] {
+    border:0 none;
     cursor: pointer; // 1
     -webkit-appearance: button; // 2
 }

@@ -1,0 +1,16 @@
+---
+title: Form
+---
+{% extends '../../layouts/default.html' %}
+{% block content %}
+<h1>{{title}}</h1>
+<form action="/" class="js-forrm">
+    <div class="form-row">
+        <label for="test">Test text input</label>
+        <input type="text" id="test" name="test" value="" required>
+    </div>
+    <div class="form-row">
+        <input type="submit">
+    </div>
+</form>
+{% endblock %}

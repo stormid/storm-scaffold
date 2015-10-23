@@ -140,7 +140,7 @@ ForrmElement.prototype = {
 			if (this.DOMElement.getAttribute('data-forrm-conditional') !== null) {
 				this.addConditional();
 			}
-			UTILS.on(this.DOMElement, 'click keyup input paste change', liveValidate);
+			STORM.UTILS.on(this.DOMElement, 'click keyup input paste change', liveValidate);
 		}
 	},
 	defaultValidity : function () {
@@ -271,7 +271,7 @@ ForrmElement.prototype = {
 			};
 		self.dependents = document.querySelectorAll('.' + dc + ' input, ' + '.' + dc + ' textarea, ' + '.' + dc + 'select');
 		self.conditionalConstraint = !!(self.parent.options.conditionalConstraint) && self.parent.options.conditionalConstraint[dc] || function () { return this.value !== ''; };
-		UTILS.on(self.DOMElement, 'change', openSesame);
+		STORM.UTILS.on(self.DOMElement, 'change', openSesame);
 	}
 };
 /*
@@ -440,7 +440,7 @@ function ForrmForm(element, options) {
         throw new Error('No element has been supplied');
     }
     this.DOMElement = element;
-    this.options = UTILS.merge({}, defaults, options);
+    this.options = STORM.UTILS.merge({}, defaults, options);
 
     this.init();
 }
@@ -500,7 +500,7 @@ ForrmForm.prototype = {
                 this.UI = new ForrmUI(this);
 
                 if (this.DOMElement.querySelector('input[type=submit]') !== null) {
-                        UTILS.on(this.DOMElement.querySelector('input[type=submit]'), 'click onkeypress', function (e) {
+                        STORM.UTILS.on(this.DOMElement.querySelector('input[type=submit]'), 'click onkeypress', function (e) {
                             self.handleEvent.call(self, e);
                     }   );
                 }

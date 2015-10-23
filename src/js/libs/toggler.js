@@ -1,4 +1,4 @@
-/*global window, document, require, define, UTILS, module*/
+/*global window, document, require, define, STORM, module*/
 /**
  * @name Toggler
  * @version 0.1.0: Wed, 09 Jun 2015
@@ -22,7 +22,7 @@
     function Toggler(el, opts) {
         var ariaControls;
         
-        this.settings = UTILS.merge({}, defaults, opts);
+        this.settings = STORM.UTILS.merge({}, defaults, opts);
         
         this.btn = el;
         this.docEl = document.documentElement;
@@ -32,7 +32,7 @@
         
         ariaControls = this.target;
         
-        UTILS.attributelist.add(this.btn, {
+        STORM.UTILS.attributelist.add(this.btn, {
             'role' : 'button',
             'aria-controls' : ariaControls,
             'aria-expanded' : 'false'
@@ -46,12 +46,12 @@
         e.preventDefault();
         e.stopImmediatePropagation();
         
-        UTILS.classlist.add(this.docEl, this.animatingClass);
+        STORM.UTILS.classlist.add(this.docEl, this.animatingClass);
         
         window.setTimeout(function() {
-            UTILS.classlist.remove(this.docEl, this.animatingClass)
+            STORM.UTILS.classlist.remove(this.docEl, this.animatingClass)
                     .toggle(this.docEl, this.statusClass);
-            UTILS.attributelist.toggle(this.btn, 'aria-expanded');
+            STORM.UTILS.attributelist.toggle(this.btn, 'aria-expanded');
         }.bind(this), delay);
     };
     

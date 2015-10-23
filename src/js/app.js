@@ -1,25 +1,50 @@
-var APP = (function(w, d) {
-	'use strict';
-	
-	function init() {
-		console.log('Running...');
-		FastClick.attach(document.body);
-		$('.banner').on('click', function() { console.log('here'); });
-	}
-	
-	return {
-		init: init
-	};
-	
-})(window, document, undefined);
+//Closure to encapsulate all JS
+var UTILS = require('./libs/utils'),
+    UI = (function(w, d) {
+            'use strict';
 
-$(document).ready(function () {
-  APP.init();
-});
+            var ffo = require('FontFaceObserver'), //installed via npm install --save fontfaceobserver to node_modules
+                Toggler = require('./libs/toggler'), //required from local directory
+                initFonts = function(){
+                    var ffo = new FontFaceObserver('Name of your font', {})
+                        .check()
+                        .then(function () {
+                            d.documentElement.className = document.documentElement.className.replace(/\bno-webfonts\b/,'');
+                        }, function () {
+                            console.log('Font is not available after waiting 5 seconds');
+                        });
+                },
+                initForrms = function(){
+                    //detect and return if not needed
+                    if(!(d.querySelector('form'))) { return; } 
+                    //loaded async as required
+                    UTILS.loadJS('/content/js/libs/forrm.min.js', function(err){
+                        if(err) {
+                            return console.log(err);
+                        }
+                        Forrm.init('.js-forrm');
+                    });
+                },
+                init = function() {
+                    //initialise everything
+                    initFonts();
+                    initForrms();
+                    Toggler.init(d.querySelectorAll('.js-toggle'));
+                };
 
-/*
-Or, modern browser only...
+            //Interface with/entry point to site JS
+            return {
+                init: init
+            };
 
-window.addEventListener('DOMContentLoaded', APP.init, false);
+        }(window, document, undefined));
 
-*/
+//expose globally
+global.STORM = {
+    UTILS: UTILS,
+    UI: UI
+};
+
+//Cut the mustard
+//Don't run any JS if the browser can't handle it
+if('addEventListener' in window) window.addEventListener('DOMContentLoaded', UI.init, false);
