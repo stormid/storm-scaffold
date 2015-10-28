@@ -49,3 +49,6 @@
         @include column(2);
     }
 }
+main {
+    margin:0 $gutter;
+}

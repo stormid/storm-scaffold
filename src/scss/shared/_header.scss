@@ -1,7 +1,7 @@
 /* Header
 -------------------------------------------------------------- */
 .banner {
-    padding:20px
+    padding:$baseline $gutter;
 }
 .banner-logo-img {
     max-width:200px;

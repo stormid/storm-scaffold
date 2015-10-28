@@ -32,8 +32,8 @@
     width:30px;
     position: absolute;
     border-top:4px solid #000;
-    top:8px;
-    right:15px;
+    top:$baseline;
+    right:$gutter;
     z-index:3;
     @media screen and (min-width:$bp-medium) {
         width:36px;

@@ -38,7 +38,7 @@ npm install
 
 ####gulp start
 
-Builds everything from the ground up, watches for changes and rebulds aas refreshes
+Builds everything from the ground up, watches for changes and rebuilds as refreshes
 
 ####gulp
 

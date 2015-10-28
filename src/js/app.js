@@ -1,10 +1,10 @@
 //Closure to encapsulate all JS
-var UTILS = require('./libs/utils'),
+var UTILS = require('storm-utils'),
     UI = (function(w, d) {
             'use strict';
 
             var ffo = require('FontFaceObserver'), //installed via npm install --save fontfaceobserver to node_modules
-                Toggler = require('./libs/toggler'), //required from local directory
+                Toggler = require('storm-toggler'), //required from local directory
                 initFonts = function(){
                     var ffo = new FontFaceObserver('Name of your font', {})
                         .check()

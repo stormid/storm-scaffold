@@ -2,6 +2,7 @@
   "name": "storm-scaffold",
   "version": "0.1.0",
   "description": "Project scaffolder",
+  "repository": "https://github.com/mjbp/storm-scaffold",
   "author": "mjbp",
   "license": "ISC",
   "devDependencies": {
@@ -45,6 +46,8 @@
     ]
   },
   "dependencies": {
-    "fontfaceobserver": "^1.5.4"
+    "fontfaceobserver": "^1.5.4",
+    "storm-utils": "^0.2.0",
+    "storm-toggler": "^0.1.2"
   }
 }
