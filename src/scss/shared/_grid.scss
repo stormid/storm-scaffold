@@ -1,14 +1,12 @@
 /* Grid
 -------------------------------------------------------------- */
 @function column-calc($num, $spacing:$gutter){
-	$multiplier: $num / $columns;
-    @return ((100 / $columns) * $num) - ($spacing);
+    @return calc(((99.999% / #{$columns}) * #{$num}) - (#{$spacing}));
 }
-@function calcer($num, $spacing:$gutter){
-	$multiplier: $num / $columns;
-    @return calc(((100% / #{$columns}) * #{$num}) - (#{$spacing}));
+/* Android 4 fallback */
+@function column-calc-fallback($num){
+    @return ((100 / $columns) * $num) - 5%;
 }
-
 @mixin column($num) {
 	width: column-calc($num);
 }
@@ -38,7 +36,7 @@
     }
 }
 .large_6,
-.slarge_half {
+.large_half {
     @media (min-width:$bp-large) {
 	   @include column(6);
     }
