@@ -118,7 +118,6 @@ gulp.task('js:browserify', function () {
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(uglify())
     .pipe(sourcemaps.write('./'))
-    // Add transformation tasks to the pipeline here.
     .pipe(gulp.dest(dest.js));
 });
 
