@@ -48,6 +48,7 @@
   "dependencies": {
     "fontfaceobserver": "^1.5.4",
     "storm-utils": "^0.2.0",
-    "storm-toggler": "^0.1.2"
+    "storm-toggler": "^0.2.1",
+    "picturefill": "^3.0.1"
   }
 }

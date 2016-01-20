@@ -19,14 +19,14 @@
         &:hover {
         }
 }
-.nav-btn-close {
+.btn-close {
     visibility: hidden;
     opacity:0;
     position:absolute;
     top:0;
     bottom:0;
 }
-.btn--hamburger {
+.btn-hamburger {
     @include ir;
     height:50px;
     width:30px;
@@ -72,7 +72,7 @@
 }
 .on--navigation {
     @media (max-width:$bp-medium) {
-        .btn--hamburger {
+        .btn-hamburger {
             border-top:4px solid #000;
             transition: border-color 100ms ease-out;
                 &:before,
@@ -88,13 +88,13 @@
                 }
         }
     }
-    .nav-btn-close {
+    .btn-close {
         width: 100%;
         left: -100%;
         visibility:visible;
     }
 }
-.animating--navigation .btn--hamburger {
+.animating--navigation .btn-hamburger {
     border-top:4px solid #fff;
     transition: border-color 100ms ease-in, border-top 100ms ease-in;
         &:before,
@@ -103,6 +103,24 @@
             transform: rotate(0);
         }
 }
-.no-js .btn--hamburger {
+.no-js .btn-hamburger {
     display:none;
+}
+
+//skip to content
+.btn-skip {
+    position: absolute;
+    visibility: hidden;
+        &:focus {
+            position: fixed;
+            visibility: visible;
+            background:#fff;
+            display:block;
+            left:0;
+            right:0;
+            top:0;
+            outline:0;
+            z-index:3;
+            text-align: center;
+        }
 }

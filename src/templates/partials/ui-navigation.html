@@ -1,12 +1,40 @@
-<nav id="navigation" class="nav-primary" role="navigation">
-        <ul class="nav-primary-list">
-            <li class="nav-primary-item">
-                <a href="/" tabindex="0" class="nav-primary-link{% if !title %} active{% endif %}">Home</a>
-            </li>
-             <li class="nav-primary-item">
-                <a href="/form/" class="nav-primary-link">Form</a>
-            </li>
-        </ul>
-        <button class="nav-btn-close js-toggle" data-target="#navigation">Close</button>
-    </div>
+<nav id="navigation" class="nav-primary">
+    <ul class="nav-primary__list">
+        <li class="nav-primary__item">
+            <a href="/" tabindex="0" class="nav-primary__link{% if !title %} active{% endif %}">Home</a>
+        </li>
+         <li class="nav-primary__item">
+            <a href="/form/" class="nav-primary__link">Form</a>
+        </li>
+        <li class="nav-primary__item">
+            <a href="#" class="nav-primary__link">Landing</a>
+            <a href="#sub-1" class="nav-primary__sub-toggle js-toggle-sub">
+                <svg height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+                    <title>Toggle subsection visibility</title>
+                    <path d="M7.41 7.84L12 12.42l4.59-4.58L18 9.25l-6 6-6-6z"/>
+                    <path d="M0-.75h24v24H0z" fill="none"/>
+                </svg>
+            </a>
+            <div id="sub-1" class="nav-primary__sub">
+                <ul class="nav-primary__sub-list">
+                    <li class="nav-primary__sub-item">
+                        <a href="nav-primary__sub-link">Item</a>
+                    </li>
+                    <li class="nav-primary__sub-item">
+                        <a href="nav-primary__sub-link">Item</a>
+                    </li>
+                    <li class="nav-primary__sub-item">
+                        <a href="nav-primary__sub-link">Item</a>
+                    </li>
+                    <li class="nav-primary__sub-item">
+                        <a href="nav-primary__sub-link">Item</a>
+                    </li>
+                    <li class="nav-primary__sub-item">
+                        <a href="nav-primary__sub-link">Item</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+    <button class="btn-close js-toggle" data-target="#navigation">Close</button>
 </nav>

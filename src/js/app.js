@@ -3,8 +3,9 @@ var UTILS = require('storm-utils'),
     UI = (function(w, d) {
             'use strict';
 
-            var ffo = require('FontFaceObserver'), //installed via npm install --save fontfaceobserver to node_modules
-                Toggler = require('storm-toggler'), //required from local directory
+            var ffo = require('FontFaceObserver'),
+                picturefill = require('picturefill'),
+                Toggler = require('storm-toggler'),
                 initFonts = function(){
                     var ffo = new FontFaceObserver('Name of your font', {})
                         .check()
@@ -30,6 +31,7 @@ var UTILS = require('storm-utils'),
                     initFonts();
                     initForrms();
                     Toggler.init(d.querySelectorAll('.js-toggle'));
+                    Toggler.init(d.querySelectorAll('.js-toggle-sub'), {targetLocal: true});
                 };
 
             //Interface with/entry point to site JS

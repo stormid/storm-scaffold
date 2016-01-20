@@ -1,7 +1,16 @@
 {% include "../partials/doc-head.html" %}
+<body>
+    <a href="#navigation" class="btn-skip">Skip to navigation</a>
+    <a href="#content" class="btn-skip">Skip to content</a>
+    <a href="#navigation" class="btn-hamburger js-toggle" title="Navigation menu" aria-label="Navigation menu">Skip to navigation</a>
     {% include "../partials/ui-header.html" %}
     {% include "../partials/ui-navigation.html" %}
     <main id="content">
-        {% block content %}{% endblock %}
+        <div class="small-12 col--centre">
+            {% block content %}{% endblock %}
+        </div>
     </main>
-{% include "../partials/doc-foot.html" %}
+    {% include "../partials/ui-footer.html" %}
+    <script src="{{assetPath}}/js/app.js"></script>
+</body>
+</html>

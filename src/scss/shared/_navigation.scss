@@ -1,22 +1,5 @@
 /* Navigation
 -------------------------------------------------------------- */
-//skip to content
-.nav-skip {
-    position: absolute;
-    visibility: hidden;
-        &:focus {
-            position: fixed;
-            visibility: visible;
-            background:#fff;
-            display:block;
-            left:0;
-            right:0;
-            top:0;
-            outline:0;
-            z-index:3;
-            text-align: center;
-        }
-}
 //primary nav
 .nav-primary {
     position:fixed;
@@ -27,7 +10,7 @@
     bottom:0;
     padding:75px 35px 20px 5%;
     transform: translateX(100%);
-    background:#000;
+    background:$body-font-color;
     visibility: hidden;
         @media (min-width:$bp-medium){  
             visibility: visible;
@@ -35,42 +18,102 @@
             position:relative;
             width:auto;
             padding:0;
-            display:inline-block;
-            float:right;
-            margin-right:40px;
-            clear:right;
+            display:block;
             transform: none;
             background:transparent;
-        }
-        ul {
-            padding:0;
+            width:100%;
+            height:36px;
+            border-top:1px solid $grey;
+            border-bottom:1px solid $grey;
+            margin-bottom: 3rem;
+                &:before,
+                &:after {
+                    content:'';
+                    display:table;
+                    width:100%;
+                }
         }
 }
-.nav-primary-item {
+.nav-primary__list {
+    padding-left:0;
+    @media (min-width:$bp-medium){ 
+        width:$max-container-width;
+        padding:0 $gutter;
+        margin:0 auto;
+    }
+}
+.nav-primary__item {
     list-style:none;
-    position:relative;
     background:#000;
     padding-bottom:0;
         @media (min-width:$bp-medium) {
-            display:block;
-            float:left;
+            display:inline-block;
+            vertical-align:middle;
+            height:36px;
+            background:transparent;
+            border-left:1px solid $grey;
+            overflow:hidden;
+                &:last-of-type {
+                    border-right:1px solid $grey;    
+                }
         }
 }
-.nav-primary-link {
+.nav-primary__link {
     color:#fff;
     font:1rem $base-font-family;
         @media (min-width:$bp-medium) {
             padding:9px 18px;
-            height:38px;
-            display:block;
-            float:left;
-            transition:background-color 500ms ease, color 500ms ease;
-                &:hover {
-                }
+            height:36px;
+            display:inline-block;
+            color:$body-font-color;
             svg {
                 transition:background-color 500ms ease, fill 500ms ease;
             }
         }
+}
+.nav-primary__sub {
+    position: absolute;
+    left:0;
+    z-index:2;
+    width:100%;
+    margin-bottom: 0;
+    max-height:0;
+    overflow:hidden;
+}
+.nav-primary__sub-list {
+    max-width:$max-container-width;
+    margin:0 auto;
+}
+.nav-primary__sub-item {
+    list-style:none;
+    display: inline-block;
+    vertical-align: middle;
+    padding:9px 18px;
+    margin-right:2rem;
+}
+.nav-primary__sub-link {
+    padding:9px 18px;
+}
+.nav-primary__sub-toggle {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    left:-10px;
+    top:3px;
+    svg {
+        fill:$body-font-color;
+    }
+}
+
+.nav-primary__item.active {
+    .nav-primary__sub {
+        max-height:100px;
+    }
+}
+.nav-primary__item.animating {
+    .nav-primary__sub {
+        transition:max-height 200ms ease;
+    }
 }
 
 .on--navigation {
@@ -82,7 +125,7 @@
             backface-visibility: hidden;
             visibility: visible;
         }
-        .nav-primary-item {
+        .nav-primary__item {
             display:block;
             margin-bottom:1rem;
             font-size:1rem;
@@ -97,12 +140,7 @@
             transform:translateX(100%);
             transition:transform 200ms ease;
         }
-        .banner-text,
-        .banner .banner-logo,
-        .nav-skip,
         main,
-        .hero,
-        .ticker,
         .contentinfo {
             transform:translateX(0);
             transition:transform 200ms ease;
@@ -116,7 +154,7 @@
         visibility: visible;
         width:100%;
         padding-top:20px;
-            .nav-primary-item {
+            .nav-primary__item {
                 display:block;
                 margin-bottom: .5rem;
                 margin-bottom: .5rem;

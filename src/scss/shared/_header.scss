@@ -1,9 +1,19 @@
 /* Header
 -------------------------------------------------------------- */
 .banner {
-    padding:$baseline $gutter;
+    padding:$baseline*2 $gutter;
+        @media (min-width:$bp-medium) {
+            padding:$baseline*2 0;
+        }
 }
-.banner-logo-img {
+.banner-inner {
+    margin:0 auto;
+    @media (min-width:$bp-medium) {
+        padding:0 $gutter;
+    }
+}
+.logo {}
+.logo__img {
     max-width:200px;
     height:auto
 }

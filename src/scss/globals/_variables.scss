@@ -8,6 +8,8 @@ $fontPath:                 '#{$assetPath}/fonts';
 $body-font-color:           #191919 !default;
 $brand-primary-color:		#006276 !default;
 
+$grey:		                #ccc !default;
+
 // Type
 // --------------------------------------------------
 // Font weights
@@ -27,7 +29,7 @@ $base-line-height:          1.5 !default;
 $body-font-family:       	$base-font-family !default;
 $bold-font-family:          $base-font-family !default;
 
-$header-font-family:       $base-font-family !default;
+$header-font-family:        $base-font-family !default;
 
 
 // Layout

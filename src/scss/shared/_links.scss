@@ -1,5 +1,5 @@
 //links 
-.link-arrow:before {
+.link-arrow-before:before {
     content:'';
     display:inline-block;
     vertical-align:middle;
@@ -12,7 +12,7 @@
     transform:rotate(45deg);
     margin-right:.5rem;
 }
-.link-arrow--after:after {
+.link-arrow-after:after {
     content:'';
     display:inline-block;
     vertical-align:middle;

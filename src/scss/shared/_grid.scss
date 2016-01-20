@@ -3,11 +3,11 @@
 @function column-calc($num, $spacing:$gutter){
     @return calc(((99.999% / #{$columns}) * #{$num}) - (#{$spacing}));
 }
-/* Android 4 fallback */
 @function column-calc-fallback($num){
     @return ((100 / $columns) * $num) - 5%;
 }
 @mixin column($num) {
+	width: column-calc-fallback($num);
 	width: column-calc($num);
 }
 
@@ -20,33 +20,85 @@
         }
 }
 .col {
+    max-width:$max-container-width;
 	float:left;
     margin-left:#{$gutter};
 }
-.xsmall_6,
-.xmedium_half {
-    @media (max-width:$bp-xsmall) {
+
+/* Sample column classes, roll your own for your own needs using the column calulation helpers above */
+.small-3 {
+    @include column(3);
+}
+.small-4 {
+    @include column(4);
+}
+.small-6 {
+    @include column(6);
+}
+.small-9 {
+    @include column(9);
+}
+.small-12 {
+    max-width:$max-container-width;
+    margin-left:0;
+    float:none;
+}
+.medium-3 {
+    @media (min-width:$bp-medium) {
+        @include column(3);
+    }
+}
+.medium-4 {
+    @media (min-width:$bp-medium) {
+        @include column(4);
+    }
+}
+.medium-6 {
+    @media (min-width:$bp-medium) {
         @include column(6);
     }
 }
-.small_6,
-.small_half {
-    @media (max-width:$bp-medium) {
-        @include column(6);
+.medium-9 {
+    @media (min-width:$bp-medium) {
+        @include column(9);
     }
 }
-.large_6,
-.large_half {
+.medium-12 {
+    @media (min-width:$bp-medium) {
+        margin-left:0;
+        float:none;
+        width:auto;
+    }
+}
+.large-3 {
+    @media (min-width:$bp-large) {
+	   @include column(3);
+    }
+}
+.large-4 {
+    @media (min-width:$bp-large) {
+	   @include column(4);
+    }
+}
+.large-6 {
     @media (min-width:$bp-large) {
 	   @include column(6);
     }
 }
-.medium_2,
-.medium_half {
-    @media (min-width:$bp-medium) {
-        @include column(2);
+.large-9 {
+    @media (min-width:$bp-large) {
+	   @include column(9);
     }
 }
-main {
-    margin:0 $gutter;
+.large-12 {
+    @media (min-width:$bp-large) {
+        margin-left:0;
+	    float:none;
+        width:auto;
+    }
+}
+
+//Grid modifiers
+.col--centre {
+    margin:0 auto;
 }

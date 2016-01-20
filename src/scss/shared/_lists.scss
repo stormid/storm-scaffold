@@ -19,17 +19,17 @@ li {
             display: inline;
         }
 }
-.list__item {
+.list-item {
     margin-bottom:0;
     padding-bottom:0;
 }
-.list-arrowed-item {
+.list-arrowed__item {
     margin-bottom:.5rem;
     a,
     a:visited {
     }
 }
-.list-arrowed-item:before {
+.list-arrowed__item:before {
     content:'';
     display:inline-block;
     vertical-align:middle;
