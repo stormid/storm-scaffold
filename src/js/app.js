@@ -1,5 +1,10 @@
 //Closure to encapsulate all JS
-var UTILS = require('storm-utils'),
+var UTILS = {
+		merge: require('object-assign'),
+		assign: require('merge'),
+		attributelist: require('attributelist'),
+		classist: require('dom-classlist')
+	},
     UI = (function(w, d) {
             'use strict';
 
