@@ -2,7 +2,7 @@
 var UTILS = {
 		merge: require('object-assign'),
 		assign: require('merge'),
-		attributelist: require('attributelist'),
+		attributelist: require('storm-attributelist'),
 		classist: require('dom-classlist')
 	},
     UI = (function(w, d) {
@@ -31,12 +31,16 @@ var UTILS = {
                         Forrm.init('.js-forrm');
                     });
                 },
+				initTogglers = function() {
+                    if(!(d.querySelector('.js-toggle'))) { return; } 
+					Toggler.init(d.querySelectorAll('.js-toggle'));
+                    Toggler.init(d.querySelectorAll('.js-toggle-local'), {targetLocal: true});
+				},
                 init = function() {
                     //initialise everything
                     initFonts();
                     initForrms();
-                    Toggler.init(d.querySelectorAll('.js-toggle'));
-                    Toggler.init(d.querySelectorAll('.js-toggle-sub'), {targetLocal: true});
+                    initTogglers();
                 };
 
             //Interface with/entry point to site JS
