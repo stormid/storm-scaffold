@@ -3,7 +3,7 @@ var UTILS = {
 		merge: require('object-assign'),
 		assign: require('merge'),
 		attributelist: require('storm-attributelist'),
-		classist: require('dom-classlist')
+		classlist: require('dom-classlist')
 	},
     UI = (function(w, d) {
             'use strict';
