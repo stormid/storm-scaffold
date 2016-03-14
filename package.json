@@ -48,7 +48,10 @@
   "dependencies": {
     "fontfaceobserver": "^1.5.4",
     "picturefill": "^3.0.1",
-    "storm-attributelist": "^0.2.0",
-    "storm-toggler": "^0.2.1"
+    "storm-toggler": "^0.2.1",
+    "dom-classlist": "^1.0.1",
+    "merge": "^1.2.0",
+    "object-assign": "^4.0.1",
+    "storm-attributelist": "^0.2.0"
   }
 }
