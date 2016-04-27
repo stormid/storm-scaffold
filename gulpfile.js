@@ -125,7 +125,7 @@ gulp.task('js:async', function () {
     return gulp.src(src.js + 'async/**/*')
   		.pipe(uglify())
   		.pipe(rename({suffix: '.min'}))
-  		.pipe(gulp.dest(dest.js + 'libs/'));
+  		.pipe(gulp.dest(dest.js + 'async/'));
 });
 gulp.task('js', ['js:browserify', 'js:async']);
 

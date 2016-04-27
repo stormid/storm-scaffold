@@ -1,9 +1,10 @@
 //Closure to encapsulate all JS
 var UTILS = {
-		merge: require('object-assign'),
-		assign: require('merge'),
+		assign: require('object-assign'),
+		merge: require('merge'),
 		attributelist: require('storm-attributelist'),
-		classlist: require('dom-classlist')
+		classlist: require('dom-classlist'),
+		loadScript: require('load-script')
 	},
     UI = (function(w, d) {
             'use strict';
@@ -22,9 +23,9 @@ var UTILS = {
                 },
                 initForrms = function(){
                     //detect and return if not needed
-                    if(!(d.querySelector('form'))) { return; } 
+                    if(!(d.querySelector('.js-forrm'))) { return; } 
                     //loaded async as required
-                    UTILS.loadJS('/content/js/libs/forrm.min.js', function(err){
+                    UTILS.loadScript('/content/js/async/forrm.min.js', function(err){
                         if(err) {
                             return console.log(err);
                         }
@@ -33,9 +34,10 @@ var UTILS = {
                 },
 				initTogglers = function() {
                     if(!(d.querySelector('.js-toggle'))) { return; } 
-					Toggler.init(d.querySelectorAll('.js-toggle'));
-                    Toggler.init(d.querySelectorAll('.js-toggle-local'), {targetLocal: true});
+					Toggler.init('.js-toggle');
+                    Toggler.init('.js-toggle-local', {targetLocal: true});
 				},
+				load = function(){},
                 init = function() {
                     //initialise everything
                     initFonts();
@@ -45,7 +47,8 @@ var UTILS = {
 
             //Interface with/entry point to site JS
             return {
-                init: init
+                init: init,
+				load: load
             };
 
         }(window, document, undefined));
@@ -59,3 +62,4 @@ global.STORM = {
 //Cut the mustard
 //Don't run any JS if the browser can't handle it
 if('addEventListener' in window) window.addEventListener('DOMContentLoaded', UI.init, false);
+if('addEventListener' in window) window.addEventListener('load', UI.load, false);

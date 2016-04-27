@@ -51,13 +51,17 @@
 .nav-primary__sub-link {}
 .nav-primary__sub-toggle {
     svg {
+		position: relative;
+		top:.25rem;
         fill:$body-font-color;
     }
 }
 
-.nav-primary__item.active {
+.nav-primary__item.active .nav-primary__sub{
+    max-height:1000px;
 }
-.nav-primary__item.animating {
+.nav-primary__item.animating .nav-primary__sub{
+    max-height:0px;
 }
 
 .on--navigation {
