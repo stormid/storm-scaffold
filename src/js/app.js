@@ -1,10 +1,10 @@
 //Closure to encapsulate all JS
-var UTILS = require('storm-utils'),
-    UI = (function(w, d) {
+var STORM = (function(w, d) {
             'use strict';
 
             var ffo = require('FontFaceObserver'),
                 picturefill = require('picturefill'),
+                loadScript = require('load-script'),
                 Toggler = require('storm-toggler'),
                 initFonts = function(){
                     var ffo = new FontFaceObserver('Name of your font', {})
@@ -19,7 +19,7 @@ var UTILS = require('storm-utils'),
                     //detect and return if not needed
                     if(!(d.querySelector('form'))) { return; } 
                     //loaded async as required
-                    UTILS.loadJS('/content/js/libs/forrm.min.js', function(err){
+                    loadScript('/content/js/libs/forrm.min.js', function(err){
                         if(err) {
                             return console.log(err);
                         }
@@ -41,12 +41,7 @@ var UTILS = require('storm-utils'),
 
         }(window, document, undefined));
 
-//expose globally
-global.STORM = {
-    UTILS: UTILS,
-    UI: UI
-};
 
 //Cut the mustard
 //Don't run any JS if the browser can't handle it
-if('addEventListener' in window) window.addEventListener('DOMContentLoaded', UI.init, false);
+if('addEventListener' in window) window.addEventListener('DOMContentLoaded', STORM.init, false);

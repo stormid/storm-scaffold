@@ -197,13 +197,18 @@ gulp.task('compress:css', function() {
 		.pipe(gulp.dest(dest.css));
 });
 
+/*
+ * Test gulp-cssnano for css compresion
+ * Implement compression etc with CL flag rather than separate task?
+ */
+
 /* Server with auto reload and browersync */
 gulp.task('serve', ['build'], function () {
       browserSync({
         notify: false,
         // https: true,
         server: [outputDir],
-        tunnel: true
+        tunnel: false
       });
 
       gulp.watch([src.html + '**/*.html'], ['html', reload]);
