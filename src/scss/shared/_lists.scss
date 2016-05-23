@@ -42,12 +42,3 @@ li {
     transform:rotate(45deg);
     margin-right:.5rem;
 }
-.list--plain,
-.list--footer {
-    padding-left:0;
-    margin-left:0;
-    display:block;
-    li {
-        list-style:none;
-    }
-}

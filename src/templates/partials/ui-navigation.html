@@ -4,11 +4,11 @@
             <a href="/" tabindex="0" class="nav-primary__link{% if !title %} active{% endif %}">Home</a>
         </li>
          <li class="nav-primary__item">
-            <a href="/form/" class="nav-primary__link">Form</a>
+            <a href="/form/" class="nav-primary__link{% if title == 'form' %} active{% endif %}">Form</a>
         </li>
         <li class="nav-primary__item">
             <a href="#" class="nav-primary__link">Landing</a>
-            <a href="#sub-1" class="nav-primary__sub-toggle js-toggle-sub">
+            <a href="#sub-1" class="nav-primary__sub-toggle js-toggle-local">
                 <svg height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
                     <title>Toggle subsection visibility</title>
                     <path d="M7.41 7.84L12 12.42l4.59-4.58L18 9.25l-6 6-6-6z"/>

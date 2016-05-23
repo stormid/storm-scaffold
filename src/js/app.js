@@ -1,5 +1,13 @@
 //Closure to encapsulate all JS
-var STORM = (function(w, d) {
+var STORM,
+    UTILS = {
+		assign: require('object-assign'),
+		merge: require('merge'),
+		attributelist: require('storm-attributelist'),
+		classlist: require('dom-classlist'),
+		loadScript: require('load-script')
+	},
+    UI = (function(w, d) {
             'use strict';
 
             var ffo = require('FontFaceObserver'),
@@ -17,31 +25,42 @@ var STORM = (function(w, d) {
                 },
                 initForrms = function(){
                     //detect and return if not needed
-                    if(!(d.querySelector('form'))) { return; } 
+                    if(!(d.querySelector('.js-forrm'))) { return; } 
                     //loaded async as required
-                    loadScript('/content/js/libs/forrm.min.js', function(err){
+                    UTILS.loadScript('/content/js/async/forrm.min.js', function(err){
                         if(err) {
                             return console.log(err);
                         }
                         Forrm.init('.js-forrm');
                     });
                 },
+				initTogglers = function() {
+                    if(!(d.querySelector('.js-toggle'))) { return; } 
+					Toggler.init('.js-toggle');
+                    Toggler.init('.js-toggle-local', {targetLocal: true});
+				},
+				load = function(){},
                 init = function() {
                     //initialise everything
                     initFonts();
                     initForrms();
-                    Toggler.init(d.querySelectorAll('.js-toggle'));
-                    Toggler.init(d.querySelectorAll('.js-toggle-sub'), {targetLocal: true});
+                    initTogglers();
                 };
 
             //Interface with/entry point to site JS
             return {
-                init: init
+                init: init,
+				load: load
             };
 
         }(window, document, undefined));
 
+STORM = {
+    UTILS: UTILS,
+    UI: UI
+};
 
 //Cut the mustard
 //Don't run any JS if the browser can't handle it
-if('addEventListener' in window) window.addEventListener('DOMContentLoaded', STORM.init, false);
+if('addEventListener' in window) window.addEventListener('DOMContentLoaded', STORM.UI.init, false);
+if('addEventListener' in window) window.addEventListener('load', STORM.UI.load, false);

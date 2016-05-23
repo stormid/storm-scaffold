@@ -1,6 +1,6 @@
 /**
  * @name Forrm: Clientside form validation framework using contraintValidation
- * @version 0.2.0 Tue, 04 Aug 2015 13:33:13 GMT
+ * @version 0.2.0 Mon, 02 Feb 2015 16:24:09 GMT
  * @author mjbp
  * @license 
  * @url https://github.com/mjbp/forrm/
@@ -26,14 +26,20 @@ var defaults = {
 	displayMessages : true,
 	firstErrorOnly : false,
 	css : {
-		prefix: 'form-',
+		prefix: 'forrm-',
 		successClass : 'success',
 		errorClass : 'error',
 		errorMessageClass : 'error-message',
 		errorListClass : 'error-list',
 		disabledClass : 'disabled',
-		hiddenClass : 'hidden'
+		hiddenClass : 'hidden',
+		buttonClass : 'btn',
+		buttonNextClass : 'btn--submit',
+		buttonPreviousClass : 'btn--previous',
+		stepPrefix : 'step-'
 	},
+	listMessages : false,
+	listTitle : 'We couldn\'t submit the form, please check your answers:',
 	errorMessageElement : 'span',
 	errorMessages : {
 		'text': {
@@ -77,8 +83,7 @@ var defaults = {
 			'typeMismatch' : 'Enter a valid number'
 		},
 		'file': {
-			'valueMissing' : 'Choose a file',
-			'typeMismatch' : 'Please use a Microsoft Word or PDF file'
+			'valueMissing' : 'Choose a file'
 		},
 		'group': {
 			'valueMissing' : 'One of these fields is required',
@@ -96,15 +101,69 @@ var defaults = {
 	}
 };
 /*
+ * Utility functions, smoothing cross-browser inconsistencies
+ *
+ */
+var UTILS = {
+	extend: function (){
+		for(var i = 1; i < arguments.length; i++) {
+			for(var key in arguments[i]) {
+				if(arguments[i].hasOwnProperty(key)) {
+					arguments[0][key] = arguments[i][key];
+				}
+			}
+		}
+		return arguments[0];
+	},
+	forEach: function (a, fn, scope) {
+		var i, l = a.length;
+		if ([].forEach) {
+			return a.forEach(fn);
+		}
+		for (i = 0; i < l; i += 1) {
+			if (a.hasOwnProperty(i)) {
+				fn.call(scope, a[i], i, a);
+			}
+		}
+	},
+	on : function (element, events, fn) {
+		var evts = events.split(' ');
+		for (var i = 0; i < evts.length; i++) {
+			if (element.addEventListener) {
+				element.addEventListener(evts[i], fn, false);
+			} else {
+				element.attachEvent('on' + evts[i], fn);
+			}
+		}
+	},
+	preventDefault : function (e) {
+		if (e.preventDefault) {
+			e.preventDefault();
+		} else {
+			e.returnValue = false;
+		}
+		return;
+	},
+	stopImmediatePropagation :function (e) {
+		if (e.stopImmediatePropagation) {
+			e.stopImmediatePropagation();
+		} else {
+			e.cancelBubble = true;
+		}
+		return;
+	}
+};
+/*
  * ForrmElement wrapper class
  *
  * @param  {DOM node} a single form input element
- * @param  {instance of ForrmElement class} reference to parent forrm
+ * @param  {instance of ForrmStep class} reference to parent step
  *
  */
 function ForrmElement(element, parent) {
 	this.DOMElement = element;
 	this.parent = parent;
+	this.forrm = parent.parent;
 	this.init();
 }
 
@@ -113,34 +172,38 @@ ForrmElement.prototype = {
 		var updateEvent,
 			self = this,
 			liveValidate = function (e) {
-				if (!self.parent.liveValidating) {
+				if (!self.forrm.liveValidating) {
 					return;
 				}
-				e.stopImmediatePropagation();
+				UTILS.stopImmediatePropagation(e);
 				self.parent.validationList[self.errorGroup].element.validate();
-                self.parent.UI.updateInlineErrors(self);
+				if (!self.forrm.options.listMessages) {
+					self.forrm.UI.updateInlineErrors(self);
+				} else {
+					self.forrm.UI.listErrorMessages();
+				}
 			};
 
 		if (this.DOMElement.getAttribute('required') !== null) {
 			this.type = (this.DOMElement.tagName.toLowerCase() === 'input') && this.DOMElement.getAttribute('type') || (this.DOMElement.tagName.toLowerCase() === 'textarea') && 'text' || this.DOMElement.tagName.toLowerCase();
 
 			//if customMessages is set, check if type exists in errorMessages object, otherwise set to default text field error
-			if(!!(this.parent.options.customErrorMessage) && !(this.type in this.parent.options.errorMessages)) {
+			if(!!(this.forrm.options.customErrorMessage) && !(this.type in this.forrm.options.errorMessages)) {
 				this.type = 'text';
 			}
 
-			this.testCustomConstraint = (!!this.DOMElement.getAttribute('data-forrm-custom-constraint') && this.parent.options.customConstraint[this.DOMElement.getAttribute('data-forrm-custom-constraint')]) || false;
+			this.testCustomConstraint = (!!this.DOMElement.getAttribute('data-forrm-custom-constraint') && this.forrm.options.customConstraint[this.DOMElement.getAttribute('data-forrm-custom-constraint')]) || false;
 
 			this.errorGroup = this.DOMElement.getAttribute('id');
 			this.validity = this.DOMElement.validity || this.defaultValidity();
 
-			if ('autocomplete' in this.DOMElement && !this.parent.options.autocomplete) {
+			if ('autocomplete' in this.DOMElement && !this.forrm.options.autocomplete) {
 				this.DOMElement.setAttribute('autocomplete', 'off');
 			}
 			if (this.DOMElement.getAttribute('data-forrm-conditional') !== null) {
 				this.addConditional();
 			}
-			STORM.UTILS.on(this.DOMElement, 'click keyup input paste change', liveValidate);
+			UTILS.on(this.DOMElement, 'click keyup input paste change', liveValidate);
 		}
 	},
 	defaultValidity : function () {
@@ -161,18 +224,16 @@ ForrmElement.prototype = {
 	},
 	setValidity : function () {
 		var regExp,
-			pattern = this.DOMElement.getAttribute('pattern') || this.parent.options.patterns[this.type],
+			pattern = this.DOMElement.getAttribute('pattern') || this.forrm.options.patterns[this.type],
 			list;
 
 		this.validationMessage = null;
 		if (this.DOMElement.value.replace( /^\s+/g, '' ).replace( /\s+$/g, '' ) === "" || ((this.type === 'radio' || this.type === 'checkbox') && !this.DOMElement.checked)) {
-            //null string test
 			this.validity.valid = false;
 			this.validity.valueMissing = true;
-			this.validationMessage = this.parent.options.errorMessages[this.type].valueMissing;
+			this.validationMessage = this.forrm.options.errorMessages[this.type].valueMissing;
 		} else {
 			this.validity.valueMissing = false;
-            //pattern test
 			regExp = new RegExp(pattern, "");
 			if (!regExp.test(this.DOMElement.value)) {
 				this.validity.valid = false;
@@ -181,7 +242,7 @@ ForrmElement.prototype = {
 				} else {
 					this.validity.typeMismatch = true;
 				}
-				this.validationMessage = this.parent.options.errorMessages[this.type].patternMismatch;
+				this.validationMessage = this.forrm.options.errorMessages[this.type].patternMismatch;
 			} else {
 				this.validity.valid = true;
 			}
@@ -195,9 +256,9 @@ ForrmElement.prototype = {
 		return this;
 	},
 	addError : function (error, groupPartial) {
-		this.DOMElement.parentNode.className = this.DOMElement.parentNode.className.split(' ' + this.parent.options.css.prefix + this.parent.options.css.successClass).join('');
-		if (this.DOMElement.parentNode.className.indexOf(this.parent.options.css.prefix + this.parent.options.css.errorClass) === -1) {
-			this.DOMElement.parentNode.className += ' ' + this.parent.options.css.prefix + this.parent.options.css.errorClass;
+		this.DOMElement.parentNode.className = this.DOMElement.parentNode.className.split(' ' + this.forrm.options.css.prefix + this.forrm.options.css.successClass).join('');
+		if (this.DOMElement.parentNode.className.indexOf(this.forrm.options.css.prefix + this.forrm.options.css.errorClass) === -1) {
+			this.DOMElement.parentNode.className += ' ' + this.forrm.options.css.prefix + this.forrm.options.css.errorClass;
 		}
 		this.DOMElement.setAttribute('aria-invalid', 'true');
 		if (!groupPartial) {
@@ -206,7 +267,7 @@ ForrmElement.prototype = {
 		return this;
 	},
 	removeError : function (groupPartial) {
-		this.DOMElement.parentNode.className = this.DOMElement.parentNode.className.split(' ' + this.parent.options.css.prefix + this.parent.options.css.errorClass).join('');
+		this.DOMElement.parentNode.className = this.DOMElement.parentNode.className.split(' ' + this.forrm.options.css.prefix + this.forrm.options.css.errorClass).join('');
 		this.DOMElement.setAttribute('aria-invalid', 'false');
 		this.DOMElement.removeAttribute('aria-labelledby');
 		if (!groupPartial) {
@@ -216,23 +277,23 @@ ForrmElement.prototype = {
 	},
 	addSuccess : function (groupPartial) {
 		this.removeError(groupPartial);
-		if (this.DOMElement.parentNode.className.indexOf(this.parent.options.css.prefix + this.parent.options.css.successClass) === -1) {
-			this.DOMElement.parentNode.className += ' ' + this.parent.options.css.prefix + this.parent.options.css.successClass;
+		if (this.DOMElement.parentNode.className.indexOf(this.forrm.options.css.prefix + this.forrm.options.css.successClass) === -1) {
+			this.DOMElement.parentNode.className += ' ' + this.forrm.options.css.prefix + this.forrm.options.css.successClass;
 		}
 		return this;
 	},
 	test : function () {
-		if (!this.parent.HTML5) {
+		if (!this.forrm.HTML5) {
 			this.setValidity();
 		}
-		if (!!this.testCustomConstraint && (!!this.getValidity() || !!this.validity.customError)) {
-			if (!!this.parent.HTML5) {
+		if (!!this.testCustomConstraint) {
+			if (!!this.forrm.HTML5) {
 				this.DOMElement.setCustomValidity(this.testCustomConstraint.call(this.DOMElement));
 			} else {
 				if (this.testCustomConstraint.call(this.DOMElement) !== '') {
 					this.validity.valid = false;
 					this.validity.customError = this.testCustomConstraint.call(this.DOMElement);
-					if (!this.parent.HTML5) {
+					if (!this.forrm.HTML5) {
 						this.validationMessage = this.validity.customError;
 					}
 				}
@@ -248,8 +309,8 @@ ForrmElement.prototype = {
 		}
 	},
 	getError : function () {
-		if (this.parent.options.customErrorMessage) {
-			return (this.parent.options.errorMessages[this.type][this.validity.valueMissing && 'valueMissing' || this.validity.patternMismatch && 'patternMismatch' || this.validity.typeMismatch && 'typeMismatch']);
+		if (this.forrm.options.customErrorMessage) {
+			return (this.forrm.options.errorMessages[this.type][this.validity.valueMissing && 'valueMissing' || this.validity.patternMismatch && 'patternMismatch' || this.validity.typeMismatch && 'typeMismatch']);
 		} else {
 			if (this.DOMElement.getAttribute('data-forrm-custom-error') !== null) {
 				return this.DOMElement.getAttribute('data-forrm-custom-error');
@@ -262,16 +323,16 @@ ForrmElement.prototype = {
 		var self = this,
 			dc = this.DOMElement.getAttribute('data-forrm-conditional'),
 			openSesame = function (e) {
-				e.stopImmediatePropagation();
+				UTILS.stopImmediatePropagation(e);
 				if (!!self.conditionalConstraint.call(self.DOMElement)) {
-					self.parent.UI.toggleEnabled(self.dependents, true);
+					self.forrm.UI.toggleEnabled(self.dependents, true);
 				} else {
-					self.parent.UI.toggleEnabled(self.dependents, null);
+					self.forrm.UI.toggleEnabled(self.dependents, null);
 				}
 			};
 		self.dependents = document.querySelectorAll('.' + dc + ' input, ' + '.' + dc + ' textarea, ' + '.' + dc + 'select');
-		self.conditionalConstraint = !!(self.parent.options.conditionalConstraint) && self.parent.options.conditionalConstraint[dc] || function () { return this.value !== ''; };
-		STORM.UTILS.on(self.DOMElement, 'change', openSesame);
+		self.conditionalConstraint = !!(self.forrm.options.conditionalConstraint) && self.forrm.options.conditionalConstraint[dc] || function () { return this.value !== ''; };
+		UTILS.on(self.DOMElement, 'change', openSesame);
 	}
 };
 /*
@@ -360,7 +421,11 @@ function ForrmUI(form) {
 
 ForrmUI.prototype = {
   init : function () {
-      this.write = this.displayInlineErrorMessages;
+	  if (!!this.parent.options.displayMessages) {
+		  this.write = !!this.parent.options.listMessages ? this.listErrorMessages : this.displayInlineErrorMessages;
+	  } else {
+		  this.write = function () {return this;};
+	  }
   },
   addInlineError : function (erId) {
 	  var el,
@@ -416,6 +481,49 @@ ForrmUI.prototype = {
 		  }
 	  }
   },
+  listErrorMessages : function () {
+	  var i = 0,
+		  oldListHolder = this.parent.DOMElement.querySelector('.' + this.parent.options.css.prefix +  this.parent.options.css.errorListClass),
+		  listHolder = document.createElement('dl'),
+		  listTitle = document.createElement('dt'),
+		  listDescription = document.createElement('dd'),
+		  list = document.createElement('ol'),
+		  listItem = document.createElement('li'),
+		  link = document.createElement('a'),
+		  item = null,
+		  itemLink = null;
+
+	  this.errorListHolder = listHolder;
+
+	  if (oldListHolder) {
+		  oldListHolder.parentElement.removeChild(oldListHolder);
+	  }
+	  if (this.parent.steps[this.parent.currentStep].countErrors() === 0) {
+		  return this;
+	  }
+	  listTitle.innerHTML = this.parent.options.listTitle;
+	  listHolder.appendChild(listTitle);
+	  listHolder.appendChild(listDescription);
+	  listHolder.className = this.parent.options.css.prefix +  this.parent.options.css.errorListClass;
+	  listHolder.setAttribute('role', 'alert');
+	  listDescription.appendChild(list);
+
+	  for (var er in this.parent.validationList) {
+		  if (this.parent.validationList.hasOwnProperty(er)) {
+			  if (!!this.parent.validationList[er].error) {
+				  item = listItem.cloneNode(true);
+				  itemLink = link.cloneNode(true);
+				  itemLink.setAttribute('href', '#' + this.parent.validationList[er].id);
+				  itemLink.setAttribute('id', er + '-error');
+				  itemLink.innerHTML = this.parent.validationList[er].error;
+				  item.appendChild(itemLink);
+				  list.appendChild(item);
+			  }
+		  }
+	  }
+
+	  this.parent.DOMElement.insertBefore(listHolder, this.parent.DOMElement.firstChild);
+  },
   toggleEnabled : function (els, reveal) {
 	  for (var i = 0, el; el = els[i];++i) {
 		  if (reveal !== null) {
@@ -426,97 +534,112 @@ ForrmUI.prototype = {
 			  el.setAttribute('disabled', 'disabled');
 		  }
 	  }
+	  //reinitialize the whole forrm
+	  this.parent.build();
   }
 };
 /*
- * Forrm wrapper class
+ * ForrmStep class
  *
- * @param {DOM node} a single form element
- * @param  {object} to extend defaults {}
+ * @param {String} DOM node containing fields for the step
+ * @param {Forrm} array of nodes
+ * @param {Number} Number in step sequence
  *
  */
-function ForrmForm(element, options) {
-    if (element === 'undefined') {
-        throw new Error('No element has been supplied');
-    }
-    this.DOMElement = element;
-    this.options = STORM.UTILS.merge({}, defaults, options);
+function ForrmStep(el, parent, num) {
+	this.stepNum = num;
+	this.parent = parent;
+	this.DOMElement = el;
 
-    this.init();
+	this.init();
 }
 
-ForrmForm.prototype = {
-    HTML5 : false,
-    init: function () {
-        var self = this,
-            tmpGroups = [];
-        this.HTML5 = 'noValidate' in document.createElement('form');
-        this.liveValidating = false;
-        this.go = this.options.pass || this.DOMElement.submit;
+ForrmStep.prototype = {
+	init : function () {
+		var tmpGroups = [],
+			self = this;
 
-        if (!this.HTML5 || this.options.augmentHTML5) {
-            if ('autocomplete' in this.DOMElement && !this.options.autocomplete) {
-                this.DOMElement.setAttribute('autocomplete', 'off');
-            }
+		this.fields = this.DOMElement.querySelectorAll('input, textarea, select');
+		this.validatebleElements = {};
+		this.unvalidatebleElements = {};
+		this.groups = {};
 
-            this.fields = this.DOMElement.querySelectorAll('input, textarea, select');
-            this.validatebleElements = {};
-            this.unvalidatebleElements = {};
-            this.groups = {};
+		for (var i = 0, field; field = this.fields[i]; i++) {
+			if (field.getAttribute('type') !== 'submit' &&
+				field.getAttribute('type') !== 'reset' &&
+				field.getAttribute('type') !== 'button' &&
+				field.getAttribute('type') !== 'hidden' &&
+				(field.getAttribute('disabled') === null || field.getAttribute('disabled') === '')&&
+				(field.getAttribute('novalidate') === null || field.getAttribute('novalidate') === '')) {
+				if (field.getAttribute('required') !== null || field.getAttribute('required') !== '') {
+					this.validatebleElements[field.getAttribute('id')] = new ForrmElement(field, this);
+					if (field.getAttribute('type') === 'checkbox' || field.getAttribute('type') === 'radio' || field.getAttribute('data-forrm-group') !== null) {
+						tmpGroups.push(this.validatebleElements[field.getAttribute('id')]);
+					}
 
-                for (var i = 0, field; field = this.fields[i]; i++) {
-                    if (field.getAttribute('type') !== 'submit' &&
-                        field.getAttribute('type') !== 'reset' &&
-                        field.getAttribute('type') !== 'button' &&
-                        field.getAttribute('type') !== 'hidden' &&
-                        (!field.hasAttribute('disabled'))&&
-                        (!field.hasAttribute('novalidate'))) {
-                        if (!!field.hasAttribute('required')) {
-                            this.validatebleElements[field.getAttribute('id')] = new ForrmElement(field, this);
-                            if (field.getAttribute('type') === 'checkbox' || field.getAttribute('type') === 'radio' || field.getAttribute('data-forrm-group') !== null) {
-                                tmpGroups.push(this.validatebleElements[field.getAttribute('id')]);
-                            }
+					if ((this.fields[i + 1] === undefined || !(field.getAttribute('data-forrm-group')) && (field.getAttribute('name') !== this.fields[i + 1].getAttribute('name')) || i - 1 === this.fields.length) || field.getAttribute('data-forrm-group') !== this.fields[i + 1].getAttribute('data-forrm-group')) {
+						if (tmpGroups.length > 0) {
+							var groupName = field.getAttribute('data-forrm-group') || field.getAttribute('name'),
+								groupType = field.getAttribute('data-forrm-group') ? 'custom' : 'checked',
+								groupMin = field.getAttribute('data-forrm-group-min') || 1,
+								groupMax = field.getAttribute('data-forrm-group-max') || null;
+							this.groups[groupName] = new ForrmGroup(groupName, tmpGroups, groupType, groupMin, groupMax);
+							for (var j = 0; j < tmpGroups.length; j++) {
 
-                            if ((this.fields[i + 1] === undefined || !(field.getAttribute('data-forrm-group')) && (field.getAttribute('name') !== this.fields[i + 1].getAttribute('name')) || i - 1 === this.fields.length) || field.getAttribute('data-forrm-group') !== this.fields[i + 1].getAttribute('data-forrm-group')) {
-                                if (tmpGroups.length > 0) {
-                                    var groupName = field.getAttribute('data-forrm-group') || field.getAttribute('name'),
-                                        groupType = field.getAttribute('data-forrm-group') ? 'custom' : 'checked',
-                                        groupMin = field.getAttribute('data-forrm-group-min') || 1,
-                                        groupMax = field.getAttribute('data-forrm-group-max') || null;
-                                    this.groups[groupName] = new ForrmGroup(groupName, tmpGroups, groupType, groupMin, groupMax);
-                                    for (var j = 0; j < tmpGroups.length; j++) {
+							   tmpGroups[j].setGroup(this.groups[groupName]);
+							}
+							tmpGroups = [];
+						}
+					}
+				} else {
+					this.unvalidatebleElements[field.getAttribute('id')] = new ForrmElement(field, this);
+				}
+			}
+		}
 
-                                       tmpGroups[j].setGroup(this.groups[groupName]);
-                                    }
-                                    tmpGroups = [];
-                                }
-                            }
-                        } else {
-                            this.unvalidatebleElements[field.getAttribute('id')] = new ForrmElement(field, this);
-                        }
-                    }
-                }
-                this.makeValidationList();
-                this.UI = new ForrmUI(this);
+		if (this.parent.numSteps > 1) {
+			this.addButtons();
+		}
 
-                if (this.DOMElement.querySelector('input[type=submit]') !== null) {
-                        STORM.UTILS.on(this.DOMElement.querySelector('input[type=submit]'), 'click onkeypress', function (e) {
-                            self.handleEvent.call(self, e);
-                    }   );
-                }
-        }
-        return this;
-    },
-    handleEvent : function (e) {
-        if (!this.HTML5 || this.options.augmentHTML5) {
-            this.liveValidating = true;
-            if (e.type === 'click' || e.type === 'onkeypress') {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-                this.test.call(this);
-            }
-        }
-    },
+		this.makeValidationList();
+		this.parent.UI = new ForrmUI(this.parent);
+		return this;
+	},
+	hide : function () {
+		this.DOMElement.className = this.DOMElement.className + ' ' + this.parent.options.css.prefix + this.parent.options.css.hiddenClass;
+	},
+	show : function () {
+		this.DOMElement.className = this.DOMElement.className.split(' ' + this.parent.options.css.prefix + this.parent.options.css.hiddenClass).join('');
+	},
+	addButtons : function () {
+		var self = this,
+			sbmt,
+			prv,
+			tpl = document.createElement('button');
+
+		sbmt = tpl.cloneNode(true);
+
+		if (this.stepNum + 1 !== this.parent.numSteps) {
+			sbmt.className = this.parent.options.css.prefix + this.parent.options.css.buttonClass + ' ' +  this.parent.options.css.prefix + this.parent.options.css.buttonNextClass;
+			sbmt.innerHTML = 'Submit';
+			UTILS.on(sbmt, 'click onkeypress', function (e) {
+					self.parent.handleEvent.call(self.parent, e);
+				});
+			this.DOMElement.appendChild(sbmt);
+		}
+
+		if (this.stepNum !== 0) {
+			prv = tpl.cloneNode(true);
+			prv.className = this.parent.options.css.prefix + this.parent.options.css.buttonClass + ' ' + this.parent.options.css.prefix + this.parent.options.css.buttonPreviousClass;
+			prv.innerHTML = 'Previous';
+			UTILS.on(prv, 'click onkeypress', function (e) {
+				self.parent.changeStep.call(self.parent, false, e);
+			});
+			this.DOMElement.appendChild(prv);
+		}
+
+		return this;
+	},
 	makeValidationList : function () {
 		this.validationList = {};
 
@@ -548,14 +671,101 @@ ForrmForm.prototype = {
 			}
 		}
 		return errors;
-	},
+	}
+};
+/*
+ * Forrm wrapper class
+ *
+ * @param {DOM node} a single form element
+ * @param  {object} to extend defaults {}
+ *
+ */
+function ForrmForm(element, options) {
+    if (element === 'undefined') {
+        throw new Error('No element has been supplied');
+    }
+    this.DOMElement = element;
+    this.options = UTILS.extend({}, defaults, options);
+
+    this.init();
+}
+
+ForrmForm.prototype = {
+    HTML5 : false,
+    build : function () {
+        var steps, stepElements;
+
+        stepElements = this.DOMElement.querySelectorAll('[data-forrm-step]');
+        this.numSteps = stepElements.length || 1;
+        this.steps = [];
+
+        stepElements = (stepElements.length > 0 && stepElements) || [this.DOMElement];
+        this.currentStep = 0;
+        if (this.numSteps > 1) {
+            this.DOMElement.className += ' ' + this.options.css.prefix + this.options.css.stepPrefix + '1';
+        }
+        for (var i = 0; i < stepElements.length; ++i) {
+            this.steps.push(new ForrmStep(stepElements[i], this, i));
+            if (i !== 0) {
+                this.steps[i].hide();
+            }
+        }
+        return this;
+    },
+    init: function () {
+        var self = this;
+        this.HTML5 = 'noValidate' in document.createElement('form');
+        this.liveValidating = false;
+        this.go = this.options.pass || this.DOMElement.submit;
+
+        if (!this.HTML5 || this.options.augmentHTML5) {
+            if ('autocomplete' in this.DOMElement && !this.options.autocomplete) {
+                this.DOMElement.setAttribute('autocomplete', 'off');
+            }
+
+            this.build();
+
+            if (this.DOMElement.querySelector('input[type=submit]') !== null) {
+                UTILS.on(this.DOMElement.querySelector('input[type=submit]'), 'click onkeypress', function (e) {
+                    self.handleEvent.call(self, e);
+            }   );
+            }
+        }
+        return this;
+    },
+    handleEvent : function (e) {
+        if (!this.HTML5 || this.options.augmentHTML5) {
+            this.liveValidating = true;
+            if (e.type === 'click' || e.type === 'onkeypress') {
+                UTILS.preventDefault(e);
+                UTILS.stopImmediatePropagation(e);
+                this.test.call(this);
+            }
+        }
+    },
+    changeStep : function (forward, e) {
+        var next = !!forward && this.currentStep + 1 || this.currentStep - 1;
+
+        if(!!e) {UTILS.preventDefault(e);}
+
+        this.steps[this.currentStep].hide();
+        this.DOMElement.className = this.DOMElement.className.split(' ' +
+                                                                    this.options.css.prefix +
+                                                                    this.options.css.stepPrefix +
+                                                                    (+this.currentStep + 1)).join(' ' +
+                                                                    this.options.css.prefix +
+                                                                    this.options.css.stepPrefix + (+next + 1));
+        this.steps[next].show();
+        this.currentStep = next;
+
+        return this;
+    },
     test : function () {
         var el = null,
             er = null,
             vList,
             self = this;
-        
-        this.validationList = this.makeValidationList();
+        this.validationList = this.steps[this.currentStep].makeValidationList();
 
         for (var i in this.validationList) {
             this.validationList[i].element.validate();
@@ -564,15 +774,22 @@ ForrmForm.prototype = {
             }
         }
 
-        if (this.countErrors() > 0) {
-            this.UI.write();
-            document.querySelector('.' + this.options.css.prefix + this.options.css.errorMessageClass).focus();
-            
+        if (this.steps[this.currentStep].countErrors() > 0) {
+            self.UI.write();
+            if (!this.options.listMessages) {
+                document.querySelector('.' + this.options.css.prefix + this.options.css.errorMessageClass).focus();
+            } else {
+                this.UI.errorListHolder.focus();
+            }
             if (typeof this.options.fail === 'function') {
                 this.options.fail.call();
             }
         } else {
-            this.go.call(this.DOMElement);
+            if (this.currentStep === this.numSteps - 1) {
+                this.go.call(this.DOMElement);
+            } else {
+                this.changeStep(true);
+            }
         }
     }
 };
