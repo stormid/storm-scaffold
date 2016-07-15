@@ -1,16 +1,20 @@
 //Closure to encapsulate all JS
 var STORM,
     UTILS = {
-		assign: require('object-assign'),
-		merge: require('merge'),
-		attributelist: require('storm-attributelist'),
-		classlist: require('dom-classlist'),
-		loadScript: require('load-script')
+		attributelist: require('storm-attributelist')
 	},
     UI = (function(w, d) {
             'use strict';
 
-            var ffo = require('FontFaceObserver'),
+            var load = function(src, cb) {
+                    var t = document.createElement('script'),
+                        s = document.getElementsByTagName('script')[0];
+                    t.async = true;
+                    t.src = 'https://apis.google.com/js/plusone.js?onload=onLoadCallback';
+                    s.parentNode.insertBefore(t, s);
+                    t.onload = cb;
+                },
+                ffo = require('FontFaceObserver'),
                 picturefill = require('picturefill'),
                 loadScript = require('load-script'),
                 Toggler = require('storm-toggler'),
@@ -34,33 +38,38 @@ var STORM,
                         Forrm.init('.js-forrm');
                     });
                 },
+                polyfill = function(){
+                    load('https://cdn.polyfill.io/v2/polyfill.min.js?features=Object.assign,Element.prototype.classList&gated=1', init);
+                },
 				initTogglers = function() {
                     if(!(d.querySelector('.js-toggle'))) { return; } 
 					Toggler.init('.js-toggle');
                     Toggler.init('.js-toggle-local', {targetLocal: true});
 				},
-				load = function(){},
                 init = function() {
                     //initialise everything
                     initFonts();
                     initForrms();
                     initTogglers();
+                },
+                run = function(){
+                    
                 };
 
             //Interface with/entry point to site JS
             return {
-                init: init,
+                polyfill: polyfill,
 				load: load
             };
 
         }(window, document, undefined));
 
 STORM = {
-    UTILS: UTILS,
-    UI: UI
+    UI: UI,
+    UTILS: UTILS
 };
 
 //Cut the mustard
 //Don't run any JS if the browser can't handle it
-if('addEventListener' in window) window.addEventListener('DOMContentLoaded', STORM.UI.init, false);
+if('addEventListener' in window) window.addEventListener('DOMContentLoaded', STORM.UI.polyfill, false);
 if('addEventListener' in window) window.addEventListener('load', STORM.UI.load, false);
