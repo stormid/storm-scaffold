@@ -24,7 +24,6 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 	border: 0;
 	font-size: 100%;
 	margin: 0;
-	outline: 0;
 	padding: 0;
 	vertical-align: baseline;
 }
@@ -143,7 +142,6 @@ a {
 a:hover,
 a:focus,
 a:active {
-    outline: 0;
     text-decoration: none;
 }
 
@@ -157,9 +155,8 @@ select {
 input, 
 button, 
 select {
-	border: 1px solid #000;
+	border: 0 none;
 	border-radius: 0;
-	outline: 0;
 	padding: 0;
 	vertical-align: middle;
 }
@@ -168,7 +165,7 @@ select::-ms-expand{
 }
 	
 input[type="search"] {
-	border-radius: 4px;
+	border-radius: 0;
 	-moz-appearance: none;
 	-webkit-appearance: none;
 }
@@ -205,18 +202,18 @@ button,
 input,
 select,
 textarea {
-    font-size: 100%; // 1
-    line-height: normal; // 4
-    margin: 0; // 2
-    vertical-align: baseline; // 3
+    font-size: 99%;
+    line-height: normal;
+    margin: 0;
+    vertical-align: baseline;
 }
 button,
 input[type="button"],
 input[type="reset"],
 input[type="submit"] {
     border:0 none;
-    cursor: pointer; // 1
-    -webkit-appearance: button; // 2
+    cursor: pointer;
+    -webkit-appearance: button;
 }
 
 button[disabled],
@@ -228,9 +225,4 @@ textarea {
 	vertical-align: top; 
 	resize: vertical; 
     width:100%;
-}
-textarea:hover, 
-textarea:active, 
-textarea:focus {
-	outline: none;
 }

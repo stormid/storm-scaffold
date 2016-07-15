@@ -100,17 +100,3 @@ legend {
     font-size:1rem;
     line-height:1.4;
 }
-
-//errors
-.form-error-message {
-    font:1rem/1.4 $body-font-family;
-    display: block;
-}
-.form-select.form-error {
-    margin-bottom:2.5rem;
-    position: relative;
-}
-.form-select .form-error-message {
-    position: absolute;
-    bottom:-1.75rem;
-}

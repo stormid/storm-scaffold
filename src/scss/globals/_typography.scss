@@ -35,23 +35,27 @@ h6 {
     line-height:1.2;
 }
 h1 {
-    font-size:1.75rem;
+    font-size:$mega-size;
     margin-bottom:$baseline;
 }
 h2 {
-    font-size:1.2rem;
+    font-size:$alpha-size;
     margin-bottom:$baseline;
 }
 h3 {
-    font-size:1.35rem;
+    font-size:$beta-size;
     margin-bottom:$baseline/2;
 }
 h4 {
-    margin-bottom:$baseline/2;}
+    font-size:$gamma-size;
+    margin-bottom:$baseline/2;
+}
 h5 {
+    font-size:$delta-size;
     margin-bottom:$baseline/2;
 }
 h6 {
+    font-size:$epsilon-size;
     margin-bottom:$baseline/2;
 }
 p {
@@ -60,11 +64,13 @@ p {
 
 //general links
 a,
+a:link,
 .link {
     color:$body-font-color;
 }
-a:hover {
-    outline:none;
+a:hover,
+a:focus,
+a:active {
 }
 
 //font-fallback

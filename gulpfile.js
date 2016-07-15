@@ -193,11 +193,10 @@ gulp.task('compress:js', function() {
 gulp.task('compress:css', function() {
 	return gulp.src(dest.css + '*.css', { base: process.cwd() })
 		.pipe(minifyCss())
-        .pipe(rename
         .pipe(rename({
             dirname: './',
             suffix: "-min"
-        })))
+        }))
 		.pipe(gulp.dest(dest.css));
 });
 

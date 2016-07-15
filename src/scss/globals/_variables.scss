@@ -1,14 +1,10 @@
 // Path alias
 $assetPath:                '/content';
 $uiImgPath:                '#{$assetPath}/img';
-$fontPath:                 '#{$assetPath}/fonts';
 
 // Colors
 // -------------------------
 $body-font-color:           #191919 !default;
-$brand-primary-color:		#006276 !default;
-
-$grey:		                #ccc !default;
 
 // Type
 // --------------------------------------------------
@@ -21,7 +17,7 @@ $bold:                      700;
 $thick:                     800;
 
 $baseline:                  1.5rem !default;
-$base-font-family:          sans-serif !default;
+$base-font-family:          'Slabo 27px', sans-serif !default;
 $base-font-weight:          $regular !default;
 $base-font-size:            100% !default;
 $base-line-height:          1.5 !default;
@@ -47,9 +43,9 @@ $gutter:				    30px !default;
 $columns:                   12 !default;
 
 // Shared
-$border-radius:             2px !default;
-$border-color:              2px !default;
-$border-width:              1px !default;
+$border-radius:             0 !default;
+$border-color:              none !default;
+$border-width:              0 !default;
 
 // Breakpoints
 // --------------------------------------------------

@@ -20,7 +20,7 @@
     "gulp-favicons": "^2.2.6",
     "gulp-front-matter": "^1.2.2",
     "gulp-header": "^1.2.2",
-    "gulp-imagemin": "^2.2.1",
+    "gulp-imagemin": "^3.0.1",
     "gulp-jshint": "^2.0.0",
     "gulp-minify-css": "^1.2.1",
     "gulp-notify": "^2.2.0",
@@ -47,14 +47,11 @@
     ]
   },
   "dependencies": {
-    "dom-classlist": "^1.0.1",
-    "fontfaceobserver": "^1.5.4",
-    "load-script": "^1.0.0",
-    "picturefill": "^3.0.1",
-    "merge": "^1.2.0",
-    "object-assign": "^4.0.1",
+    "fontfaceobserver": "^2.0.1",
     "picturefill": "^3.0.1",
     "storm-attributelist": "^0.2.0",
-    "storm-toggler": "^0.7.1"
+    "storm-outliner": "^0.1.0",
+    "storm-skip": "^0.1.0",
+    "storm-toggler": "^0.10.0"
   }
 }

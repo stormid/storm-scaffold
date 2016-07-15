@@ -1,12 +1,11 @@
 //Closure to encapsulate all JS
-var STORM,
-    UTILS = {
+var UTILS = {
 		attributelist: require('storm-attributelist')
 	},
     UI = (function(w, d) {
             'use strict';
 
-            var load = function(src, cb) {
+            var LoadScript = function(src, cb) {
                     var t = document.createElement('script'),
                         s = document.getElementsByTagName('script')[0];
                     t.async = true;
@@ -14,32 +13,33 @@ var STORM,
                     s.parentNode.insertBefore(t, s);
                     t.onload = cb;
                 },
-                ffo = require('FontFaceObserver'),
-                picturefill = require('picturefill'),
-                loadScript = require('load-script'),
+                Skip = require('storm-skip'),
+                Outliner = require('storm-outliner'),
+                FontFaceObserver = require('FontFaceObserver'),
+                Picturefill = require('picturefill'),
                 Toggler = require('storm-toggler'),
                 initFonts = function(){
-                    var ffo = new FontFaceObserver('Name of your font', {})
-                        .check()
+                    var ffo = new FontFaceObserver('Font family name here', {})
+                        .load()
                         .then(function () {
                             d.documentElement.className = document.documentElement.className.replace(/\bno-webfonts\b/,'');
                         }, function () {
-                            console.log('Font is not available after waiting 5 seconds');
+                            console.log('Font is not available after waiting 3 seconds');
                         });
-                },
-                initForrms = function(){
+                },/*
+                initAsyncExample = function(){
                     //detect and return if not needed
-                    if(!(d.querySelector('.js-forrm'))) { return; } 
+                    if(!(d.querySelector('.js-className'))) { return; } 
                     //loaded async as required
-                    UTILS.loadScript('/content/js/async/forrm.min.js', function(err){
+                    load('/content/js/async/module.min.js', function(err){
                         if(err) {
                             return console.log(err);
                         }
-                        Forrm.init('.js-forrm');
+                        Module.init('.js-className');
                     });
-                },
+                },*/
                 polyfill = function(){
-                    load('https://cdn.polyfill.io/v2/polyfill.min.js?features=Object.assign,Element.prototype.classList&gated=1', init);
+                    LoadScript('https://cdn.polyfill.io/v2/polyfill.min.js?features=Object.assign,Element.prototype.classList&gated=1', init);
                 },
 				initTogglers = function() {
                     if(!(d.querySelector('.js-toggle'))) { return; } 
@@ -47,14 +47,18 @@ var STORM,
                     Toggler.init('.js-toggle-local', {targetLocal: true});
 				},
                 init = function() {
-                    //initialise everything
+                    //if you want to use font-face observer, set the font-family names in the array on line 9
+                    //otherwise delete all fonts/FontFaceObserver references from this file and the no-=webfonts className from the docElement and typography SCC 
                     initFonts();
-                    initForrms();
+
                     initTogglers();
+
+                    //initAsyncExample();
                 },
                 run = function(){
                     
-                };
+                },
+                load = function(){};
 
             //Interface with/entry point to site JS
             return {
@@ -64,7 +68,7 @@ var STORM,
 
         }(window, document, undefined));
 
-STORM = {
+global.STORM = {
     UI: UI,
     UTILS: UTILS
 };

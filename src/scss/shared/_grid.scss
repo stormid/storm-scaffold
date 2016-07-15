@@ -25,7 +25,8 @@
     margin-left:#{$gutter};
 }
 
-/* Sample column classes, roll your own for your own needs using the column calulation helpers above */
+/* Sample column classes, roll your own for your own needs using the column calulation helpers above
+Example:
 .xsmall-4 {
     @media(max-width:$bp-small){
         @include column(4);
@@ -180,3 +181,4 @@
 .col--centre {
     margin:0 auto;
 }
+ */
