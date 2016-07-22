@@ -48,6 +48,8 @@
   },
   "dependencies": {
     "fontfaceobserver": "^2.0.1",
+    "gulp-if": "^2.0.1",
+    "gulp-util": "^3.0.7",
     "picturefill": "^3.0.1",
     "storm-attributelist": "^0.2.0",
     "storm-outliner": "^0.1.0",

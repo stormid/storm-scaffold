@@ -31,6 +31,8 @@ var gulp = require('gulp'),
     source = require('vinyl-source-stream'),
     buffer = require('vinyl-buffer'),
     jshint = require('gulp-jshint'),
+    gulpIf = require('gulp-if'),
+    gulpUtil = require('gulp-util'),
     jshintConfig = pkg.jshintConfig;
 
 
@@ -159,8 +161,10 @@ gulp.task('sass', function () {
 		.pipe(pixrem())
 		.pipe(header(banner, {pkg : pkg}))
 		.pipe(sourcemaps.write())
+        .pipe(gulpIf(!!gulpUtil.env.production, minifyCss()))
 		.pipe(gulp.dest(dest.css));
 });
+
 
 gulp.task('css', ['sass']);
 
@@ -179,25 +183,6 @@ gulp.task('img', function () {
 gulp.task('font', function() {
     return gulp.src(src.fonts + '**/*.*')
         .pipe(gulp.dest(dest.fonts));
-});
-
-/* Compress js */
-gulp.task('compress:js', function() {
-	return gulp.src(dest.js + 'app.js')
-		.pipe(uglify())
-		.pipe(rename('app.min.js'))
-		.pipe(gulp.dest(dest.js));
-});
-
-/* Compress CSS */
-gulp.task('compress:css', function() {
-	return gulp.src(dest.css + '*.css', { base: process.cwd() })
-		.pipe(minifyCss())
-        .pipe(rename({
-            dirname: './',
-            suffix: "-min"
-        }))
-		.pipe(gulp.dest(dest.css));
 });
 
 /*
@@ -243,10 +228,8 @@ gulp.task('psi', function(cb) {
 gulp.task('start', ['html', 'css', 'js', 'img', 'font', 'serve']);
 
 /* Final build task including compression */
-gulp.task('build', ['html', 'css', 'js', 'compress']);
+gulp.task('build', ['html', 'css', 'js']);
 
-/* The compress task */
-gulp.task('compress', ['compress:css']);
 
 /* Default 'refresh' task */
 gulp.task('default', ['start']);
