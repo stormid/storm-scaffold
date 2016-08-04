@@ -9,7 +9,9 @@
 .nav-primary__sub-list {}
 .nav-primary__sub-item {}
 .nav-primary__sub-link {
-    visibility: hidden
+    visibility: hidden;
+    &:hover,
+    &:focus {}
 }
 .nav-primary__sub-toggle {
     svg {
