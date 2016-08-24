@@ -9,7 +9,7 @@ var UTILS = {
                     var t = document.createElement('script'),
                         s = document.getElementsByTagName('script')[0];
                     t.async = true;
-                    t.src = 'https://apis.google.com/js/plusone.js?onload=onLoadCallback';
+                    t.src = src;
                     s.parentNode.insertBefore(t, s);
                     t.onload = cb;
                 },
@@ -38,32 +38,29 @@ var UTILS = {
                         Module.init('.js-className');
                     });
                 },*/
-                polyfill = function(){
-                    LoadScript('https://cdn.polyfill.io/v2/polyfill.min.js?features=Object.assign,Element.prototype.classList&gated=1', init);
-                },
 				initTogglers = function() {
                     if(!(d.querySelector('.js-toggle'))) { return; } 
 					Toggler.init('.js-toggle');
-                    Toggler.init('.js-toggle-local', {targetLocal: true});
+                    !!d.querySelector('.js-toggle') && Toggler.init('.js-toggle-local', {targetLocal: true});
 				},
+                initPolyfills = function(){
+                    require('classlist-polyfill');
+                    require('es6-object-assign').polyfill();
+                    require('es6-promise').polyfill();
+                },
                 init = function() {
-                    //if you want to use font-face observer, set the font-family names in the array on line 9
-                    //otherwise delete all fonts/FontFaceObserver references from this file and the no-=webfonts className from the docElement and typography SCC 
+                    initPolyfills();
                     initFonts();
-
                     initTogglers();
 
                     //initAsyncExample();
                 },
-                run = function(){
-                    
-                },
-                load = function(){};
+                loaded = function(){};
 
             //Interface with/entry point to site JS
             return {
-                polyfill: polyfill,
-				load: load
+                init: init,
+				loaded: loaded
             };
 
         }(window, document, undefined));
@@ -75,5 +72,5 @@ global.STORM = {
 
 //Cut the mustard
 //Don't run any JS if the browser can't handle it
-if('addEventListener' in window) window.addEventListener('DOMContentLoaded', STORM.UI.polyfill, false);
-if('addEventListener' in window) window.addEventListener('load', STORM.UI.load, false);
+if('addEventListener' in window) window.addEventListener('DOMContentLoaded', STORM.UI.init, false);
+if('addEventListener' in window) window.addEventListener('load', STORM.UI.loaded, false);

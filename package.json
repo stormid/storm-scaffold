@@ -47,6 +47,9 @@
     ]
   },
   "dependencies": {
+    "classlist-polyfill": "^1.0.3",
+    "es6-object-assign": "^1.0.3",
+    "es6-promise": "^3.2.1",
     "fontfaceobserver": "^2.0.1",
     "gulp-if": "^2.0.1",
     "gulp-util": "^3.0.7",
