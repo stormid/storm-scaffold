@@ -39,7 +39,7 @@ var UTILS = {
                     });
                 },*/
 				initTogglers = function() {
-                    if(!(d.querySelector('.js-toggle'))) { return; } 
+                    if(!(d.querySelector('.js-toggle')) && !(d.querySelector('.js-toggle'))) { return; } 
 					Toggler.init('.js-toggle');
                     !!d.querySelector('.js-toggle') && Toggler.init('.js-toggle-local', {targetLocal: true});
 				},

@@ -10,11 +10,10 @@ var gulp = require('gulp'),
     pixrem = require('gulp-pixrem'),
     uglify = require('gulp-uglify'),
     rename = require('gulp-rename'),
-    minifyCss = require('gulp-minify-css'),
+    minifyCss = require('gulp-clean-css'),
     swig = require('gulp-swig'),
     frontMatter = require('gulp-front-matter'),
     data = require('gulp-data'),
-    pagespeed = require('psi'),
     extname = require('gulp-extname'),
     sourcemaps = require('gulp-sourcemaps'),
     browserSync = require('browser-sync'),
@@ -30,10 +29,8 @@ var gulp = require('gulp'),
     runSequence = require('run-sequence'),
     source = require('vinyl-source-stream'),
     buffer = require('vinyl-buffer'),
-    jshint = require('gulp-jshint'),
     gulpIf = require('gulp-if'),
-    gulpUtil = require('gulp-util'),
-    jshintConfig = pkg.jshintConfig;
+    gulpUtil = require('gulp-util');
 
 
 /* Set up the banner */
@@ -211,13 +208,6 @@ gulp.task('watch', function () {
       gulp.watch([src.css + '**/*.scss'], ['css']);
       gulp.watch([src.img + '**/*'], ['img']);
       gulp.watch([src.js + '**/*'], ['js']);
-});
-
-/* Page speed insights */
-gulp.task('psi', function(cb) {
-  pagespeed.output(publicUrl, {
-    strategy: psiStrategy,
-  }, cb);
 });
 
 
