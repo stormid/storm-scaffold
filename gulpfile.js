@@ -30,6 +30,7 @@ var gulp = require('gulp'),
     source = require('vinyl-source-stream'),
     buffer = require('vinyl-buffer'),
     gulpIf = require('gulp-if'),
+    collapse = require('bundle-collapser/plugin'),
     gulpUtil = require('gulp-util');
 
 
@@ -108,10 +109,13 @@ gulp.task('lint', function() {
 gulp.task('js:browserify', function () {
   var b = browserify({
     entries: src.js + 'app.js',
-    debug: true
+    debug: true,
+    fullPaths: false
   });
 
-  return b.bundle()
+  return b
+    .plugin(collapse)
+    .bundle()
     .pipe(source('app.js'))
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))
