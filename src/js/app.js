@@ -43,17 +43,17 @@ var UTILS = {
 					Toggler.init('.js-toggle');
                     !!d.querySelector('.js-toggle') && Toggler.init('.js-toggle-local', {targetLocal: true});
 				},
-                initPolyfills = function(){
-                    require('classlist-polyfill');
-                    require('es6-object-assign').polyfill();
-                    require('es6-promise').polyfill();
-                },
                 init = function() {
-                    initPolyfills();
+                    //classList, promise, object.assign
+                    if(!!Object.assign && !!Promise && !!('classList' in document.documentElement)){ 
+                        run(); 
+                    } else {
+                        LoadScript('/content/js/async/polyfills.js', run);
+                    }
+                },
+                run = function(){
                     initFonts();
                     initTogglers();
-
-                    //initAsyncExample();
                 },
                 loaded = function(){};
 

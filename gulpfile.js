@@ -109,7 +109,7 @@ gulp.task('lint', function() {
 gulp.task('js:browserify', function () {
   var b = browserify({
     entries: src.js + 'app.js',
-    debug: true,
+    debug: false,
     fullPaths: false
   });
 
@@ -124,13 +124,29 @@ gulp.task('js:browserify', function () {
     .pipe(gulp.dest(dest.js));
 });
 
+gulp.task('js:polyfill', function () {
+  var b = browserify({
+    entries: src.js + 'require/polyfills.js',
+    debug: false,
+    fullPaths: false
+  });
+
+  return b
+    .plugin(collapse)
+    .bundle()
+    .pipe(source('polyfills.js'))
+    .pipe(buffer())
+    .pipe(uglify())
+    .pipe(gulp.dest(dest.js + 'async/'));
+});
+
 gulp.task('js:async', function () {
     return gulp.src(src.js + 'async/**/*')
   		.pipe(uglify())
   		.pipe(rename({suffix: '.min'}))
   		.pipe(gulp.dest(dest.js + 'async/'));
 });
-gulp.task('js', ['js:browserify', 'js:async']);
+gulp.task('js', ['js:browserify', 'js:async', 'js:polyfill']);
 
 /* Build the flat html */
 gulp.task('html', function(){
