@@ -30,6 +30,7 @@ var gulp = require('gulp'),
     source = require('vinyl-source-stream'),
     buffer = require('vinyl-buffer'),
     gulpIf = require('gulp-if'),
+    babelify = require('babelify'),
     collapse = require('bundle-collapser/plugin'),
     gulpUtil = require('gulp-util');
 
@@ -106,38 +107,30 @@ gulp.task('lint', function() {
 		.pipe(jshint.reporter('default'));
 });
 
-gulp.task('js:browserify', function () {
-  var b = browserify({
-    entries: src.js + 'app.js',
-    debug: false,
-    fullPaths: false
-  });
-
-  return b
-    .plugin(collapse)
-    .bundle()
-    .pipe(source('app.js'))
-    .pipe(buffer())
-    .pipe(sourcemaps.init({loadMaps: true}))
-    .pipe(uglify())
-    .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest(dest.js));
+gulp.task('js:main', function(){
+    return browserify({
+            entries: src.js + 'app.js',
+            debug: !gulpUtil.env.production
+        })
+        .transform(babelify, {presets: ['es2015']})
+        .bundle()
+        .pipe(source('app.js'))
+        .pipe(buffer())
+        .pipe(gulpIf(!!gulpUtil.env.production, uglify()))
+        .pipe(gulp.dest(dest.js));
 });
 
-gulp.task('js:polyfill', function () {
-  var b = browserify({
-    entries: src.js + 'require/polyfills.js',
-    debug: false,
-    fullPaths: false
-  });
-
-  return b
-    .plugin(collapse)
-    .bundle()
-    .pipe(source('polyfills.js'))
-    .pipe(buffer())
-    .pipe(uglify())
-    .pipe(gulp.dest(dest.js + 'async/'));
+gulp.task('js:polyfill', function(){
+    return browserify({
+            entries: src.js + 'polyfills/polyfills.js',
+            debug: !gulpUtil.env.production
+        })
+        .transform(babelify, {presets: ['es2015']})
+        .bundle()
+        .pipe(source('polyfills.js'))
+        .pipe(buffer())
+        .pipe(gulpIf(!!gulpUtil.env.production, uglify()))
+        .pipe(gulp.dest(dest.js + '/async/'));
 });
 
 gulp.task('js:async', function () {
@@ -146,7 +139,7 @@ gulp.task('js:async', function () {
   		.pipe(rename({suffix: '.min'}))
   		.pipe(gulp.dest(dest.js + 'async/'));
 });
-gulp.task('js', ['js:browserify', 'js:async', 'js:polyfill']);
+gulp.task('js', ['js:main', 'js:async', 'js:polyfill']);
 
 /* Build the flat html */
 gulp.task('html', function(){
@@ -201,11 +194,6 @@ gulp.task('font', function() {
     return gulp.src(src.fonts + '**/*.*')
         .pipe(gulp.dest(dest.fonts));
 });
-
-/*
- * Test gulp-cssnano for css compresion
- * Implement compression etc with CL flag rather than separate task?
- */
 
 /* Server with auto reload and browersync */
 gulp.task('serve', ['build'], function () {
