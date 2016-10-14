@@ -10,8 +10,12 @@ const onDOMContentLoadedTasks = [
         () => {
             //togglers
             if(!(document.querySelector('.js-toggle, .js-toggle-local'))) return; 
-            !!document.querySelector('.js-toggle') && Toggler.init('.js-toggle');
-            !!document.querySelector('.js-toggle-local') && Toggler.init('.js-toggle-local', {targetLocal: true});
+            if(!!document.querySelector('.js-toggle')){
+                global.UI.Togglers = Toggler.init('.js-toggle');
+            }
+            if(!!document.querySelector('.js-toggle-local')){
+                global.UI.Togglers = global.UI.Togglers ? global.UI.Togglers.concat(Toggler.init('.js-toggle-local', {targetLocal: true})) : Toggler.init('.js-toggle-local', {targetLocal: true});
+            }
         },
         () => {
             //font face observer
@@ -36,9 +40,12 @@ const onDOMContentLoadedTasks = [
 //when page Loaded, run these tasks
 const onLoadTasks = [];
 
+//attached anything to this
+global.UI = {};
+
 if('addEventListener' in window) 
     Polyfill()
         .then(() => {
-            !!onDOMContentLoadedTasks.length && window.addEventListener('DOMContentLoaded', () => { onDOMContentLoadedTasks.forEach((fn) => fn.call()); });
-            !!onLoadTasks.length && window.addEventListener('load', () => { onLoadTasks.forEach((fn) => fn.call()); });
+            !!onDOMContentLoadedTasks.length && window.addEventListener('DOMContentLoaded', () => { onDOMContentLoadedTasks.forEach((fn) => fn()); });
+            !!onLoadTasks.length && window.addEventListener('load', () => { onLoadTasks.forEach((fn) => fn()); });
         });

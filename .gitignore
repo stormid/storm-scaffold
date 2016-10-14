@@ -2,4 +2,4 @@
 /build/
 .bowerrc
 .DS_Store
-npm-debug.log
+*.log
