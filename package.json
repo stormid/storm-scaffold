@@ -6,6 +6,7 @@
   "author": "mjbp",
   "license": "ISC",
   "dependencies": {
+    "babel-preset-es2015": "^6.16.0",
     "babelify": "^7.3.0",
     "browser-sync": "^2.14.0",
     "browserify": "^13.1.0",
