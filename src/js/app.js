@@ -22,7 +22,7 @@ const onDOMContentLoadedTasks = [
             let ffo = new FontFaceObserver('', {})
                 .load()
                 .then(function () {
-                    d.documentElement.className = document.documentElement.className.replace(/\bno-webfonts\b/,'');
+                    d.documentElement.classList.remove('no-webfonts');
                 }, function () {
                     console.log('Font is not available after waiting 3 seconds');
                 });
