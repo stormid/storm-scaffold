@@ -1,9 +1,9 @@
-import Polyfill from './polyfills';
+import './polyfills';
 import Outliner from './require/outliner';
 import FontFaceObserver from 'FontFaceObserver';
 import Picturefill from 'picturefill';
 import * as Toggler from './require/toggler';
-import Load from './require/loader.js';
+import Load from './require/loader';
 
 //when DOMContentLoaded, run these tasks
 const onDOMContentLoadedTasks = [
@@ -40,12 +40,10 @@ const onDOMContentLoadedTasks = [
 //when page Loaded, run these tasks
 const onLoadTasks = [];
 
-//attached anything to this
+//attached anything to this that you would like to access across modules 
+//or at a window level  
 global.UI = {};
 
-if('addEventListener' in window) 
-    Polyfill()
-        .then(() => {
-            !!onDOMContentLoadedTasks.length && window.addEventListener('DOMContentLoaded', () => { onDOMContentLoadedTasks.forEach((fn) => fn()); });
-            !!onLoadTasks.length && window.addEventListener('load', () => { onLoadTasks.forEach((fn) => fn()); });
-        });
+if('addEventListener' in window)
+    !!onDOMContentLoadedTasks.length && window.addEventListener('DOMContentLoaded', () => { onDOMContentLoadedTasks.forEach((fn) => fn()); });
+    !!onLoadTasks.length && window.addEventListener('load', () => { onLoadTasks.forEach((fn) => fn()); });

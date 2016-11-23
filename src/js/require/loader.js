@@ -1,7 +1,13 @@
-const createScript = url => {
+/**
+ * @name storm-load: Lightweight promise-based script loader
+ * @version 0.1.0: Thu, 20 Oct 2016 12:55:45 GMT
+ * @author stormid
+ * @license MIT
+ */
+const create = url => {
     return new Promise(function(resolve) {
         if (!(/js$/.test(url))){
-            console.warn(url + " is not a js file");
+            console.log(url + " is not a js file");
             return resolve();
         }
         let script = document.createElement('script');
@@ -11,14 +17,26 @@ const createScript = url => {
     });
 }
 
-export default urls => {
-    return new Promise(function(resolve) {
-        //we're creating these sequentially, so they load in the order they're passed in
-        function next() {
+export const synchronous = urls => {
+    return new Promise((resolve, reject) => {
+        let next = () => {
             if (!urls.length) return resolve();
             let url = urls.shift();
-            createScript(url).then(next);
-        }
+            create(url).then(next);
+        };
         next();
+    });
+};
+
+export default (urls, async = true) => {
+    if (!async) return synchronous(urls);
+
+    return new Promise((resolve, reject) => {
+        if(!!!Array.isArray(urls)) return reject(); 
+        
+        return Promise.all(urls.map(url => {
+                    return create(url); 
+                }))
+                .then(resolve, reject);
     });
 };

@@ -42,6 +42,7 @@
     "picturefill": "^3.0.1",
     "run-sequence": "^1.1.0",
     "storm-attributelist": "^0.2.0",
+    "storm-load": "^0.2.3",
     "storm-outliner": "^0.1.0",
     "storm-skip": "^0.1.0",
     "storm-toggler": "^0.11.0",
