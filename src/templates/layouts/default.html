@@ -1,4 +1,4 @@
-{% include "../partials/doc-head.html" %}
+{% include "partials/doc-head.html" %}
 <body>
     <div class="skip">
         <a class="btn btn-skip" tabindex="0" href="content">Skip to main content</a>
@@ -10,14 +10,14 @@
             <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
         </svg>
     </a>
-    {% include "../partials/ui-header.html" %}
-    {% include "../partials/ui-navigation.html" %}
+    {% include "partials/ui-header.html" %}
+    {% include "partials/ui-navigation.html" %}
     <main id="content">
         <div class="small-12 col--centre">
             {% block content %}{% endblock %}
         </div>
     </main>
-    {% include "../partials/ui-footer.html" %}
+    {% include "partials/ui-footer.html" %}
     <script src="{{assetPath}}/js/app.js"></script>
 </body>
 </html>

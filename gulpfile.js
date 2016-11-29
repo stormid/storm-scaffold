@@ -32,7 +32,8 @@ var gulp = require('gulp'),
     gulpIf = require('gulp-if'),
     babelify = require('babelify'),
     collapse = require('bundle-collapser/plugin'),
-    gulpUtil = require('gulp-util');
+    gulpUtil = require('gulp-util'),
+    nunjucksRender = require('gulp-nunjucks-render');
 
 
 /* Set up the banner */
@@ -139,7 +140,7 @@ gulp.task('js:async', function () {
   		.pipe(rename({suffix: '.min'}))
   		.pipe(gulp.dest(dest.js + 'async/'));
 });
-gulp.task('js', ['js:main', 'js:async', 'js:polyfill']);
+gulp.task('js', ['js:main', 'js:async']);
 
 /* Build the flat html */
 gulp.task('html', function(){
@@ -149,12 +150,10 @@ gulp.task('html', function(){
         .pipe(data(function(file) {
             return {'assetPath': assetPath};
         }))
-        .pipe(swig({
-            defaults: {
-                cache: false
-            }
+        .pipe(nunjucksRender({
+            path: src.html
         }))
-      .pipe(gulp.dest(dest.html));
+        .pipe(gulp.dest(dest.html));
 });
 
 /* 
