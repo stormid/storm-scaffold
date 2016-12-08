@@ -120,7 +120,7 @@ gulp.task('js:main', function(){
         .pipe(gulpIf(!!gulpUtil.env.production, uglify()))
         .pipe(gulp.dest(dest.js));
 });
-
+/*
 gulp.task('js:polyfill', function(){
     return browserify({
             entries: src.js + 'polyfills/polyfills.js',
@@ -132,7 +132,7 @@ gulp.task('js:polyfill', function(){
         .pipe(buffer())
         .pipe(gulpIf(!!gulpUtil.env.production, uglify()))
         .pipe(gulp.dest(dest.js + '/async/'));
-});
+});*/
 
 gulp.task('js:async', function () {
     return gulp.src(src.js + 'async/**/*')
