@@ -1,9 +1,9 @@
-##Storm Scaffold
+##How to run this project
 
 ##JS
-The app uses commonjs modules that are transformed using browserify into a minified single app.js that contains the core js used on every page.
+The app uses es6 modules that are transpiled, then transformed using browserify into a minified single app.js that contains the core js used on every page.
 
-Component-specific JS files are loaded asynchronously as required. These files are found in src/js/async, and copied to build/assets/js/libs/. UMD format modules are recommended for these scripts.
+Component-specific JS files are loaded asynchronously as required. These files are found in src/js/async, and copied to build/assets/js/async/. UMD format modules are recommended for these scripts.
 
 ##CSS
 SCSS, structured thus:
@@ -16,7 +16,7 @@ SCSS, structured thus:
 
 All project configurations and variables are set in globals/_variables.scss.
 ##HTML
-Swig templates. 
+Nunjucks templates. 
 
 Three types, in separate directories:
 1. Layout templates defining the overall structure of the complete HTML document. The parent template, usually only one or two per project)
@@ -36,30 +36,29 @@ npm install
 
 ##Gulp Tasks
 
-####gulp start
+####`gulp start`
 
-Builds everything from the ground up, watches for changes and rebuilds as refreshes
+Builds everything from the ground up, watches for changes and rebuilds as refreshes. 
 
-####gulp
+####`gulp`
 
 Runs gulp start (see above)
 
-####gulp serve
+####`gulp serve`
 
 Starts the local webserver with browsersync, watches for changes to the source JS, SCSS, swig HTML templates and images, and runs the corresponding task.
 
-####gulp css
+####`gulp css`
 
 Compiles the SCSS source files into a single CSS file and creates a minified copy.
 
-####gulp js
+####`gulp js`
 
 Builds and transforms the commonjs files into a single compressed browser-ready JS file, plus copies and compresses the JS files that are asynchronously loaded.
 
-####gulp html
+####`gulp html`
 
 Builds the static HTML from swig templates.
 
-####gulp compress
-
-Minify CSS
+Add a production flag to run in production mode, and compress everything
+####`gulp --production`
