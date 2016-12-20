@@ -1,9 +1,9 @@
 ##How to run this project
 
 ##JS
-The app uses es6 modules that are transpiled, then transformed using browserify into a minified single app.js that contains the core js used on every page.
+The app uses es6 modules that are transpiled, then transformed using browserify into a minified single app.js containing the core js used on every page.
 
-Component-specific JS files are loaded asynchronously as required. These files are found in src/js/async, and copied to build/assets/js/async/. UMD format modules are recommended for these scripts.
+Page or component-specific JS files should be loaded asynchronously as required. These files, which need to be browser-ready or UMD, should be placed in src/js/async.
 
 ##CSS
 SCSS, structured thus:
@@ -15,14 +15,17 @@ SCSS, structured thus:
 - vendor/
 
 All project configurations and variables are set in globals/_variables.scss.
+
 ##HTML
 Nunjucks templates. 
 
 Three types, in separate directories:
-1. Layout templates defining the overall structure of the complete HTML document. The parent template, usually only one or two per project)
+
+1. Layout templates defining the overall structure of the complete HTML document.
 2. View templates, one for each page on the website, the structure of the statoc build site follows the structure of the views
 3. Partial templates contain components. Naming convention recommended for these:
-- doc- prefix for fundamental document blocks like the <head>>
+
+- doc- prefix for fundamental document blocks like the head
 - ui- prefix for permanent UI elements like the navigation
 - block- prefix for other components
 
@@ -31,11 +34,9 @@ Variables can be set in YAML in the head of each template.
 ##Build Script
 
 ###Installation
-
-npm install
+####`npm install`
 
 ##Gulp Tasks
-
 ####`gulp start`
 
 Builds everything from the ground up, watches for changes and rebuilds as refreshes. 
