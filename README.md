@@ -59,7 +59,7 @@ Builds and transforms the commonjs files into a single compressed browser-ready 
 
 ####`gulp html`
 
-Builds the static HTML from swig templates.
+Builds the static HTML from nunjucks templates.
 
 Add a production flag to run in production mode, and compress everything
 ####`gulp --production`
