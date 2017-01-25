@@ -1,5 +1,11 @@
 ##How to run this project
 
+###Installation
+####`npm install`
+
+###Run
+####`npm start`
+
 ##JS
 The app uses es6 modules that are transpiled, then transformed using browserify into a minified single app.js containing the core js used on every page.
 
@@ -31,12 +37,10 @@ Three types, in separate directories:
 
 Variables can be set in YAML in the head of each template.
 
-##Build Script
-
-###Installation
-####`npm install`
-
 ##Gulp Tasks
+Add a production flag to run in production mode, and compress everything
+####`gulp --production`
+
 ####`gulp start`
 
 Builds everything from the ground up, watches for changes and rebuilds as refreshes. 
@@ -61,5 +65,3 @@ Builds and transforms the commonjs files into a single compressed browser-ready 
 
 Builds the static HTML from nunjucks templates.
 
-Add a production flag to run in production mode, and compress everything
-####`gulp --production`
