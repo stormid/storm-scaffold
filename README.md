@@ -14,13 +14,13 @@ Page or component-specific JS files should be loaded asynchronously as required.
 ##CSS
 SCSS, structured thus:
 
-- globals/
-- shared/
+- global
+- modules/
 - components/
 - utils/
 - vendor/
 
-All project configurations and variables are set in globals/_variables.scss.
+All project configurations and variables are set in global/_variables.scss.
 
 ##HTML
 Nunjucks templates. 
