@@ -6,7 +6,6 @@
   "author": "mjbp",
   "license": "ISC",
   "scripts": {
-    "prestart": "npm install",
     "start": "node_modules/.bin/gulp serve",
     "watch": "node_modules/.bin/gulp watch",
     "serve": "node_modules/.bin/gulp serve"
