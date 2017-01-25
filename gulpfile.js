@@ -172,15 +172,15 @@ function watch(cb){
 	const watchers = [
 		{
 			glob: `${paths.src.html}**/*.html`,
-			tasks: [html]
+			tasks: ['html']
 		},
 		{
 			glob: `${paths.src.css}**/*.scss`,
-			tasks: [scss]
+			tasks: ['scss']
 		},
 		{
 			glob: `${paths.src.img}**/*`,
-			tasks: [img]
+			tasks: ['img']
 		},
 		{
 			glob: `${paths.src.js}**/*`,
