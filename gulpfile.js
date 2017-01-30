@@ -117,6 +117,22 @@ function jsAsync(){
 		.pipe(gulp.dest(`${paths.dest.js}async/`));
 }
 
+function jsPolyfills(){
+	return browserify({
+		entries: `${paths.src.js}polyfills/index.js`,
+		debug: !gulpUtil.env.production
+	})
+	.bundle()
+	.pipe(source('index.js'))
+	.pipe(buffer())
+	.pipe(uglify())
+	.pipe(rename({
+		basename: 'polyfills',
+		suffix: '.min'
+	}))
+	.pipe(gulp.dest(`${paths.dest.js}async/`));
+}
+
 function html(){
 	return gulp.src(`${paths.src.html}views/**/*.html`)
 		.pipe(plumber({errorHandler: onError}))
@@ -202,9 +218,10 @@ gulp.task('compile', () => {
 
 gulp.task('jsCore', jsCore);
 gulp.task('jsAsync', jsAsync);
+gulp.task('jsPolyfills', jsPolyfills);
 
 gulp.task('clean', clean);
-gulp.task('js', ['jsCore', 'jsAsync']);
+gulp.task('js', ['jsCore', 'jsAsync', 'jsPolyfills']);
 gulp.task('html', html);
 gulp.task('scss', scss);
 gulp.task('img', img);
