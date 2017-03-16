@@ -2,17 +2,17 @@ import CONSTANTS from './constants';
 import 'es6-promise/auto';
 import './require/outliner';
 import Toggler from './require/toggler';
-import FontFaceObserver from './require/fontfaceobserver';
+// import FontFaceObserver from './require/fontfaceobserver';
 import Load from 'storm-load';
 
 const onDOMContentLoadedTasks = [
 	Toggler,
-	FontFaceObserver,
+	// FontFaceObserver,
 	() => {
-		if(!(document.querySelector(CONSTANTS.TABS.CLASSNAME))) return;
+		if(!document.querySelector(CONSTANTS.TABS.SELECTOR)) return;
 
 		Load(`${CONSTANTS.PATHS.JS_ASYNC}/storm-tabs.js`)
-			.then(() => StormTabs.init(CONSTANTS.TABS.CLASSNAME));
+			.then(() => { StormTabs.init(CONSTANTS.TABS.SELECTOR); });
 	}
 ];
 
@@ -25,7 +25,7 @@ const init = () => {
 			.then(() => {
 				onDOMContentLoadedTasks.forEach(fn => fn());
 			});
-	else onDOMContentLoadedTasks.forEach(fn => fn());
+	else onDOMContentLoadedTasks.forEach(fn => { fn(); });
 };
 
 //attach anything you wish to expose on a window level here

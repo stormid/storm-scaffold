@@ -4,12 +4,12 @@ export default {
 	},
 	FONTS: [''],
 	TOGGLERS: {
-		CLASSNAME:{
+		SELECTOR:{
 			GLOBAL: '.js-toggle',
 			LOCAL: '.js-toggle-local'
 		}
 	},
 	TABS: {
-		CLASSNAME: '.js-tabs'
+		SELECTOR: '.js-tabs'
 	}
 };
