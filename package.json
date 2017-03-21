@@ -40,9 +40,9 @@
     "picturefill": "latest",
     "run-sequence": "^1.2.2",
     "storm-load": "^0.5.1",
-    "storm-outliner": "latest",
+    "storm-outliner": "^1.0.0",
     "storm-skip": "latest",
-    "storm-toggler": "latest",
+    "storm-toggler": "^1.0.3",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   }

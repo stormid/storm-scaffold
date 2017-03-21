@@ -1,6 +1,6 @@
 import CONSTANTS from './constants';
 import 'es6-promise/auto';
-import './require/outliner';
+import 'storm-outliner';
 import Toggler from './require/toggler';
 // import FontFaceObserver from './require/fontfaceobserver';
 import Load from 'storm-load';
