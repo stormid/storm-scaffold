@@ -1,12 +1,12 @@
 import CONSTANTS from './constants';
 import 'es6-promise/auto';
 import 'storm-outliner';
-import Toggler from 'storm-toggler';
+import Toggler from './require/toggler';
 // import FontFaceObserver from './require/fontfaceobserver';
 import Load from 'storm-load';
 
 const onDOMContentLoadedTasks = [
-	() => { Toggler.init(`${CONSTANTS.TOGGLERS.SELECTOR.GLOBAL}`); },
+	Toggler,
 	// FontFaceObserver,
 	() => {
 		if(!document.querySelector(CONSTANTS.TABS.SELECTOR)) return;
