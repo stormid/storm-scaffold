@@ -9,6 +9,10 @@ JSONStream@^1.0.3:
     jsonparse "^1.2.0"
     through ">=2.2.7 <3"
 
+a-sync-waterfall@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/a-sync-waterfall/-/a-sync-waterfall-1.0.0.tgz#38e8319d79379e24628845b53b96722b29e0e47c"
+
 abbrev@1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.0.tgz#d0554c2256636e2f56e7c2e5ad183f859428d81f"
@@ -1771,7 +1775,7 @@ es6-object-assign@latest:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/es6-object-assign/-/es6-object-assign-1.1.0.tgz#c2c3582656247c39ea107cb1e6652b6f9f24523c"
 
-es6-promise@^4.1.0:
+es6-promise@latest:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-4.1.0.tgz#dda03ca8f9f89bc597e689842929de7ba8cebdf0"
 
@@ -2451,13 +2455,13 @@ gulp-notify@latest:
     node.extend "^1.1.6"
     through2 "^2.0.3"
 
-gulp-nunjucks-render@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/gulp-nunjucks-render/-/gulp-nunjucks-render-2.0.0.tgz#cf48506ac5c05ad89023260a30f6951f223b259f"
+gulp-nunjucks-render@latest:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/gulp-nunjucks-render/-/gulp-nunjucks-render-2.2.1.tgz#371c6acafe94ba9d69ce5a5fc43c1523863b10f0"
   dependencies:
     gulp-util "~2.2.0"
-    lodash "^3.3.0"
-    nunjucks "^2.0.0"
+    lodash "^3.10.0"
+    nunjucks "^3.0.0"
     through2 "~0.4.0"
 
 gulp-pixrem@latest:
@@ -2471,7 +2475,7 @@ gulp-pixrem@latest:
     through2 "~2.0.0"
     vinyl-sourcemaps-apply "^0.1.4"
 
-gulp-plumber@^1.0.0:
+gulp-plumber@latest:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/gulp-plumber/-/gulp-plumber-1.1.0.tgz#f12176c2d0422f60306c242fff6a01a394faba09"
   dependencies:
@@ -3537,7 +3541,7 @@ lodash.values@~2.4.1:
   dependencies:
     lodash.keys "~2.4.1"
 
-lodash@^3.10.1, lodash@^3.3.0:
+lodash@^3.10.0, lodash@^3.10.1:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
@@ -3923,13 +3927,15 @@ number-is-nan@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
 
-nunjucks@^2.0.0:
-  version "2.5.2"
-  resolved "https://registry.yarnpkg.com/nunjucks/-/nunjucks-2.5.2.tgz#ea7d346e785b8a4874666c3cca9e18c577fba22c"
+nunjucks@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/nunjucks/-/nunjucks-3.0.0.tgz#0a2a8fd2942a3ba04f5ba6684e4f7f7ceaca8305"
   dependencies:
+    a-sync-waterfall "^1.0.0"
     asap "^2.0.3"
-    chokidar "^1.6.0"
     yargs "^3.32.0"
+  optionalDependencies:
+    chokidar "^1.6.0"
 
 oauth-sign@~0.8.1:
   version "0.8.2"
@@ -4388,18 +4394,9 @@ read-pkg@^1.0.0:
     normalize-package-data "^2.3.2"
     path-type "^1.0.0"
 
-"readable-stream@>=1.0.33-1 <1.1.0-0", readable-stream@~1.0.17, readable-stream@~1.0.26:
+"readable-stream@>=1.0.33-1 <1.1.0-0", readable-stream@^1.0.33, readable-stream@~1.0.17, readable-stream@~1.0.26:
   version "1.0.34"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-1.0.34.tgz#125820e34bc842d2f2aaafafe4c2916ee32c157c"
-  dependencies:
-    core-util-is "~1.0.0"
-    inherits "~2.0.1"
-    isarray "0.0.1"
-    string_decoder "~0.10.x"
-
-readable-stream@^1.0.33, readable-stream@~1.1.9:
-  version "1.1.14"
-  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-1.1.14.tgz#7cf4c54ef648e3813084c636dd2079e166c081d9"
   dependencies:
     core-util-is "~1.0.0"
     inherits "~2.0.1"
@@ -4417,6 +4414,15 @@ readable-stream@^2.0.0, "readable-stream@^2.0.0 || ^1.1.13", readable-stream@^2.
     process-nextick-args "~1.0.6"
     string_decoder "~0.10.x"
     util-deprecate "~1.0.1"
+
+readable-stream@~1.1.9:
+  version "1.1.14"
+  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-1.1.14.tgz#7cf4c54ef648e3813084c636dd2079e166c081d9"
+  dependencies:
+    core-util-is "~1.0.0"
+    inherits "~2.0.1"
+    isarray "0.0.1"
+    string_decoder "~0.10.x"
 
 readable-stream@~2.0.0:
   version "2.0.6"
@@ -4632,7 +4638,7 @@ ripemd160@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/ripemd160/-/ripemd160-1.0.1.tgz#93a4bbd4942bc574b69a8fa57c71de10ecca7d6e"
 
-run-sequence@^1.2.2:
+run-sequence@latest:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/run-sequence/-/run-sequence-1.2.2.tgz#5095a0bebe98733b0140bd08dd80ec030ddacdeb"
   dependencies:
@@ -4918,11 +4924,11 @@ stdout-stream@^1.4.0:
   dependencies:
     readable-stream "^2.0.1"
 
-storm-load@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/storm-load/-/storm-load-0.5.1.tgz#2d1a52935abbf2a2c40bd2d2f8c4a35fb0f54252"
+storm-load@latest:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/storm-load/-/storm-load-1.0.0.tgz#ac2b6dafe8ff5a2467bc54c904b6564148f75943"
 
-storm-outliner@^1.0.0:
+storm-outliner@latest:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/storm-outliner/-/storm-outliner-1.0.0.tgz#b150cb517f0e0381db213e176e691d3aabfc61a1"
 
@@ -4930,7 +4936,7 @@ storm-skip@latest:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/storm-skip/-/storm-skip-1.0.0.tgz#1cfe6ac9897fe00c81d54ddd603832c0e4e288e4"
 
-storm-toggler@^1.0.3:
+storm-toggler@latest:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/storm-toggler/-/storm-toggler-1.0.3.tgz#046cef03b6231835d910d1fa1c7a75eb12ac5c4c"
 
@@ -5431,7 +5437,7 @@ vinyl-assign@^1.0.1:
     object-assign "^4.0.1"
     readable-stream "^2.0.0"
 
-vinyl-buffer@^1.0.0:
+vinyl-buffer@latest:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/vinyl-buffer/-/vinyl-buffer-1.0.0.tgz#ca067ea08431d507722b1de5083f602616ebc234"
   dependencies:
@@ -5479,7 +5485,7 @@ vinyl-fs@^2.2.0:
     vali-date "^1.0.0"
     vinyl "^1.0.0"
 
-vinyl-source-stream@^1.1.0:
+vinyl-source-stream@latest:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/vinyl-source-stream/-/vinyl-source-stream-1.1.0.tgz#44cbe5108205279deb0c5653c094a2887938b1ab"
   dependencies:
