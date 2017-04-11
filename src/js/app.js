@@ -21,7 +21,7 @@ const onDOMContentLoadedTasks = [
 
 const init = () => {
 	if(!Object.assign || !('classList' in document.createElement('_'))) 
-		Load(`${CONSTANTS.PATHS.JS_ASYNC}/polyfills.js`)
+		Load(`${CONSTANTS.PATHS.JS_ASYNC}/polyfills.min.js`)
 			.then(() => {
 				onDOMContentLoadedTasks.forEach(fn => fn());
 			});
