@@ -1,7 +1,7 @@
 import Toggler from 'storm-toggler';
-import CONSTANTS from '../../constants';
+import { TOGGLER } from '../../constants';
 
 export default () => {
-	// if(document.querySelector(CONSTANTS.TOGGLERS.SELECTOR.GLOBAL)) Toggler.init(CONSTANTS.TOGGLERS.SELECTOR.GLOBAL);
-	// if(document.querySelector(CONSTANTS.TOGGLERS.SELECTOR.LOCAL)) Toggler.init(CONSTANTS.TOGGLERS.SELECTOR.LOCAL, {local: true});
+	//if(document.querySelector(TOGGLERS.SELECTOR.GLOBAL)) Toggler.init(TOGGLERS.SELECTOR.GLOBAL);
+	// if(document.querySelector(TOGGLERS.SELECTOR.LOCAL)) Toggler.init(TOGGLERS.SELECTOR.LOCAL, {local: true});
 };

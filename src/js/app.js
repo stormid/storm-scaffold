@@ -1,4 +1,4 @@
-import CONSTANTS from './constants';
+import { TABS, PATHS} from './constants';
 import 'es6-promise/auto';
 import 'storm-outliner';
 import Toggler from './require/toggler';
@@ -9,10 +9,10 @@ const onDOMContentLoadedTasks = [
 	Toggler,
 	// FontFaceObserver,
 	() => {
-		if(!document.querySelector(CONSTANTS.TABS.SELECTOR)) return;
+		if(!document.querySelector(TABS.SELECTOR)) return;
 
 		Load(`${CONSTANTS.PATHS.JS_ASYNC}/storm-tabs.js`)
-			.then(() => { StormTabs.init(CONSTANTS.TABS.SELECTOR); });
+			.then(() => { StormTabs.init(TABS.SELECTOR); });
 	}
 ];
 
@@ -21,7 +21,7 @@ const onDOMContentLoadedTasks = [
 
 const init = () => {
 	if(!Object.assign || !('classList' in document.createElement('_'))) 
-		Load(`${CONSTANTS.PATHS.JS_ASYNC}/polyfills.min.js`)
+		Load(`${PATHS.JS_ASYNC}/polyfills.min.js`)
 			.then(() => {
 				onDOMContentLoadedTasks.forEach(fn => fn());
 			});
