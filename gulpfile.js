@@ -69,7 +69,7 @@ const AUTOPREFIXER_BROWSERS = [
 const outputDir = './build';
 
 // Asset destination base path
-const assetPath = '/content';
+const assetPath = '/static';
 
 // Paths for source and destinations
 const paths = {

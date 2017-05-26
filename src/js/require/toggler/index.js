@@ -1,5 +1,5 @@
 import Toggler from 'storm-toggler';
-import { TOGGLER } from '../../constants';
+import { TOGGLERS } from '../../constants';
 
 export default () => {
 	//if(document.querySelector(TOGGLERS.SELECTOR.GLOBAL)) Toggler.init(TOGGLERS.SELECTOR.GLOBAL);
