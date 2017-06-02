@@ -30,5 +30,7 @@ const init = () => {
 //global.UI = {};
 
 if('addEventListener' in window)
-	onDOMContentLoadedTasks.length && window.addEventListener('DOMContentLoaded', init);
-	//onLoadTasks.length && window.addEventListener('load', () => { onLoadTasks.forEach((fn) => fn()); });
+	if(document.readyState === 'complete') init();
+	else
+		onDOMContentLoadedTasks.length && window.addEventListener('DOMContentLoaded', init);
+		//onLoadTasks.length && window.addEventListener('load', () => { onLoadTasks.forEach((fn) => fn()); });
