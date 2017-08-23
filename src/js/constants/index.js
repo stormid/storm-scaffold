@@ -1,5 +1,5 @@
 export const PATHS = {
-	JS_ASYNC: '/content/js/async'
+	JS_ASYNC: '/static/js/async'
 };
 
 export const FONTS = [''];
