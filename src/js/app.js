@@ -1,30 +1,29 @@
-import { TABS, PATHS} from './constants';
+import { PATHS} from './constants';
 import 'es6-promise/auto';
-import 'storm-outliner';
+// import 'storm-outliner';
+//import 'lazysizes' from 'lazysizes';
 import Toggler from './require/toggler';
+import AsyncHelper from './require/async-helper';
 // import FontFaceObserver from './require/fontfaceobserver';
 import Load from 'storm-load';
 
-const onDOMContentLoadedTasks = [
+const onInit = [
 	Toggler,
+	AsyncHelper('tabs'),
 	// FontFaceObserver,
-	() => {
-		if(!document.querySelector(TABS.SELECTOR)) return;
-
-		Load(`${PATHS.JS_ASYNC}/storm-tabs.js`)
-			.then(() => { StormTabs.init(TABS.SELECTOR); });
-	}
 ];
 
-const onLoadTasks = [];
+const onLoad = [];
 
-const init = () => {
+{
 	if(!Object.assign || !('classList' in document.createElement('_'))) 
 		Load(`${PATHS.JS_ASYNC}/polyfills.min.js`)
-			.then(() => { onDOMContentLoadedTasks.forEach(fn => { fn(); }); });
-	else onDOMContentLoadedTasks.forEach(fn => { fn(); });
-};
+			.then(() => { 
+				onInit.forEach(fn => fn());
+			});
+	else onInit.forEach(fn => fn());
 
-if('addEventListener' in window)
-		onDOMContentLoadedTasks.length && window.addEventListener('DOMContentLoaded', init);
-		onLoadTasks.length && window.addEventListener('load', () => { onLoadTasks.forEach((fn) => fn()); });
+	onLoad.length && window.addEventListener('load', [].forEach.bind(onLoad, fn => fn()));
+
+	if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
+}

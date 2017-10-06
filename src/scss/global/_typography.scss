@@ -22,7 +22,6 @@ strong {
     font-weight: $bold;
 }
 
-//general headings
 h1,
 h2,
 h3,
@@ -61,7 +60,6 @@ p {
     margin-bottom:$baseline/2;
 }
 
-//general links
 a,
 a:link,
 .link {
@@ -72,7 +70,6 @@ a:focus,
 a:active {
 }
 
-//font-fallback
 .no-webfonts:not(.no-js) * {
     font-family:sans-serif;
 }

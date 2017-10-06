@@ -7,8 +7,7 @@
 #### `yarn run start`
 
 ### Production
-Just add a flag:
-#### `yarn run start --production`
+#### `yarn run production`
 
 ## JS
 The app uses es6 modules that are transpiled, then transformed using browserify into a minified single app.js containing the core js used on every page.

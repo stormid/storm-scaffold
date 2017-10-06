@@ -1,23 +1,20 @@
 {% include "partials/doc-head.html" %}
 <body>
     <div class="skip">
-        <a class="btn btn-skip" tabindex="0" href="content">Skip to main content</a>
+        <a class="btn btn-skip" tabindex="0" href="#content">Skip to main content</a>
     </div>
-    <a href="#navigation" class="btn-hamburger js-toggle" title="Navigation menu" aria-label="Navigation menu">
-        <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-            <title>Go to navigation</title>
+    <button data-target="#navigation" class="btn-hamburger js-toggle" aria-label="Toggle navigation visibility">
+        <svg focusable="false" tabindex="-1" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
             <path d="M0 0h24v24H0z" fill="none"/>
             <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
         </svg>
-    </a>
+    </button>
     {% include "partials/ui-header.html" %}
     {% include "partials/ui-primary-navigation.html" %}
     <main id="content">
-        <div class="small-12 col--centre">
             {% block content %}{% endblock %}
-        </div>
     </main>
     {% include "partials/ui-footer.html" %}
-    <script src="{{assetPath}}/js/app.js"></script>
+    <script async src="{{assetPath}}/js/app.js"></script>
 </body>
 </html>

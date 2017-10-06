@@ -7,11 +7,13 @@
   "license": "ISC",
   "scripts": {
     "start": "node_modules/.bin/gulp serve",
+    "production": "node_modules/.bin/gulp serve --production",
     "watch": "node_modules/.bin/gulp watch",
     "serve": "node_modules/.bin/gulp serve"
   },
   "dependencies": {
     "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-preset-env": "^1.6.0",
     "babel-preset-es2015": "latest",
     "babelify": "latest",
     "browser-sync": "latest",

@@ -102,7 +102,18 @@ function jsCore(){
 		entries: `${paths.src.js}app.js`,
 		debug: !gulpUtil.env.production
 	})
-	.transform(babelify, {presets: ['es2015']})
+	.transform(babelify, {
+		"presets": [
+			[
+				"env", 
+				{
+					"targets": {
+						"browsers": ["last 2 versions", "safari >= 7"]
+					}
+				}
+			]
+		]
+	})
 	.bundle()
 	.pipe(source('app.js'))
 	.pipe(buffer())
@@ -174,6 +185,11 @@ function fonts(){
 		.pipe(gulp.dest(paths.dest.fonts));
 }
 
+function sw(){
+	return gulp.src(`${paths.src.js}/sw/*.*`)
+		.pipe(gulp.dest(outputDir));
+}
+
 function serve(){
 	browserSync({
 		notify: false,
@@ -219,9 +235,10 @@ gulp.task('compile', () => {
 gulp.task('jsCore', jsCore);
 gulp.task('jsAsync', jsAsync);
 gulp.task('jsPolyfills', jsPolyfills);
+gulp.task('sw', sw);
 
 gulp.task('clean', clean);
-gulp.task('js', ['jsCore', 'jsAsync', 'jsPolyfills']);
+gulp.task('js', ['sw', 'jsCore', 'jsAsync', 'jsPolyfills']);
 gulp.task('html', html);
 gulp.task('scss', scss);
 gulp.task('img', img);

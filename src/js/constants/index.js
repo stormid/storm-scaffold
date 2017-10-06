@@ -8,6 +8,11 @@ export const TOGGLERS = {
 	SELECTOR:{
 		GLOBAL: '.js-toggle',
 		LOCAL: '.js-toggle-local'
+	},
+	OPTIONS: {
+		LOCAL: {
+			local: true
+		}
 	}
 };
 
