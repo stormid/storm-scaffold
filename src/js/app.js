@@ -10,6 +10,11 @@ import Load from 'storm-load';
 const onInit = [
 	Toggler,
 	AsyncHelper('tabs'),
+	// AsyncComponentHelper('google-map').bind(null, () => {
+	// 	GoogleMap.init(GOOGLE_MAP.SELECTOR, window.event_location, {
+	// 		key: GOOGLE_MAP.KEY
+	// 	});
+	// }),
 	// FontFaceObserver,
 ];
 
