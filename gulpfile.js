@@ -100,7 +100,8 @@ function clean() {
 function jsCore(){
 	return browserify({
 		entries: `${paths.src.js}app.js`,
-		debug: !gulpUtil.env.production
+		debug: !gulpUtil.env.production,
+		fullPaths: !gulpUtil.env.production
 	})
 	.transform(babelify, {
 		"presets": [
@@ -131,7 +132,8 @@ function jsAsync(){
 function jsPolyfills(){
 	return browserify({
 		entries: `${paths.src.js}polyfills/index.js`,
-		debug: !gulpUtil.env.production
+		debug: !gulpUtil.env.production,
+		fullPaths: !gulpUtil.env.production
 	})
 	.bundle()
 	.pipe(source('index.js'))

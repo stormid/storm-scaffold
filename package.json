@@ -8,8 +8,11 @@
   "scripts": {
     "start": "node_modules/.bin/gulp serve",
     "production": "node_modules/.bin/gulp serve --production",
+    "development": "node_modules/.bin/gulp serve --development",
     "watch": "node_modules/.bin/gulp watch",
-    "serve": "node_modules/.bin/gulp serve"
+    "serve": "node_modules/.bin/gulp serve",
+    "test": "source-map-explorer build/static/js/app.js",
+    "disc": "discify build/static/js/app.js >disc.html"
   },
   "dependencies": {
     "babel-plugin-add-module-exports": "^0.2.1",
@@ -45,8 +48,6 @@
     "storm-load": "latest",
     "storm-outliner": "latest",
     "storm-skip": "latest",
-    "storm-toggler": "latest",
-    "vinyl-buffer": "latest",
-    "vinyl-source-stream": "latest"
+    "storm-toggler": "latest"
   }
 }

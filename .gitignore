@@ -1,5 +1,6 @@
 /node_modules/
 /build/
+disc.html
 .bowerrc
 .DS_Store
 *.log
