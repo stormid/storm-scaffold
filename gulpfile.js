@@ -66,7 +66,8 @@ const AUTOPREFIXER_BROWSERS = [
 ];
 
 // Build root destination / webroot for serve
-const outputDir = './build';
+const staticOutputDir = './build';
+const dynamicOutputDir = '../Production/src/GlasgowLifeConventions/GlasgowLifeConventions';
 
 // Asset destination base path
 const assetPath = '/static';
@@ -81,11 +82,21 @@ const paths = {
 		fonts: './src/fonts/'
 	},
 	dest: {
-		css: `${outputDir}${assetPath}/css/`,
-		js:  `${outputDir}${assetPath}/js/`,
-		html: outputDir,
-		img: `${outputDir}${assetPath}/img/`,
-		fonts: `${outputDir}${assetPath}/fonts/`
+		development: {
+			css: `${staticOutputDir}${assetPath}/css/`,
+			js:  `${staticOutputDir}${assetPath}/js/`,
+			html: staticOutputDir,
+			img: `${staticOutputDir}${assetPath}/img/`,
+			fonts: `${staticOutputDir}${assetPath}/fonts/`
+		},
+		production: {
+			css: `${dynamicOutputDir}${assetPath}/css/`,
+			js:  `${dynamicOutputDir}${assetPath}/js/`,
+			html: staticOutputDir,
+			img: `${dynamicOutputDir}${assetPath}/img/`,
+			fonts: `${dynamicOutputDir}${assetPath}/fonts/`
+		},
+
 	}
 };
 
@@ -119,14 +130,14 @@ function jsCore(){
 	.pipe(source('app.js'))
 	.pipe(buffer())
 	.pipe(gulpIf(!!gulpUtil.env.production, uglify()))
-	.pipe(gulp.dest(paths.dest.js));
+	.pipe(gulp.dest(paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].js));
 }
 
 function jsAsync(){
 	return gulp.src(`${paths.src.js}async/**/*`)
 		.pipe(uglify())
 		.pipe(rename({suffix: '.min'}))
-		.pipe(gulp.dest(`${paths.dest.js}async/`));
+		.pipe(gulp.dest(`${paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].js}async/`));
 }
 
 function jsPolyfills(){
@@ -143,7 +154,12 @@ function jsPolyfills(){
 		basename: 'polyfills',
 		suffix: '.min'
 	}))
-	.pipe(gulp.dest(`${paths.dest.js}async/`));
+	.pipe(gulp.dest(`${paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].js}async/`));
+}
+
+function sw(){
+	return gulp.src(`${paths.src.js}/sw/*.*`)
+	.pipe(gulp.dest(paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].html));
 }
 
 function html(){
@@ -156,7 +172,7 @@ function html(){
 		.pipe(nunjucksRender({
 			path: paths.src.html
 		}))
-		.pipe(gulp.dest(paths.dest.html));
+		.pipe(gulp.dest(paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].html));
 }
 
 function scss(){
@@ -169,7 +185,7 @@ function scss(){
 		.pipe(header(banner, {pkg : pkg}))
 		.pipe(sourcemaps.write())
 		.pipe(gulpIf(!!gulpUtil.env.production, minifyCss()))
-		.pipe(gulp.dest(paths.dest.css));
+		.pipe(gulp.dest(paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].css));
 }
 
 function img(){
@@ -179,24 +195,19 @@ function img(){
 			interlaced: true,
 			svgoPlugins: [{removeViewBox: true}]
 		}))
-		.pipe(gulp.dest(paths.dest.img));
+		.pipe(gulp.dest(paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].img));
 }
 
 function fonts(){
 	return gulp.src(`${paths.src.fonts}**/*.*`)
-		.pipe(gulp.dest(paths.dest.fonts));
-}
-
-function sw(){
-	return gulp.src(`${paths.src.js}/sw/*.*`)
-		.pipe(gulp.dest(outputDir));
+	.pipe(gulp.dest(paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].fonts));
 }
 
 function serve(){
 	browserSync({
 		notify: false,
 		// https: true,
-		server: [outputDir],
+		server: [staticOutputDir],
 		tunnel: false
 	});
 	watch(reload);
@@ -248,5 +259,7 @@ gulp.task('fonts', fonts);
 gulp.task('serve', () => {
 	runSequence('clean', ['js', 'scss', 'img', 'html', 'fonts'], serve);
 });
-gulp.task('watch', watch);
+gulp.task('watch', () => {
+	runSequence('compile', watch);
+});
 gulp.task('default', ['serve']);
