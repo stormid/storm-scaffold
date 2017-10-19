@@ -30,5 +30,5 @@ const onLoad = [];
 
 	onLoad.length && window.addEventListener('load', [].forEach.bind(onLoad, fn => fn()));
 
-	if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
+	//if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
 }
