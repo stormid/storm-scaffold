@@ -1,5 +1,6 @@
 import { PATHS} from './constants';
-import 'es6-promise/auto';
+// import 'es6-promise/auto';
+import Promise from 'promise-polyfill';
 // import 'storm-outliner';
 //import 'lazysizes' from 'lazysizes';
 import Toggler from './require/toggler';
@@ -21,6 +22,8 @@ const onInit = [
 const onLoad = [];
 
 {
+	window.Promise = window.Promise ? window.Promise : Promise;
+
 	if(!Object.assign || !('classList' in document.createElement('_'))) 
 		Load(`${PATHS.JS_ASYNC}/polyfills.min.js`)
 			.then(() => { 

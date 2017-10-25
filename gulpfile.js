@@ -6,6 +6,7 @@ const gulp = require('gulp'),
 	header = require('gulp-header'),
 	pixrem = require('gulp-pixrem'),
 	uglify = require('gulp-uglify'),
+	wait = require('gulp-wait'),
 	rename = require('gulp-rename'),
 	minifyCss = require('gulp-clean-css'),
 	frontMatter = require('gulp-front-matter'),
@@ -177,6 +178,7 @@ function html(){
 
 function scss(){
 	return gulp.src([`${paths.src.css}**/*.scss`, `!${paths.src.css}{fonts,kss}/*.*`])
+		.pipe(wait(500))
 		.pipe(plumber({errorHandler: onError}))
 		.pipe(sourcemaps.init())
 		.pipe(sass())
