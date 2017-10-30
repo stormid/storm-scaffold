@@ -115,18 +115,7 @@ function jsCore(){
 		debug: !gulpUtil.env.production,
 		fullPaths: !gulpUtil.env.production
 	})
-	.transform(babelify, {
-		"presets": [
-			[
-				"env", 
-				{
-					"targets": {
-						"browsers": ["last 2 versions", "safari >= 7"]
-					}
-				}
-			]
-		]
-	})
+	.transform(babelify)
 	.bundle()
 	.pipe(source('app.js'))
 	.pipe(buffer())
