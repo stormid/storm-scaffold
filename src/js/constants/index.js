@@ -4,7 +4,7 @@ export const PATHS = {
 
 export const FONTS = [''];
 
-export const TOGGLERS = {
+export const TOGGLES = {
 	SELECTOR:{
 		GLOBAL: '.js-toggle',
 		LOCAL: '.js-toggle-local'

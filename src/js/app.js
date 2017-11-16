@@ -3,13 +3,13 @@ import { PATHS} from './constants';
 import Promise from 'promise-polyfill';
 // import 'storm-outliner';
 //import 'lazysizes' from 'lazysizes';
-import Toggler from './require/toggler';
+import Toggle from './require/toggle';
 import AsyncHelper from './require/async-helper';
 // import FontFaceObserver from './require/fontfaceobserver';
 import Load from 'storm-load';
 
 const onInit = [
-	Toggler,
+	Toggle,
 	AsyncHelper('tabs'),
 	// AsyncComponentHelper('google-map').bind(null, () => {
 	// 	GoogleMap.init(GOOGLE_MAP.SELECTOR, window.event_location, {

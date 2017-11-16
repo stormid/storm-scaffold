@@ -68,7 +68,7 @@ const AUTOPREFIXER_BROWSERS = [
 
 // Build root destination / webroot for serve
 const staticOutputDir = './build';
-const dynamicOutputDir = '../Production/src/GlasgowLifeConventions/GlasgowLifeConventions';
+const dynamicOutputDir = '../Production/src/';
 
 // Asset destination base path
 const assetPath = '/static';

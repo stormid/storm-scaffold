@@ -50,7 +50,7 @@
     "storm-load": "latest",
     "storm-outliner": "latest",
     "storm-skip": "latest",
-    "storm-toggler": "latest",
+    "storm-toggle": "latest",
     "vinyl-buffer": "latest",
     "vinyl-source-stream": "latest"
   }
