@@ -181,12 +181,18 @@ function scss(){
 
 function img(){
 	return gulp.src(`${paths.src.img}**/*`)
-		.pipe(imagemin({
-			progressive: true,
-			interlaced: true,
-			svgoPlugins: [{removeViewBox: true}]
-		}))
-		.pipe(gulp.dest(paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].img));
+			.pipe(imagemin([
+            	imagemin.gifsicle({interlaced: true}),
+				imagemin.jpegtran({progressive:true}),
+				imagemin.optipng({optimizationLevel:5}),
+				imagemin.svgo({
+					plugins: [
+						{removeViewBox: false},
+						{cleanupIDs: true}
+					]
+				})
+        	]))
+			.pipe(gulp.dest(paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].img));
 }
 
 function fonts(){
