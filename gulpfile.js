@@ -67,7 +67,7 @@ const AUTOPREFIXER_BROWSERS = [
 ];
 
 // Build root destination / webroot for serve
-const staticOutputDir = './build';
+const staticOutputDir = 'build';
 const dynamicOutputDir = '../Production/src/';
 
 // Asset destination base path
@@ -76,11 +76,12 @@ const assetPath = '/static';
 // Paths for source and destinations
 const paths = {
 	src: {
-		css: './src/scss/',
-		js: './src/js/',
-		html: './src/templates/',
-		img: './src/img/',
-		fonts: './src/fonts/'
+		css: 'src/scss/',
+		js: 'src/js/',
+		html: 'src/templates/',
+		img: 'src/img/',
+		fonts: 'src/fonts/',
+		static: 'src/static/'
 	},
 	dest: {
 		development: {
@@ -88,14 +89,14 @@ const paths = {
 			js:  `${staticOutputDir}${assetPath}/js/`,
 			html: staticOutputDir,
 			img: `${staticOutputDir}${assetPath}/img/`,
-			fonts: `${staticOutputDir}${assetPath}/fonts/`
+			static: `${staticOutputDir}${assetPath}/`
 		},
 		production: {
 			css: `${dynamicOutputDir}${assetPath}/css/`,
 			js:  `${dynamicOutputDir}${assetPath}/js/`,
 			html: staticOutputDir,
 			img: `${dynamicOutputDir}${assetPath}/img/`,
-			fonts: `${dynamicOutputDir}${assetPath}/fonts/`
+			static: `${dynamicOutputDir}${assetPath}/`
 		},
 
 	}
@@ -106,7 +107,7 @@ const paths = {
 //------------------------
 
 function clean() {
-	return del(`${paths.dest}`);
+	return del(`${staticOutputDir}`);
 }
 
 function jsCore(){
@@ -195,9 +196,9 @@ function img(){
 			.pipe(gulp.dest(paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].img));
 }
 
-function fonts(){
-	return gulp.src(`${paths.src.fonts}**/*.*`)
-	.pipe(gulp.dest(paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].fonts));
+function static(){
+	return gulp.src(`${paths.src.static}**/*.*`)
+	.pipe(gulp.dest(paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].static));
 }
 
 function serve(){
@@ -223,6 +224,10 @@ function watch(cb){
 		{
 			glob: `${paths.src.img}**/*`,
 			tasks: ['img']
+		},
+		{
+			glob: `${paths.src.static}**/*`,
+			tasks: ['static']
 		},
 		{
 			glob: `${paths.src.js}**/*`,
@@ -251,10 +256,10 @@ gulp.task('clean', clean);
 gulp.task('js', ['sw', 'jsCore', 'jsAsync', 'jsPolyfills']);
 gulp.task('html', html);
 gulp.task('scss', scss);
+gulp.task('static', static);
 gulp.task('img', img);
-gulp.task('fonts', fonts);
 gulp.task('serve', () => {
-	runSequence('clean', ['js', 'scss', 'img', 'html', 'fonts'], serve);
+	runSequence('clean', ['js', 'scss', 'img', 'html', 'static'], serve);
 });
 gulp.task('watch', () => {
 	runSequence('compile', watch);
