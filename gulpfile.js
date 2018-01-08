@@ -1,5 +1,6 @@
 // Dependencies
-const gulp = require('gulp'),
+const config = require('./gulp.config'),
+	gulp = require('gulp'),
 	pkg = require('./package.json'),
 	sass = require('gulp-sass'),
 	autoprefixer = require('gulp-autoprefixer'),
@@ -49,70 +50,19 @@ function onError(err) {
 	this.emit('end');
 }
 
-//------------------------
-// Configuration
-//------------------------
 
-// Autoprefixer settings
-const AUTOPREFIXER_BROWSERS = [
-	'ie >= 9',
-	'ie_mob >= 10',
-	'ff >= 20',
-	'chrome >= 4',
-	'safari >= 7',
-	'opera >= 23',
-	'ios >= 7',
-	'android >= 4.4',
-	'bb >= 10'
-];
-
-// Build root destination / webroot for serve
-const staticOutputDir = 'build';
-const dynamicOutputDir = '../Production/src/';
-
-// Asset destination base path
-const assetPath = '/static';
-
-// Paths for source and destinations
-const paths = {
-	src: {
-		css: 'src/scss/',
-		js: 'src/js/',
-		html: 'src/templates/',
-		img: 'src/img/',
-		fonts: 'src/fonts/',
-		static: 'src/static/'
-	},
-	dest: {
-		development: {
-			css: `${staticOutputDir}${assetPath}/css/`,
-			js:  `${staticOutputDir}${assetPath}/js/`,
-			html: staticOutputDir,
-			img: `${staticOutputDir}${assetPath}/img/`,
-			static: `${staticOutputDir}${assetPath}/`
-		},
-		production: {
-			css: `${dynamicOutputDir}${assetPath}/css/`,
-			js:  `${dynamicOutputDir}${assetPath}/js/`,
-			html: staticOutputDir,
-			img: `${dynamicOutputDir}${assetPath}/img/`,
-			static: `${dynamicOutputDir}${assetPath}/`
-		},
-
-	}
-};
 
 //------------------------
 // Tasks
 //------------------------
 
 function clean() {
-	return del(`${staticOutputDir}`);
+	return del(`${config.paths.root.static}`);
 }
 
 function jsCore(){
 	return browserify({
-		entries: `${paths.src.js}app.js`,
+		entries: `${config.paths.src.js}app.js`,
 		debug: !gulpUtil.env.production,
 		fullPaths: !gulpUtil.env.production
 	})
@@ -121,19 +71,19 @@ function jsCore(){
 	.pipe(source('app.js'))
 	.pipe(buffer())
 	.pipe(gulpIf(!!gulpUtil.env.production, uglify()))
-	.pipe(gulp.dest(paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].js));
+	.pipe(gulp.dest(config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].js));
 }
 
 function jsAsync(){
-	return gulp.src(`${paths.src.js}async/**/*`)
+	return gulp.src(`${config.paths.src.js}async/**/*`)
 		.pipe(uglify())
 		.pipe(rename({suffix: '.min'}))
-		.pipe(gulp.dest(`${paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].js}async/`));
+		.pipe(gulp.dest(`${config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].js}async/`));
 }
 
 function jsPolyfills(){
 	return browserify({
-		entries: `${paths.src.js}polyfills/index.js`,
+		entries: `${config.paths.src.js}polyfills/index.js`,
 		debug: !gulpUtil.env.production,
 		fullPaths: !gulpUtil.env.production
 	})
@@ -145,43 +95,43 @@ function jsPolyfills(){
 		basename: 'polyfills',
 		suffix: '.min'
 	}))
-	.pipe(gulp.dest(`${paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].js}async/`));
+	.pipe(gulp.dest(`${config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].js}async/`));
 }
 
 function sw(){
-	return gulp.src(`${paths.src.js}/sw/*.*`)
-	.pipe(gulp.dest(paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].html));
+	return gulp.src(`${config.paths.src.js}/sw/*.*`)
+	.pipe(gulp.dest(config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].html));
 }
 
 function html(){
-	return gulp.src(`${paths.src.html}views/**/*.html`)
+	return gulp.src(`${config.paths.src.html}views/**/*.html`)
 		.pipe(plumber({errorHandler: onError}))
 		.pipe(frontMatter({ property: 'data' }))
 		.pipe(data(() => {
-			return {'assetPath': assetPath};
+			return {'assetPath': config.paths.assets};
 		}))
 		.pipe(nunjucksRender({
-			path: paths.src.html
+			path: config.paths.src.html
 		}))
-		.pipe(gulp.dest(paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].html));
+		.pipe(gulp.dest(config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].html));
 }
 
 function scss(){
-	return gulp.src([`${paths.src.css}**/*.scss`, `!${paths.src.css}{fonts,kss}/*.*`])
+	return gulp.src([`${config.paths.src.css}**/*.scss`, `!${config.paths.src.css}{fonts,kss}/*.*`])
 		.pipe(wait(500))
 		.pipe(plumber({errorHandler: onError}))
 		.pipe(sourcemaps.init())
 		.pipe(sass())
-		.pipe(autoprefixer(AUTOPREFIXER_BROWSERS))
+		.pipe(autoprefixer(config.browsers))
 		.pipe(pixrem())
 		.pipe(header(banner, {pkg : pkg}))
 		.pipe(sourcemaps.write())
 		.pipe(gulpIf(!!gulpUtil.env.production, minifyCss()))
-		.pipe(gulp.dest(paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].css));
+		.pipe(gulp.dest(config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].css));
 }
 
 function img(){
-	return gulp.src(`${paths.src.img}**/*`)
+	return gulp.src(`${config.paths.src.img}**/*`)
 			.pipe(imagemin([
             	imagemin.gifsicle({interlaced: true}),
 				imagemin.jpegtran({progressive:true}),
@@ -193,19 +143,19 @@ function img(){
 					]
 				})
         	]))
-			.pipe(gulp.dest(paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].img));
+			.pipe(gulp.dest(config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].img));
 }
 
 function static(){
-	return gulp.src(`${paths.src.static}**/*.*`)
-	.pipe(gulp.dest(paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].static));
+	return gulp.src(`${config.paths.src.static}**/*.*`)
+	.pipe(gulp.dest(config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].static));
 }
 
 function serve(){
 	browserSync({
 		notify: false,
 		// https: true,
-		server: [staticOutputDir],
+		server: [config.paths.root.static],
 		tunnel: false
 	});
 	watch(reload);
@@ -214,23 +164,23 @@ function serve(){
 function watch(cb){
 	const watchers = [
 		{
-			glob: `${paths.src.html}**/*.html`,
+			glob: `${config.paths.src.html}**/*.html`,
 			tasks: ['html']
 		},
 		{
-			glob: `${paths.src.css}**/*.scss`,
+			glob: `${config.paths.src.css}**/*.scss`,
 			tasks: ['scss']
 		},
 		{
-			glob: `${paths.src.img}**/*`,
+			glob: `${config.paths.src.img}**/*`,
 			tasks: ['img']
 		},
 		{
-			glob: `${paths.src.static}**/*`,
+			glob: `${config.paths.src.static}**/*`,
 			tasks: ['static']
 		},
 		{
-			glob: `${paths.src.js}**/*`,
+			glob: `${config.paths.src.js}**/*`,
 			tasks: ['js']
 		}
 	];
