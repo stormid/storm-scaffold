@@ -35,7 +35,7 @@
     "gulp-if": "latest",
     "gulp-imagemin": "latest",
     "gulp-notify": "latest",
-    "gulp-nunjucks-render": "latest",
+    "gulp-nunjucks-render": "2.0.0",
     "gulp-pixrem": "latest",
     "gulp-plumber": "latest",
     "gulp-rename": "latest",
