@@ -55,6 +55,7 @@ function onError(err) {
 //walk the custom-components dir for .standalone.js modules in a dist folder
 //return array of them for use in glob
 function findStandaloneModules(dir) {
+	if(!fs.existsSync(dir)) return [];
 	return fs.readdirSync(dir)
 				.reduce(function(files, file){
 					if(fs.statSync(path.resolve(__dirname, path.join(dir, file))).isDirectory()) return files.concat(findStandaloneModules(path.join(dir, file)));
@@ -92,9 +93,6 @@ function jsAsync(){
 		.pipe(gulp.dest(`${config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].js}async/`));
 }
 
-
-
-						  
 
 function jsCustomComponents(){
 	return gulp.src(findStandaloneModules(path.resolve(__dirname, 'src/js/custom-components')))
