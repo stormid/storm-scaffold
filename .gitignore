@@ -4,3 +4,4 @@ disc.html
 .bowerrc
 .DS_Store
 *.log
+.vscode
