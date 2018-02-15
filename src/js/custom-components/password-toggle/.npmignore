@@ -1,0 +1,8 @@
+.DS_Store
+*.log
+src
+test
+example
+coverage
+node_modules
+.babelrc

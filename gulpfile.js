@@ -26,6 +26,8 @@ const config = require('./gulp.config'),
 	source = require('vinyl-source-stream'),
 	buffer = require('vinyl-buffer'),
 	runSequence = require('run-sequence'),
+	fs = require('fs'),
+	path = require('path'),
 	nunjucksRender = require('gulp-nunjucks-render');
 
 // Banner
@@ -50,7 +52,16 @@ function onError(err) {
 	this.emit('end');
 }
 
-
+//walk the custom-components dir for .standalone.js modules in a dist folder
+//return array of them for use in glob
+function findStandaloneModules(dir) {
+	return fs.readdirSync(dir)
+				.reduce(function(files, file){
+					if(fs.statSync(path.resolve(__dirname, path.join(dir, file))).isDirectory()) return files.concat(findStandaloneModules(path.join(dir, file)));
+					if(/\S+dist\S+\.standalone.js$/.test(path.join(dir, file))) files.push(path.join(dir, file));
+					return files;
+				}, []);
+};
 
 //------------------------
 // Tasks
@@ -78,6 +89,19 @@ function jsAsync(){
 	return gulp.src(`${config.paths.src.js}async/**/*`)
 		.pipe(uglify())
 		.pipe(rename({suffix: '.min'}))
+		.pipe(gulp.dest(`${config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].js}async/`));
+}
+
+
+
+						  
+
+function jsCustomComponents(){
+	return gulp.src(findStandaloneModules(path.resolve(__dirname, 'src/js/custom-components')))
+		.pipe(uglify())
+		.pipe(rename(function (path) {
+			path.basename = path.basename.replace('.standalone', '');
+		}))
 		.pipe(gulp.dest(`${config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].js}async/`));
 }
 
@@ -200,10 +224,13 @@ gulp.task('compile', () => {
 gulp.task('jsCore', jsCore);
 gulp.task('jsAsync', jsAsync);
 gulp.task('jsPolyfills', jsPolyfills);
+gulp.task('jsCustomComponents', jsCustomComponents);
 gulp.task('sw', sw);
 
 gulp.task('clean', clean);
-gulp.task('js', ['sw', 'jsCore', 'jsAsync', 'jsPolyfills']);
+gulp.task('js', () => {
+	runSequence('jsCustomComponents', ['sw', 'jsCore', 'jsAsync', 'jsPolyfills']);
+});
 gulp.task('html', html);
 gulp.task('scss', scss);
 gulp.task('static', static);
