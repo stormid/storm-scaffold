@@ -1,16 +1,15 @@
-import { PATHS} from './constants';
-// import 'es6-promise/auto';
+// import { PATHS } from './constants';
 import Promise from 'promise-polyfill';
 // import 'storm-outliner';
 //import 'lazysizes' from 'lazysizes';
-import Toggle from './require/toggle';
-import AsyncHelper from './require/async-helper';
+// import Toggle from './require/toggle';
+// import AsyncHelper from './require/async-helper';
 // import FontFaceObserver from './require/fontfaceobserver';
 import Load from 'storm-load';
 
 const onInit = [
-	Toggle,
-	AsyncHelper('tabs'),
+	// Toggle,
+	// AsyncHelper('tabs'),
 	// AsyncComponentHelper('google-map').bind(null, () => {
 	// 	GoogleMap.init(GOOGLE_MAP.SELECTOR, window.event_location, {
 	// 		key: GOOGLE_MAP.KEY

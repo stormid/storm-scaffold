@@ -1,21 +1,21 @@
 ## How to run this project
 
 ### Installation
-#### `yarn install`
+#### `npm install`
 
 ### Run
-#### `yarn run start`
+#### `npm start`
 
 ### Production
-#### `yarn run production`
+#### `npm run production`
 
 ## JS
-The app uses es6 modules that are transpiled, then transformed using browserify into a minified single app.js containing the core js used on every page.
+The app uses es6 modules that are transpiled then transformed using browserify into a minified single app.js containing the core js used on every page.
 
 Page or component-specific JS files should be loaded asynchronously as required. These files, which need to be browser-ready or UMD, should be placed in src/js/async.
 
 ## CSS
-SCSS, structured thus:
+SCSS, structured:
 
 - global
 - modules/
@@ -26,7 +26,7 @@ SCSS, structured thus:
 All project configurations and variables are set in global/_variables.scss.
 
 ## HTML
-Nunjucks templates. 
+Nunjucks templates, (https://mozilla.github.io/nunjucks/)[https://mozilla.github.io/nunjucks/]
 
 1. Layout templates defining the overall structure of the complete HTML document.
 2. View templates, one for each page on the website, the structure of the statoc build site follows the structure of the views
@@ -34,7 +34,7 @@ Nunjucks templates.
     - doc- prefix for fundamental document blocks like the head
     - ui- prefix for permanent UI elements like the navigation
     - block- prefix for other components
-4. Macros templates contain components. Naming convention recommended for these:
+4. Macro templates contain functional components
 
 Variables can be set in YAML in the head of each template.
 
@@ -65,4 +65,8 @@ Builds and transforms the commonjs files into a single compressed browser-ready 
 #### `gulp html`
 
 Builds the static HTML from nunjucks templates.
+
+#### `gulp static`
+
+Copies all directories and files from src/static to build/static
 

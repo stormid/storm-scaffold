@@ -4,18 +4,18 @@ export const PATHS = {
 
 export const FONTS = [''];
 
-export const TOGGLES = {
-	SELECTOR:{
-		GLOBAL: '.js-toggle',
-		LOCAL: '.js-toggle-local'
-	},
-	OPTIONS: {
-		LOCAL: {
-			local: true
-		}
-	}
-};
+// export const TOGGLES = {
+// 	SELECTOR:{
+// 		GLOBAL: '.js-toggle',
+// 		LOCAL: '.js-toggle-local'
+// 	},
+// 	OPTIONS: {
+// 		LOCAL: {
+// 			local: true
+// 		}
+// 	}
+// };
 
-export const TABS = {
-	SELECTOR: '.js-tabs'
-};
+// export const TABS = {
+// 	SELECTOR: '.js-tabs'
+// };

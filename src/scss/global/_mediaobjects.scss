@@ -1,51 +1,51 @@
 /* Media objects
 -------------------------------------------------------------- */
-.media-list {
-    padding:0;
-}
-.media-item {
-    blockquote {
-        @media (min-width:$bp-medium){
-            padding-right:column-calc(2);
-        }
-    }
-}
-.media-item__media {
-    display:table-cell;
-    padding-right:$gutter;
-    vertical-align:top;
-}
-.media-item__media--right {
-    padding-right:0;
-}
-.media-item__img {
-    display: block;
-}
-.media-item__bd {
-    width:10000px;
-    display:table-cell;
-    padding-right:$gutter;
-}
-.media-item__bd--right {
-    padding-right:0;
-}
-.media-item__heading {
-    @media (min-width:$bp-medium){
-        padding-top:1rem;
-        font-size:1.65rem;
-        margin-bottom:.5rem;
-        padding-left:20px;
-    }
-}
-.media-item__sub {
-    font-size:1rem;
-    margin-bottom:1rem;
-    @media (min-width:$bp-medium){
-        padding-left:20px;
-    }
-}
-.media-item__meta {
-    @media (min-width:$bp-medium){
-        padding-left:20px;
-    }
-}
+// .media-list {
+//     padding:0;
+// }
+// .media-item {
+//     blockquote {
+//         @media (min-width:$bp-medium){
+//             padding-right:column-calc(2);
+//         }
+//     }
+// }
+// .media-item__media {
+//     display:table-cell;
+//     padding-right:$gutter;
+//     vertical-align:top;
+// }
+// .media-item__media--right {
+//     padding-right:0;
+// }
+// .media-item__img {
+//     display: block;
+// }
+// .media-item__bd {
+//     width:10000px;
+//     display:table-cell;
+//     padding-right:$gutter;
+// }
+// .media-item__bd--right {
+//     padding-right:0;
+// }
+// .media-item__heading {
+//     @media (min-width:$bp-medium){
+//         padding-top:1rem;
+//         font-size:1.65rem;
+//         margin-bottom:.5rem;
+//         padding-left:20px;
+//     }
+// }
+// .media-item__sub {
+//     font-size:1rem;
+//     margin-bottom:1rem;
+//     @media (min-width:$bp-medium){
+//         padding-left:20px;
+//     }
+// }
+// .media-item__meta {
+//     @media (min-width:$bp-medium){
+//         padding-left:20px;
+//     }
+// }

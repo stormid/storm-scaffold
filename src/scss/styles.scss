@@ -7,16 +7,12 @@
 @import 'global/normalise',
 		'global/typography',
 		'global/grid',
-		'global/lists',
-		'global/links',
 		'global/forms',
-		'global/icons',
 		'global/mediaobjects';
 
 @import 'modules/header',
-		'modules/primary-navigation',
 		'modules/footer';
 
 //@import 'vendor/';
 
-@import 'components//buttons';
+@import 'components/buttons';

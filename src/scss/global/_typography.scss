@@ -1,75 +1,75 @@
 /* Type
 -------------------------------------------------------------- */
-body,
-button,
-input,
-select,
-textarea {
-    font:$base-font-weight $base-font-size $body-font-family;
-    line-height:$base-line-height;
-    color:$body-font-color;
-}
+// body,
+// button,
+// input,
+// select,
+// textarea {
+//     font:$base-font-weight $base-font-size $body-font-family;
+//     line-height:$base-line-height;
+//     color:$body-font-color;
+// }
 
-input,
-select,
-textarea {
-    font-size:.99rem;
-    line-height:1rem;
-}
+// input,
+// select,
+// textarea {
+//     font-size:.99rem;
+//     line-height:1rem;
+// }
 
-b,
-strong {
-    font-weight: $bold;
-}
+// b,
+// strong {
+//     font-weight: $bold;
+// }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    margin-bottom:0;
-    font-weight:$regular;
-    line-height:1.2;
-}
-h1 {
-    font-size:$mega-size;
-    margin-bottom:$baseline;
-}
-h2 {
-    font-size:$alpha-size;
-    margin-bottom:$baseline;
-}
-h3 {
-    font-size:$beta-size;
-    margin-bottom:$baseline/2;
-}
-h4 {
-    font-size:$gamma-size;
-    margin-bottom:$baseline/2;
-}
-h5 {
-    font-size:$delta-size;
-    margin-bottom:$baseline/2;
-}
-h6 {
-    font-size:$epsilon-size;
-    margin-bottom:$baseline/2;
-}
-p {
-    margin-bottom:$baseline/2;
-}
+// h1,
+// h2,
+// h3,
+// h4,
+// h5,
+// h6 {
+//     margin-bottom:0;
+//     font-weight:$regular;
+//     line-height:1.2;
+// }
+// h1 {
+//     font-size:$mega-size;
+//     margin-bottom:$baseline;
+// }
+// h2 {
+//     font-size:$alpha-size;
+//     margin-bottom:$baseline;
+// }
+// h3 {
+//     font-size:$beta-size;
+//     margin-bottom:$baseline/2;
+// }
+// h4 {
+//     font-size:$gamma-size;
+//     margin-bottom:$baseline/2;
+// }
+// h5 {
+//     font-size:$delta-size;
+//     margin-bottom:$baseline/2;
+// }
+// h6 {
+//     font-size:$epsilon-size;
+//     margin-bottom:$baseline/2;
+// }
+// p {
+//     margin-bottom:$baseline/2;
+// }
 
-a,
-a:link,
-.link {
-    color:$body-font-color;
-}
-a:hover,
-a:focus,
-a:active {
-}
+// a,
+// a:link,
+// .link {
+//     color:$body-font-color;
+// }
+// a:hover,
+// a:focus,
+// a:active {
+// }
 
-.no-webfonts:not(.no-js) * {
-    font-family:sans-serif;
-}
+// .no-webfonts:not(.no-js) * {
+//     font-family:sans-serif;
+// }
