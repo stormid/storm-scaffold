@@ -26,7 +26,7 @@ SCSS, structured:
 All project configurations and variables are set in global/_variables.scss.
 
 ## HTML
-Nunjucks templates, (https://mozilla.github.io/nunjucks/)[https://mozilla.github.io/nunjucks/]
+Nunjucks templates, (https://mozilla.github.io/nunjucks/)
 
 1. Layout templates defining the overall structure of the complete HTML document.
 2. View templates, one for each page on the website, the structure of the statoc build site follows the structure of the views
