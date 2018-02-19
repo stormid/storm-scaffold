@@ -1,5 +1,6 @@
 // Dependencies
 const config = require('./gulp.config'),
+	sriToolbox = require("sri-toolbox"),
 	gulp = require('gulp'),
 	pkg = require('./package.json'),
 	sass = require('gulp-sass'),
@@ -130,7 +131,15 @@ function html(){
 		.pipe(plumber({errorHandler: onError}))
 		.pipe(frontMatter({ property: 'data' }))
 		.pipe(data(() => {
-			return {'assetPath': config.paths.assets};
+			return {
+				'assetPath': config.paths.assets,
+				'JSIntegrity': sriToolbox.generate({
+					algorithms: ["sha256"]
+				}, `${path.resolve(__dirname, `${config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].js}app.js`)}`),
+				'CSSIntegrity': sriToolbox.generate({
+					algorithms: ["sha256"]
+				}, `${path.resolve(__dirname, `${config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].css}styles.css`)}`)
+			};
 		}))
 		.pipe(nunjucksRender({
 			path: config.paths.src.html

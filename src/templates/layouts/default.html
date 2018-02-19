@@ -6,6 +6,9 @@
             {% block content %}{% endblock %}
     </main>
     {% include "partials/ui-footer.html" %}
-    <script async src="{{assetPath}}/js/app.js"></script>
+    <script async
+        integrity="{{JSIntegrity}}"
+        crossorigin="anonymous"
+        src="{{assetPath}}/js/app.js"></script>
 </body>
 </html>
