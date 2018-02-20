@@ -48,6 +48,7 @@
     "classlist-polyfill": "^1.2.0",
     "es6-object-assign": "^1.1.0",
     "fontfaceobserver": "^2.0.13",
+    "node-sri": "^1.1.1",
     "picturefill": "^3.0.2",
     "promise-polyfill": "^7.1.0",
     "storm-load": "^1.0.2",

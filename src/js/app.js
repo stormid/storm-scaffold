@@ -8,6 +8,9 @@ import Promise from 'promise-polyfill';
 import Load from 'storm-load';
 
 const onInit = [
+	() => {
+		console.log('init');
+	},
 	// Toggle,
 	// AsyncHelper('tabs'),
 	// AsyncComponentHelper('google-map').bind(null, () => {

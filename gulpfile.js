@@ -1,6 +1,6 @@
 // Dependencies
 const config = require('./gulp.config'),
-	//sriToolbox = require("sri-toolbox"),
+	sri = require('node-sri'),
 	gulp = require('gulp'),
 	pkg = require('./package.json'),
 	sass = require('gulp-sass'),
@@ -127,24 +127,27 @@ function sw(){
 }
 
 function html(){
-	return gulp.src(`${config.paths.src.html}views/**/*.html`)
-		.pipe(plumber({errorHandler: onError}))
-		.pipe(frontMatter({ property: 'data' }))
-		.pipe(data(() => {
-			return {
-				'assetPath': config.paths.assets,
-				// 'JSIntegrity': sriToolbox.generate({
-				// 	algorithms: ["sha256"]
-				// }, `${path.resolve(__dirname, `${config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].js}app.js`)}`),
-				// 'CSSIntegrity': sriToolbox.generate({
-				// 	algorithms: ["sha256"]
-				// }, `${path.resolve(__dirname, `${config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].css}styles.css`)}`)
-			};
-		}))
-		.pipe(nunjucksRender({
-			path: config.paths.src.html
-		}))
-		.pipe(gulp.dest(config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].html));
+	var JSHashFn = sri.hash(`${path.resolve(__dirname, `${config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].js}app.js`)}`),
+		CSSHash = sri.hash(`${path.resolve(__dirname, `${config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].css}styles.css`)}`);
+	
+	return Promise.all([JSHashFn, CSSHash])
+		.then(function(hashes){
+			return gulp.src(`${config.paths.src.html}views/**/*.html`)
+				.pipe(plumber({errorHandler: onError}))
+				.pipe(frontMatter({ property: 'data' }))
+				.pipe(data(() => {
+					return {
+						'assetPath': config.paths.assets,
+						'JSIntegrity': hashes[0],
+						'CSSIntegrity': hashes[1]
+					};
+				}))
+				.pipe(nunjucksRender({
+					path: config.paths.src.html
+				}))
+				.pipe(gulp.dest(config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].html));
+
+		});
 }
 
 function scss(){
@@ -225,7 +228,7 @@ function watch(cb){
 // Gulp API
 //------------------------
 gulp.task('compile', () => {
-	runSequence('clean', ['js', 'scss', 'img', 'html', 'fonts']);
+	runSequence('clean', ['js', 'scss'], ['img', 'html', 'fonts']);
 });
 
 gulp.task('jsCore', jsCore);
@@ -243,7 +246,7 @@ gulp.task('scss', scss);
 gulp.task('static', static);
 gulp.task('img', img);
 gulp.task('serve', () => {
-	runSequence('clean', ['js', 'scss', 'img', 'html', 'static'], serve);
+	runSequence('clean', ['js', 'scss'], ['img', 'html', 'static'], serve);
 });
 gulp.task('watch', () => {
 	runSequence('compile', watch);
