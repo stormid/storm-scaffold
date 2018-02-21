@@ -214,8 +214,12 @@ function watch(cb){
 			tasks: ['static']
 		},
 		{
-			glob: `${config.paths.src.js}**/*`,
-			tasks: ['js']
+			glob: [`${config.paths.src.js}**/*`, `!${config.paths.src.js}require/`, `!${config.paths.src.js}app.js`],
+			tasks: ['js-other']
+		},
+		{
+			glob: [`${config.paths.src.js}app.js`, `${config.paths.src.js}require/**/*`],
+			tasks: ['js-sri']
 		}
 	];
 	watchers.forEach(watcher => {
@@ -245,6 +249,12 @@ gulp.task('html', html);
 gulp.task('scss', scss);
 gulp.task('static', static);
 gulp.task('img', img);
+gulp.task('js-sri', () => {
+	runSequence('jsCore', ['html']);
+})
+gulp.task('js-other', () => {
+	runSequence('jsCustomComponents', ['sw', 'jsAsync', 'jsPolyfills']);
+});
 gulp.task('serve', () => {
 	runSequence('clean', ['js', 'scss'], ['img', 'html', 'static'], serve);
 });

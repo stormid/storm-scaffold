@@ -9,7 +9,7 @@ import Load from 'storm-load';
 
 const onInit = [
 	() => {
-		console.log('init');
+		console.log('with SRI, tes');
 	},
 	// Toggle,
 	// AsyncHelper('tabs'),
