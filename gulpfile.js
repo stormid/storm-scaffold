@@ -128,9 +128,9 @@ function sw(){
 
 function html(){
 	var JSHashFn = sri.hash(`${path.resolve(__dirname, `${config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].js}app.js`)}`),
-		CSSHash = sri.hash(`${path.resolve(__dirname, `${config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].css}styles.css`)}`);
-	
-	return Promise.all([JSHashFn, CSSHash])
+		CSSHashFn = sri.hash(`${path.resolve(__dirname, `${config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].css}styles.css`)}`);
+
+	return Promise.all([JSHashFn, CSSHashFn])
 		.then(function(hashes){
 			return gulp.src(`${config.paths.src.html}views/**/*.html`)
 				.pipe(plumber({errorHandler: onError}))
@@ -203,7 +203,7 @@ function watch(cb){
 		},
 		{
 			glob: `${config.paths.src.css}**/*.scss`,
-			tasks: ['scss']
+			tasks: ['scss-sri']
 		},
 		{
 			glob: `${config.paths.src.img}**/*`,
@@ -232,7 +232,7 @@ function watch(cb){
 // Gulp API
 //------------------------
 gulp.task('compile', () => {
-	runSequence('clean', ['js', 'scss'], ['img', 'html', 'fonts']);
+	runSequence('clean', ['jsCore', 'scss'], ['html', 'js-other', 'img', 'static']);
 });
 
 gulp.task('jsCore', jsCore);
@@ -252,11 +252,14 @@ gulp.task('img', img);
 gulp.task('js-sri', () => {
 	runSequence('jsCore', ['html']);
 })
+gulp.task('scss-sri', () => {
+	runSequence('scss', ['html']);
+})
 gulp.task('js-other', () => {
 	runSequence('jsCustomComponents', ['sw', 'jsAsync', 'jsPolyfills']);
 });
 gulp.task('serve', () => {
-	runSequence('clean', ['js', 'scss'], ['img', 'html', 'static'], serve);
+	runSequence('clean', ['jsCore', 'scss'], ['html', 'js-other', 'img', 'static'], serve);
 });
 gulp.task('watch', () => {
 	runSequence('compile', watch);

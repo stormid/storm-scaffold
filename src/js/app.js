@@ -8,9 +8,6 @@ import Promise from 'promise-polyfill';
 import Load from 'storm-load';
 
 const onInit = [
-	() => {
-		console.log('with SRI, tes');
-	},
 	// Toggle,
 	// AsyncHelper('tabs'),
 	// AsyncComponentHelper('google-map').bind(null, () => {
