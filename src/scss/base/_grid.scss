@@ -1,0 +1,12 @@
+/* Grid
+-------------------------------------------------------------- */
+// @function column-calc($num, $spacing:$gutter){
+//     @return calc(((99.999% / #{$columns}) * #{$num}) - (#{$spacing}));
+// }
+// @function column-calc-fallback($num){
+//     @return ((100 / $columns) * $num) - 5%;
+// }
+// @mixin column($num) {
+// 	width: column-calc-fallback($num);
+// 	width: column-calc($num);
+// }

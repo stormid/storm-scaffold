@@ -1,18 +1,14 @@
 @charset "UTF-8";
 
-@import 'global/variables';
+@import 'abstracts/variables',
+		'abstracts/mixins';
 
-@import 'utils/mixins';
+@import 'base/normalise',
+		'base/typography',
+		'base/grid';
 
-@import 'global/normalise',
-		'global/typography',
-		'global/grid',
-		'global/forms',
-		'global/mediaobjects';
+@import 'layout/header',
+		'layout/footer';
 
-@import 'modules/header',
-		'modules/footer';
-
-//@import 'vendor/';
-
-@import 'components/buttons';
+@import 'components/forms',
+		'components/buttons';

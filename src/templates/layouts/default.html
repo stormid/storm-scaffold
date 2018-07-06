@@ -1,14 +1,12 @@
+{% import 'macros/header.html' as header %}
+{% import 'macros/footer.html' as footer %}
 {% include "partials/doc-head.html" %}
 <body>
-    {% include "partials/ui-header.html" %}
-    {% include "partials/ui-primary-navigation.html" %}
-    <main id="content">
-            {% block content %}{% endblock %}
-    </main>
-    {% include "partials/ui-footer.html" %}
-    <script async
-        integrity="{{JSIntegrity}}"
-        crossorigin="anonymous"
-        src="{{assetPath}}/js/app.js"></script>
+	{{ header.render() }}
+	<main id="main">
+			{% block content %}{% endblock %}
+	</main>
+	{{ footer.render() }}
+	{% include "partials/scripts.html" %}
 </body>
 </html>

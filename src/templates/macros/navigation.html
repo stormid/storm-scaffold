@@ -1,0 +1,33 @@
+<!--
+e.g.
+@props: Array of navigation objects
+[{
+    href: '/',  :String
+    isActive: false,    :Boolean,
+    sub: [{
+        href: '/',  :String
+        isActive: false,    :Boolean,
+    }] :Array
+}]  
+-->
+{% macro primary(props) %}
+<nav class="nav-primary">
+    <ul class="nav-primary__list">
+        {% for link in props %}
+            <li class="nav-primary__item">
+                <a class="nav-primary__link{% if link.isActive %} is--active{% endif %}" href="{{ link.href }}">{{ link.label }}</a>
+                {% if link.sub %}
+                    {% for sublink in link.sub %}
+                    <ul class="nav-primary__sub-list">
+                        <li class="nav-primary__sub-item">
+                            <a href="{{ sublink.href }}" class="nav-primary__sub-link{% if link.isActive %} is--active{% endif %}">{{ sublink.label }}</a>
+                        </li>
+                    </ul>
+                    {% end for %}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</nav>
+{% endmacro %}
+
