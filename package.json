@@ -14,6 +14,17 @@
     "test": "source-map-explorer build/static/js/app.js",
     "disc": "discify build/static/js/app.js >disc.html"
   },
+  "browserlist": [
+    "ie >= 9",
+    "ie_mob >= 10",
+    "ff >= 20",
+    "chrome >= 4",
+    "safari >= 7",
+    "opera >= 23",
+    "ios >= 7",
+    "android >= 4.4",
+    "bb >= 10"
+  ],
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-plugin-add-module-exports": "^0.2.1",
@@ -23,7 +34,7 @@
     "browserify": "^16.1.0",
     "del": "^3.0.0",
     "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^4.1.0",
+    "gulp-autoprefixer": "^5.0.0",
     "gulp-clean-css": "^3.9.2",
     "gulp-data": "^1.3.1",
     "gulp-front-matter": "^1.3.0",
@@ -40,6 +51,7 @@
     "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.8",
     "gulp-wait": "^0.0.2",
+    "node-sri": "^1.1.1",
     "run-sequence": "^2.2.1",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0"
@@ -48,7 +60,6 @@
     "classlist-polyfill": "^1.2.0",
     "es6-object-assign": "^1.1.0",
     "fontfaceobserver": "^2.0.13",
-    "node-sri": "^1.1.1",
     "picturefill": "^3.0.2",
     "promise-polyfill": "^7.1.0",
     "storm-load": "^1.0.2",

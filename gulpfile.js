@@ -156,7 +156,9 @@ function scss(){
 		.pipe(plumber({errorHandler: onError}))
 		.pipe(sourcemaps.init())
 		.pipe(sass())
-		.pipe(autoprefixer(config.browsers))
+		.pipe(autoprefixer({
+            browsers: pkg.browserlist
+        }))
 		.pipe(pixrem())
 		.pipe(header(banner, {pkg : pkg}))
 		.pipe(sourcemaps.write())

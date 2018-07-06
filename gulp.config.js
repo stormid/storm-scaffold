@@ -1,16 +1,3 @@
-// Autoprefixer settings
-const browsers = [
-	'ie >= 9',
-	'ie_mob >= 10',
-	'ff >= 20',
-	'chrome >= 4',
-	'safari >= 7',
-	'opera >= 23',
-	'ios >= 7',
-	'android >= 4.4',
-	'bb >= 10'
-];
-
 // Build root destination / webroot for serve
 const staticOutputDir = 'build';
 const dynamicOutputDir = '../Production/src/';
@@ -52,6 +39,5 @@ const paths = {
 };
 
 module.exports = {
-    browsers,
     paths
 };
