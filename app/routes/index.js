@@ -5,7 +5,7 @@ const routes = (app) => {
 
 	//Set local and secondary navigation state
 	//Navigation 
-	navigation(app);
+	// navigation(app);
 	
     //add app manifest
     require('./lib/manifest')(app);

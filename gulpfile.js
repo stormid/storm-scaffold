@@ -27,6 +27,7 @@ const config = require('./gulp.config'),
 	source = require('vinyl-source-stream'),
 	buffer = require('vinyl-buffer'),
 	runSequence = require('run-sequence'),
+	nunjucksRender = require('gulp-nunjucks-render'),
 	fs = require('fs'),
 	path = require('path');
 
@@ -131,29 +132,12 @@ const sw = () => gulp.src(`${config.paths.src.js}/sw/*.*`)
 					.pipe(gulp.dest(`${config.paths.public}`));
 					// .pipe(gulp.dest(config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].html));
 
-// const html = () => {
-// 	var JSHashFn = sri.hash(`${path.resolve(__dirname, `${config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].js}app.js`)}`),
-// 		CSSHashFn = sri.hash(`${path.resolve(__dirname, `${config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].css}styles.css`)}`);
-
-// 	return Promise.all([JSHashFn, CSSHashFn])
-// 		.then(function(hashes){
-// 			return gulp.src(`${config.paths.src.html}views/**/*.html`)
-// 				.pipe(plumber({errorHandler: onError}))
-// 				.pipe(frontMatter({ property: 'data' }))
-// 				.pipe(data(() => {
-// 					return {
-// 						'assetPath': config.paths.assets,
-// 						'JSIntegrity': hashes[0],
-// 						'CSSIntegrity': hashes[1]
-// 					};
-// 				}))
-// 				.pipe(nunjucksRender({
-// 					path: config.paths.src.html
-// 				}))
-// 				.pipe(gulp.dest(config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].html));
-
-// 		});
-// }
+const html = () => gulp.src(`${config.paths.src.html}/views/**/*.html`)
+					.pipe(plumber({errorHandler: onError}))
+					.pipe(nunjucksRender({
+						path: config.paths.src.html
+					}))
+					.pipe(gulp.dest(config.paths.public));
 
 
 const img = () => gulp.src(`${config.paths.src.img}/**/*`)
@@ -197,9 +181,11 @@ gulp.task('js', () => { runSequence('jsCustomComponents', ['sw', 'jsCore', 'jsAs
 gulp.task('scss', scss);
 gulp.task('staticAssets', staticAssets);
 gulp.task('img', img);
+gulp.task('html', html);
 // gulp.task('js-sri', () => { runSequence('jsCore', ['html']); })
 // gulp.task('scss-sri', () => { runSequence('scss', ['html']); })
 gulp.task('js-other', () => { runSequence('jsCustomComponents', ['sw', 'jsAsync', 'jsPolyfills']); });
 gulp.task('serve', () => { runSequence('clean', ['jsCore', 'scss'], ['js-other', 'img', 'staticAssets'], serve); });
 gulp.task('watch', () => { runSequence('compile', watch); });
+gulp.task('eject', ['compile', 'html']);
 gulp.task('default', ['serve']);
