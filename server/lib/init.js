@@ -31,10 +31,10 @@ module.exports = () => {
     require('../../app/routes')(app);
 
 	//Prevent SE indexing
-	require('./routes/hide')(app);
+	require('./router/hide')(app);
     
 	//Error handling
-    require('./routes/errors')(app);
+    require('./router/errors')(app);
 
 
     const njk = nunjucks.configure(

@@ -1,7 +1,7 @@
 import jest from 'jest';
 import { toHaveNoViolations } from 'jest-axe';
 import config from '../jest-puppeteer.config';
-const walker = require('../server/lib/walker');
+const walker = require('../server/lib/router/walker');
 
 expect.extend(toHaveNoViolations);
 
