@@ -1,4 +1,4 @@
-const autoRoute = require('./lib/auto-router');
+const autoRoute = require('../../server/lib/routes/auto');
 const navigation = require('./lib/navigation');
 
 const routes = (app) => {
@@ -7,7 +7,7 @@ const routes = (app) => {
 	//Navigation 
 	// navigation(app);
 	
-    //add app manifest
+    //app manifest
     require('./lib/manifest')(app);
 	
 	//Home
@@ -17,13 +17,7 @@ const routes = (app) => {
 		});
 	});
 	
-	// autoRoute(app)('/resources');
-
-	//Prevent SE indexing
-	require('./lib/hide')(app);
-
-	//Error handling
-	require('./lib/errors')(app);
+	autoRoute(app)('/');
 
 };
 

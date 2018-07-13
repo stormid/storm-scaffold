@@ -1,26 +1,11 @@
 import jest from 'jest';
 import { toHaveNoViolations } from 'jest-axe';
-const fs = require('fs');
-const path = require('path');
 import config from '../jest-puppeteer.config';
+const walker = require('../server/lib/walker');
 
 expect.extend(toHaveNoViolations);
 
-const walkDir = (base, dir) => {
-        const baseDir = path.join(base, dir);
-        const walk = (dir, filelist = []) => {
-            fs.readdirSync(dir).forEach(file => {
-                filelist = fs.statSync(path.join(dir, file)).isDirectory()
-                ? walk(path.join(dir, file), filelist)
-                : filelist.concat(path.join(dir.split(baseDir)[1], file.replace(/(index)?.html/, '')));
-    
-            });
-            return filelist;
-        };
-        return walk(path.join(base, dir));
-};
-
-walkDir(__dirname, `../app/ui/templates/views`)
+walker(__dirname, `../app/ui/templates/views`, /(index)?.html/)
     .forEach(url => {
         url = url === '.' ? '/' : url;
 

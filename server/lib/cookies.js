@@ -1,9 +1,7 @@
 const session = require('express-session');
 const crypto = require('crypto');
 
-//Development only
-//https://stackoverflow.com/questions/10760620/using-memorystore-in-production/39637830
-//cookie-session instead?
+//Development only - https://stackoverflow.com/questions/10760620/using-memorystore-in-production/39637830
 module.exports = app => {
     app.use(session({
         cookie: {
