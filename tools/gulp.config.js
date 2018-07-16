@@ -1,12 +1,13 @@
 const paths = {
-	public: 'public',
+	public: '../public',
 	staticAssets: 'static',
+	ejectDir: '../',
 	src: {
-		css: 'app/ui/scss',
-		js: 'app/ui/js',
-		html: 'app/ui/templates',
-		img: 'app/ui/img',
-		staticAssets: 'app/static-assets',
+		css: '../app/ui/scss',
+		js: '../app/ui/js',
+		html: '../app/ui/templates',
+		img: '../app/ui/img',
+		staticAssets: '../app/static-assets',
 	}
 };
 const banner = [

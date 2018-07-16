@@ -2,25 +2,17 @@
 const config = require('./gulp.config'),
 	sri = require('node-sri'),
 	gulp = require('gulp'),
-	pkg = require('./package.json'),
-	sass = require('gulp-sass'),
-	autoprefixer = require('gulp-autoprefixer'),
 	header = require('gulp-header'),
-	pixrem = require('gulp-pixrem'),
 	uglify = require('gulp-uglify'),
-	wait = require('gulp-wait'),
 	rename = require('gulp-rename'),
-	minifyCss = require('gulp-clean-css'),
 	frontMatter = require('gulp-front-matter'),
 	data = require('gulp-data'),
-	sourcemaps = require('gulp-sourcemaps'),
 	del = require('del'),
 	browserSync = require('browser-sync'),
 	reload = browserSync.reload,
 	browserify = require('browserify'),
 	imagemin = require('gulp-imagemin'),
 	notify = require('gulp-notify'),
-	plumber = require('gulp-plumber'),
 	gulpIf = require('gulp-if'),
 	babelify = require('babelify'),
 	gulpUtil = require('gulp-util'),
@@ -59,25 +51,6 @@ const findStandaloneModules = dir => {
 // Tasks
 //------------------------
 const clean = () => del(`${config.paths.public}`);
-
-
-const scss = () => gulp.src([`${config.paths.src.css}/**/*.scss`])
-                    .pipe(wait(500))
-                    .pipe(plumber({errorHandler: onError}))
-                    .pipe(sourcemaps.init())
-                    .pipe(sass())
-					.pipe(autoprefixer({
-						browsers: pkg.browserlist
-					}))
-                    .pipe(pixrem())
-                    .pipe(header(config.banner, {pkg : pkg}))
-                    .pipe(minifyCss())
-                    .pipe(sourcemaps.write())
-					.pipe(gulpIf(!!gulpUtil.env.production, minifyCss()))
-					.pipe(gulp.dest(`${config.paths.public}/${config.paths.staticAssets}/css`));
-					// .pipe(gulp.dest(config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].css));
-					//pipe to production
-							
 
 const jsCore = () => browserify({
 						entries: `${config.paths.src.js}/app.js`,
