@@ -28,3 +28,6 @@ walker(__dirname, `../app/ui/templates/views`, /(index)?.html/)
             });
         });
     });
+
+
+    //is browser.close() called????

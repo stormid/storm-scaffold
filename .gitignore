@@ -9,6 +9,7 @@
 .yarn-integrity
 bower_components
 public
+ejected
 
 # ignore Node-specific files and directories
 node_modules/

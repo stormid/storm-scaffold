@@ -1,7 +1,7 @@
 const paths = {
 	public: '../public',
 	staticAssets: 'static',
-	ejectDir: '../',
+	eject: '../ejected',
 	src: {
 		css: '../app/ui/scss',
 		js: '../app/ui/js',

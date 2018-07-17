@@ -10,9 +10,9 @@ describe('Server > 200 status and html content', () => {
     });
 
 
-    // it('return a status code 200', async () => {
-    //     expect(response.status()).toEqual(200);
-    // });
+    it('return a status code 200', async () => {
+        expect(response.status()).toEqual(200);
+    });
 
     it('should send "text/html; charset=utf-8" content-type in headers', async () => {
         expect(response.headers()['content-type']).toEqual('text/html; charset=utf-8');
@@ -37,3 +37,6 @@ describe('Server > error handling middleware', () => {
         expect(response.status()).toEqual(500)
     });
 });
+
+
+//is browser.close() called????

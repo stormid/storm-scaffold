@@ -6,8 +6,8 @@
   "author": "stormid",
   "license": "ISC",
   "scripts": {
-    "start": "npm run development",
-    "eject": "node node_modules/gulp/bin/gulp.js --gulpfile tools/gulpfile.js eject",
+    "start": "node node_modules/gulp/bin/gulp.js --gulpfile tools/gulpfile.js build",
+    "eject": "node node_modules/gulp/bin/gulp.js --gulpfile tools/gulpfile.js eject --production",
     "test": "cross-env NODE_ENV=test node node_modules/jest/bin/jest.js --forceExit",
     "development": "concurrently \"node node_modules/nodemon/bin/nodemon.js server\" \"node node_modules/gulp/bin/gulp.js --gulpfile tools/gulpfile.js watch\""
   },
@@ -38,9 +38,9 @@
   ],
   "devDependencies": {
     "axe-core": "^3.0.1",
-    "babel-core": "^6.26.0",
+    "babel-core": "^6.26.3",
     "babel-jest": "^22.4.3",
-    "babel-preset-env": "^1.6.1",
+    "babel-preset-env": "^1.7.0",
     "babelify": "^8.0.0",
     "body-parser": "^1.18.2",
     "browser-sync": "^2.23.6",
@@ -88,7 +88,6 @@
   "dependencies": {
     "classlist-polyfill": "^1.2.0",
     "es6-object-assign": "^1.1.0",
-    "fontfaceobserver": "^2.0.13",
     "helmet": "^3.12.0",
     "picturefill": "^3.0.2",
     "promise-polyfill": "^8.0.0",
