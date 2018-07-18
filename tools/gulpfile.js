@@ -10,6 +10,7 @@ const compileFromSCSS  = require('./css');
 const compileImages  = require('./images');
 const compileJS  = require('./js');
 const compileHTML  = require('./html');
+const ci  = require('./ci');
 
 
 //------------------------
@@ -62,6 +63,10 @@ gulp.task('staticAssets:eject', staticAssets(true));
 //html
 gulp.task('html:eject', compileHTML);
 
+//ci
+gulp.task('ci:artefacts', ci.artefacts);
+gulp.task('ci:sri', ci.sri);
+
 //js
 for(const subtask of ['core', 'standalone', 'polyfills', 'custom']) {
 	gulp.task(`js:${subtask}`, compileJS[subtask](gulpUtil.env.production));
@@ -89,13 +94,8 @@ gulp.task('build', () => {
 	sequence('clean', ['css', 'img', 'staticAssets', 'js']);
 });
 gulp.task('watch', () => { runSequence('build', watch); });
+
 //-------
-
-
-
-//Task to generate SRIs
-//Create artefacts zip
-
 
 /*
 gulp.task('compile', () => { runSequence('clean', ['jsCore', 'scss'], ['js-other', 'img', 'staticAssets']); });

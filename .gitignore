@@ -10,6 +10,7 @@
 bower_components
 public
 ejected
+artefacts
 
 # ignore Node-specific files and directories
 node_modules/

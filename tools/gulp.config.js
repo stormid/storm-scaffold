@@ -2,6 +2,7 @@ const paths = {
 	public: '../public',
 	staticAssets: 'static',
 	eject: '../ejected',
+	artefacts: '../artefacts',
 	src: {
 		css: '../app/ui/scss',
 		js: '../app/ui/js',
