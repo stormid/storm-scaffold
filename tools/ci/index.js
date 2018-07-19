@@ -6,8 +6,8 @@ const config = require('../gulp.config');
 //read js and css files and write hash and filenames to json
 const sri = () => {
     return gulp.src([`${config.paths.public}/${config.paths.staticAssets}/js/**.*`, `${config.paths.public}/${config.paths.staticAssets}/css/**.*`])
-            .pipe(gulpSRI())           // pipe generated files into gulp-sri
-            .pipe(gulp.dest(config.paths.artefacts));  // output sri.json to project root
+            .pipe(gulpSRI())
+            .pipe(gulp.dest(config.paths.artefacts));
 };
 
 const artefacts = () => {

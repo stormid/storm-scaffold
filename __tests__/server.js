@@ -5,10 +5,7 @@ describe('Server > 200 status and html content', () => {
     let response;
     beforeAll(async () => {
         response = await page.goto(`http://localhost:${config.server.port}/`, { waitUntil: 'load'});
-        console.log(response.status());
-        console.log(response.headers());
     });
-
 
     it('return a status code 200', async () => {
         expect(response.status()).toEqual(200);

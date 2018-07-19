@@ -1,22 +1,22 @@
 // Dependencies
-const config = require('./gulp.config');
+const config = require('./tools/gulp.config');
 const gulp = require('gulp');
 const del = require('del');
 const gulpUtil = require('gulp-util');
 const sequence = require('run-sequence');
 
-// const handleError = require('./utils').handleError;
-const compileFromSCSS  = require('./css');
-const compileImages  = require('./images');
-const compileJS  = require('./js');
-const compileHTML  = require('./html');
-const ci  = require('./ci');
+// Tooling fns
+const compileFromSCSS  = require('./tools/css');
+const compileImages  = require('./tools/images');
+const compileJS  = require('./tools/js');
+const compileHTML  = require('./tools/html');
+const ci  = require('./tools/ci');
 
 
 //------------------------
 // Tasks
 //------------------------
-const clean = () => del([`${config.paths.public}`, `${config.paths.eject}`], { force: true });
+const clean = () => del([`${config.paths.public}`, `${config.paths.eject}`, `${config.paths.artefacts}`], { force: true });
 
 const sw = () => gulp.src(`${config.paths.src.js}/sw/*.*`)
 					.pipe(gulp.dest(`${config.paths.public}`));
@@ -47,7 +47,6 @@ const watch = () => {
 //clean
 gulp.task('clean', clean);
 
-
 //css
 gulp.task('css', compileFromSCSS(gulpUtil.env.production));
 gulp.task('css:eject', compileFromSCSS(gulpUtil.env.production, true));
@@ -67,6 +66,18 @@ gulp.task('html:eject', compileHTML);
 gulp.task('ci:artefacts', ci.artefacts);
 gulp.task('ci:sri', ci.sri);
 
+/*
+?????
+const composeTasks
+
+????
+const TASKS = {
+	'css': {
+		fn: compileFromSCSS,
+		ejectSubtask: true
+	}
+}
+*/
 //js
 for(const subtask of ['core', 'standalone', 'polyfills', 'custom']) {
 	gulp.task(`js:${subtask}`, compileJS[subtask](gulpUtil.env.production));
@@ -93,20 +104,13 @@ gulp.task('eject', () => {
 gulp.task('build', () => {
 	sequence('clean', ['css', 'img', 'staticAssets', 'js']);
 });
-gulp.task('watch', () => { runSequence('build', watch); });
+gulp.task('watch', () => { sequence('build', watch); });
+gulp.task('ci', () => { 
+	sequence('build', ['ci:artefacts', 'ci:artefacts']);
+});
 
-//-------
 
 /*
-gulp.task('compile', () => { runSequence('clean', ['jsCore', 'scss'], ['js-other', 'img', 'staticAssets']); });
-
-
 gulp.task('sw', sw);
-
-gulp.task('html', html);
-// gulp.task('js-sri', () => { runSequence('jsCore', ['html']); })
-// gulp.task('scss-sri', () => { runSequence('scss', ['html']); })
-gulp.task('serve', () => { runSequence('clean', ['jsCore', 'scss'], ['js-other', 'img', 'staticAssets'], serve); });
-gulp.task('watch', () => { runSequence('compile', watch); });
 gulp.task('default', ['serve']);
 */

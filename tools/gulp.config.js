@@ -1,14 +1,14 @@
 const paths = {
-	public: '../public',
+	public: './public',
 	staticAssets: 'static',
-	eject: '../ejected',
-	artefacts: '../artefacts',
+	eject: './ejected',
+	artefacts: './artefacts',
 	src: {
-		css: '../app/ui/scss',
-		js: '../app/ui/js',
-		html: '../app/ui/templates',
-		img: '../app/ui/img',
-		staticAssets: '../app/static-assets',
+		css: './app/ui/scss',
+		js: './app/ui/js',
+		html: './app/ui/templates',
+		img: './app/ui/img',
+		staticAssets: './app/static-assets',
 	}
 };
 const banner = [
