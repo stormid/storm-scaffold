@@ -28,23 +28,23 @@ const getAvailablePort = app => {
 };
 
 //Acquire port, start server and plumb browserSync in to server if in development env
-module.exports = app => {
-    return getAvailablePort(app)
-        .then(port => {
-            return new Promise(resolve => {
-                let server = app.listen(app.get('env') === 'development' ? (port + 1) : port, () => {
-                    console.log(`Server listening on port ${port}`);
-                    if(app.get('env') === 'development') {
-                        browserSync({
-                            files: ['app/**/*.*'],
-                            port: port,
-                            open: false,
-                            notify: false,
-                            proxy: `localhost:${(port + 1)}`
-                        });
-                    }
+module.exports = async app => {
+    const port = await getAvailablePort(app);
+    const server = await new Promise(resolve => {
+        let server = app.listen(app.get('env') === 'development' ? (port + 1) : port, () => {
+            console.log(`Server listening on port ${port}`);
+            if(app.get('env') === 'development') {
+                browserSync({
+                    files: ['app/**/*.*'],
+                    port: port,
+                    open: false,
+                    notify: false,
+                    proxy: `localhost:${(port + 1)}`
                 });
-                resolve(server);
-            });
+            }
         });
+        resolve(server);
+    });
+
+    return server;
 };

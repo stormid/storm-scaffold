@@ -17,8 +17,10 @@
   },
   "nodemonConfig": {
     "ignore": [
-      "app/ui/*",
+      "app/*",
       "public/*",
+      "eject/*",
+      "artefacts/*",
       "node_modules/*"
     ]
   },

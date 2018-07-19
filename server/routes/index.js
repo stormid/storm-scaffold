@@ -1,7 +1,7 @@
-const autoRouter = require('../../server/lib/router/auto');
+const autoRouter = require('../lib/router/auto');
 // const navigation = require('./lib/navigation');
 
-module.exports = (app) => {
+module.exports = app => {
 
 	//Set local and secondary navigation state
 	//Navigation 

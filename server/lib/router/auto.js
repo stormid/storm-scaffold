@@ -15,7 +15,7 @@ const walker = require('./walker');
 
 
 module.exports = app => dir => {
-    walker(__dirname, `../../../app/ui/templates/views`, /(index)?.html/)
+    walker(__dirname, `../../../app/templates/views`, /(index)?.html/)
         .forEach(url => {
             url = url === '.' ? '/' : url;
 

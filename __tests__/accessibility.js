@@ -5,7 +5,7 @@ const walker = require('../server/lib/router/walker');
 
 expect.extend(toHaveNoViolations);
 
-walker(__dirname, `../app/ui/templates/views`, /(index)?.html/)
+walker(__dirname, `../app/templates/views`, /(index)?.html/)
     .forEach(url => {
         url = url === '.' ? '/' : url;
 

@@ -36,10 +36,10 @@ const standalone = (production = false, eject = false) => () => {
 };
 
 const custom = (production = false, eject = false) => () => {
-    return gulp.src(find(path.resolve(__dirname, `${config.paths.src.js}/custom-components`)), /\S+dist\S+\.standalone.js$/)
+    return gulp.src(find(`${config.paths.src.js}/custom-components`, path.resolve(__dirname, `../../${config.paths.src.js}/custom-components`), /\S+dist\S+\.standalone.js$/))
                 .pipe(gulpIf(!!production, uglify()))
                 .pipe(rename(path => {
-                    path.basename = path.basename.replace('.standalone', '');
+                    path.basename = path.basename.replace('.standalone', '.min');
                 }))
                 .pipe(gulp.dest(`${eject ? config.paths.eject : config.paths.public}/${config.paths.staticAssets}/js/async`));
                 //pipe to production

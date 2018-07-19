@@ -4,10 +4,10 @@ const paths = {
 	eject: './ejected',
 	artefacts: './artefacts',
 	src: {
-		css: './app/ui/scss',
-		js: './app/ui/js',
-		html: './app/ui/templates',
-		img: './app/ui/img',
+		css: './app/scss',
+		js: './app/js',
+		html: './app/templates',
+		img: './app/img',
 		staticAssets: './app/static-assets',
 	}
 };

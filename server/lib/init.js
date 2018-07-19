@@ -5,7 +5,7 @@ const helmet = require('helmet');
 const path = require('path');
 const connect = require('./connect');
 const pkg = require('../../package.json');
-const appConfig = require('../../app/config');
+const appConfig = require('../config');
 // const buildConfig = require('../../gulp.config');
 
 module.exports = () => {
@@ -28,7 +28,7 @@ module.exports = () => {
     app.set('view engine', 'html');
 
     //Bootstrap routes
-    require('../../app/routes')(app);
+    require('../routes')(app);
 
 	//Prevent SE indexing
 	require('./router/hide')(app);
@@ -38,7 +38,7 @@ module.exports = () => {
 
 
     const njk = nunjucks.configure(
-        [path.join(__dirname, '../../app/ui/templates')],
+        [path.join(__dirname, '../../app/templates')],
         {
             autoescape: true,
             express: app,
