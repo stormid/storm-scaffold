@@ -9,7 +9,7 @@ const onLoad = [];
 {
 	window.Promise = window.Promise ? window.Promise : Promise;
 
-	if(!Object.assign || !('classList' in document.createElement('_'))) 
+	if(!Object.assign) 
 		Load(`${PATHS.JS_ASYNC}/polyfills.min.js`)
 			.then(() => onInit.map(f => f()));
 	else onInit.map(fn => fn());
