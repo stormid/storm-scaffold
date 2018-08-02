@@ -9,10 +9,10 @@ const onLoad = [];
 {
 	window.Promise = window.Promise ? window.Promise : Promise;
 
-	if(!Object.assign) 
+	if(!Object.assign) {
 		Load(`${PATHS.JS_ASYNC}/polyfills.min.js`)
 			.then(() => onInit.map(f => f()));
-	else onInit.map(fn => fn());
+	} else onInit.map(fn => fn());
 
 	onLoad.length && window.addEventListener('load', [].map.bind(onLoad, f => f()));
 
