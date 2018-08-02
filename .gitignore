@@ -9,6 +9,7 @@
 .yarn-integrity
 bower_components
 public
+build
 ejected
 artefacts
 
