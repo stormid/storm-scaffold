@@ -127,27 +127,18 @@ function sw(){
 }
 
 function html(){
-	var JSHashFn = sri.hash(`${path.resolve(__dirname, `${config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].js}app.js`)}`),
-		CSSHashFn = sri.hash(`${path.resolve(__dirname, `${config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].css}styles.css`)}`);
-
-	return Promise.all([JSHashFn, CSSHashFn])
-		.then(function(hashes){
-			return gulp.src(`${config.paths.src.html}views/**/*.html`)
-				.pipe(plumber({errorHandler: onError}))
-				.pipe(frontMatter({ property: 'data' }))
-				.pipe(data(() => {
-					return {
-						'assetPath': config.paths.assets,
-						'JSIntegrity': hashes[0],
-						'CSSIntegrity': hashes[1]
-					};
-				}))
-				.pipe(nunjucksRender({
-					path: config.paths.src.html
-				}))
-				.pipe(gulp.dest(config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].html));
-
-		});
+	return gulp.src(`${config.paths.src.html}views/**/*.html`)
+		.pipe(plumber({errorHandler: onError}))
+		.pipe(frontMatter({ property: 'data' }))
+		.pipe(data(() => {
+			return {
+				'assetPath': config.paths.assets
+			};
+		}))
+		.pipe(nunjucksRender({
+			path: config.paths.src.html
+		}))
+		.pipe(gulp.dest(config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].html));
 }
 
 function scss(){
