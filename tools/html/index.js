@@ -6,7 +6,7 @@ const frontMatter = require('gulp-front-matter');
 const data = require('gulp-data');
 
 gulp.task('html', () => {
-    return gulp.src(`${config.paths.src.html}/views/**/*.html`)
+    return gulp.src(`${config.paths.src.html}/pages/**/*.html`)
             .pipe(plumbErrors())
             .pipe(frontMatter({ property: 'data' }))
 			.pipe(data(() => { return { 'assets': config.paths.assets }; }))

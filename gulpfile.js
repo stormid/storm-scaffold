@@ -2,6 +2,7 @@
 const config = require('./tools/gulp.config');
 const gulp = require('gulp');
 const del = require('del');
+const fs = require('fs');
 const sequence = require('run-sequence');
 const browserSync = require('browser-sync');
 
@@ -24,7 +25,9 @@ gulp.task('clean', () => del([`${config.paths.build}`, `${config.paths.artefacts
 
 gulp.task('staticAssets', () => gulp.src(`${config.paths.src.staticAssets}/**/*`).pipe(gulp.dest(`${config.paths.build}/${config.paths.assets}`)));
 
-gulp.task('robots', () => gulp.src(`${config.paths.src.html}/views/robots.txt`).pipe(gulp.dest(config.paths.build)));
+gulp.task('robots', cb => {
+	fs.writeFile(`${config.paths.build}/robots.txt`, 'User-agent: *\nDisallow: /', cb);
+});
 
 // const sw = () => gulp.src(`${config.paths.src.js}/sw/*.*`)
 // 					.pipe(gulp.dest(`${config.paths.public}`));
@@ -74,7 +77,7 @@ gulp.task('ci', () => {
 // npm task interface
 //------------------------
 gulp.task('compile', () => {
-	sequence('clean', ['css', 'html', 'robots', 'img', 'staticAssets', 'js'], ['ci:sri', 'ci:artefacts']);
+	sequence('clean', ['css', 'html', 'img', 'staticAssets', 'js'], ['ci:sri', 'robots', 'ci:artefacts']);
 });
 gulp.task('build', () => {
 	sequence('clean', ['css', 'html', 'img', 'staticAssets', 'js']);

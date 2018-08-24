@@ -2,7 +2,9 @@ import { PATHS } from './constants';
 import Promise from 'promise-polyfill';
 import Load from 'storm-load';
 
-const onInit = [];
+const onInit = [
+	() => { document.documentElement.className =  document.documentElement.className.split('no-js').join(''); }
+];
 
 const onLoad = [];
 

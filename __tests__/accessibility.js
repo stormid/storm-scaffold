@@ -20,7 +20,7 @@ const walkDir = (base, dir) => {
     return walk(path.join(base, dir));
 };
 
-walkDir(__dirname, `../src/templates/views`)
+walkDir(__dirname, `../src/templates/pages`)
     .forEach(url => {
         url = url === '.' ? '/' : url;
 
