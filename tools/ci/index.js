@@ -17,4 +17,5 @@ const artefacts = () => {
             .pipe(gulp.dest(config.paths.artefacts))
 };
 
-module.exports = { sri, artefacts };
+gulp.task('ci:artefacts', artefacts);
+gulp.task('ci:sri', sri);

@@ -8,12 +8,14 @@ const header = require('gulp-header');
 const minifyCss = require('gulp-clean-css');
 const gulpIf = require('gulp-if');
 const config = require('../gulp.config');
+const gulpUtil = require('gulp-util');
 const pkg = require('../../package.json');
 const DELAY = 500;
 const plumbErrors = require('../utils').plumbErrors;
 
-module.exports = (production = false) => () => {
-    return gulp.src([`${config.paths.src.css}/**/*.scss`])
+
+gulp.task('css', () => {
+    return gulp.src([`${config.paths.src.css}/styles.scss`])
             .pipe(wait(DELAY))
             .pipe(plumbErrors())
             .pipe(sourcemaps.init())
@@ -24,8 +26,6 @@ module.exports = (production = false) => () => {
             .pipe(pixrem())
             .pipe(header(config.banner, {pkg : pkg}))
             .pipe(sourcemaps.write())
-            .pipe(gulpIf(!!production, minifyCss()))
+            .pipe(gulpIf(!!gulpUtil.env.production, minifyCss()))
             .pipe(gulp.dest(`${config.paths.build}/${config.paths.assets}/css`));
-            // .pipe(gulp.dest(config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].css));
-            //pipe to production
-};
+});

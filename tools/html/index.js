@@ -5,7 +5,7 @@ const config = require('../gulp.config');
 const frontMatter = require('gulp-front-matter');
 const data = require('gulp-data');
 
-module.exports = () => {
+gulp.task('html', () => {
     return gulp.src(`${config.paths.src.html}/views/**/*.html`)
             .pipe(plumbErrors())
             .pipe(frontMatter({ property: 'data' }))
@@ -14,4 +14,4 @@ module.exports = () => {
                 path: config.paths.src.html
             }))
             .pipe(gulp.dest(config.paths.build));
-};
+});

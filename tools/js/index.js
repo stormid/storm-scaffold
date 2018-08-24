@@ -9,6 +9,8 @@ const find = require('../utils').find;
 const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 const config = require('../gulp.config');
+const gulpUtil = require('gulp-util');
+const sequence = require('run-sequence');
 
 const core = (production = false) => () => {
     return browserify({
@@ -22,17 +24,13 @@ const core = (production = false) => () => {
         .pipe(buffer())
         .pipe(gulpIf(!!production, uglify()))
         .pipe(gulp.dest(`${config.paths.build}/${config.paths.assets}/js`));
-        //pipe to production
-        // .pipe(gulp.dest(config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].js));
 };
 
 const standalone = (production = false) => () => {
     return gulp.src(`${config.paths.src.js}/async/**/*`)
-                        .pipe(gulpIf(!!production, uglify()))
-                        .pipe(rename({suffix: '.min'}))
-                        .pipe(gulp.dest(`${config.paths.build}/${config.paths.assets}/js/async`));
-                        //pipe to production
-                        // .pipe(gulp.dest(`${config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].js}async/`));
+                .pipe(gulpIf(!!production, uglify()))
+                .pipe(rename({suffix: '.min'}))
+                .pipe(gulp.dest(`${config.paths.build}/${config.paths.assets}/js/async`));
 };
 
 const custom = (production = false) => () => {
@@ -42,8 +40,6 @@ const custom = (production = false) => () => {
                     path.basename = path.basename.replace('.standalone', '.min');
                 }))
                 .pipe(gulp.dest(`${config.paths.build}/${config.paths.assets}/js/async`));
-                //pipe to production
-                // .pipe(gulp.dest(`${config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].js}async/`));
 };
 
 const polyfills = (production = false) => () => {
@@ -61,13 +57,19 @@ const polyfills = (production = false) => () => {
             suffix: '.min'
         }))
         .pipe(gulp.dest(`${config.paths.build}/${config.paths.assets}/js/async`));
-        //pipe to production
-        // .pipe(gulp.dest(`${config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].js}async/`));
 };
 
-module.exports = {
+const tasks = {
     core,
     standalone,
     custom,
     polyfills
 };
+
+for(const subtask of ['core', 'standalone', 'polyfills', 'custom']) {
+	gulp.task(`js:${subtask}`, tasks[subtask](gulpUtil.env.production));
+}
+
+gulp.task('js', () => {
+	sequence('js:custom', ['js:core', 'js:standalone', 'js:polyfills']);
+});

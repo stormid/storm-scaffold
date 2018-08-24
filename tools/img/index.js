@@ -2,7 +2,7 @@ const gulp = require('gulp');
 const imagemin = require('gulp-imagemin');
 const config = require('../gulp.config');
 
-module.exports = () => () => {
+gulp.task('img', () => {
     return gulp.src(`${config.paths.src.img}/**/*`)
             .pipe(imagemin([
                 imagemin.gifsicle({interlaced: true}),
@@ -15,5 +15,5 @@ module.exports = () => () => {
                     ]
                 })
             ]))
-            .pipe(gulp.dest(`${config.paths.public}/${config.paths.assets}/img`));
-};
+            .pipe(gulp.dest(`${config.paths.build}/${config.paths.assets}/img`));
+});
