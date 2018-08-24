@@ -1,6 +1,14 @@
-export const PATHS = {
-	JS_ASYNC: 'static/js/async'
+const extractPathName = () => {
+	let scripts = document.getElementsByTagName('script'),
+		pathName = scripts[scripts.length-1].src;
+	
+	return pathName.substr(0, pathName.lastIndexOf('/'));
 };
+
+export const PATHS = {
+	JS_ASYNC: `${extractPathName()}/async`
+};
+
 
 export const FONTS = [''];
 
