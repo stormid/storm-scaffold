@@ -61,18 +61,6 @@ gulp.task('serve', () => {
 	});
 });
 
-
-//------------------------
-// npm task interface
-//------------------------
-gulp.task('build', () => {
-	sequence('clean', ['css', 'html', 'img', 'staticAssets', 'js']);
-});
-// gulp.task('watch', () => { sequence('build', watch); });
-gulp.task('ci', () => { 
-	sequence('clean', ['css', 'html', 'img', 'staticAssets', 'js'], ['ci:sri', 'ci:artefacts']);
-});
-
 //------------------------
 // npm task interface
 //------------------------
