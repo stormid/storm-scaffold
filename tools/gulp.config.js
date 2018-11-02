@@ -7,7 +7,7 @@ const paths = {
 		js: './src/js',
 		html: './src/templates',
 		img: './src/img',
-		staticAssets: './src/static-assets',
+		staticAssets: './src/static-assets'
 	}
 };
 const banner = [
