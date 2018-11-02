@@ -65,9 +65,9 @@ gulp.task('serve', () => {
 // npm task interface
 //------------------------
 gulp.task('compile', () => {
-	sequence('clean', ['css', 'html', 'img', 'staticAssets', 'js'], ['ci:sri', 'robots', 'ci:artefacts']);
+	sequence(['js', 'css', 'html', 'img', 'staticAssets'], ['robots', 'ci:artefacts', 'ci:sri']);
 });
 gulp.task('build', () => {
-	sequence('clean', ['css', 'html', 'img', 'staticAssets', 'js']);
+	sequence('clean', ['js', 'css', 'html', 'img', 'staticAssets']);
 });
 gulp.task('watch', () => { sequence('build', watch); });

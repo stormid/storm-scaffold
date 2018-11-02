@@ -9,6 +9,9 @@ export const PATHS = {
 	JS_ASYNC: `${extractPathName()}/async`
 };
 
+export const AI = {
+	META: 'data-ai'
+};
 
 export const FONTS = [''];
 
@@ -27,3 +30,4 @@ export const FONTS = [''];
 // export const TABS = {
 // 	SELECTOR: '.js-tabs'
 // };
+

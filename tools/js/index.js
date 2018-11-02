@@ -12,6 +12,20 @@ const config = require('../gulp.config');
 const gulpUtil = require('gulp-util');
 const sequence = require('run-sequence');
 
+const head = (production = false) => () => {
+    return browserify({
+            entries: `${config.paths.src.js}/head.js`,
+            debug: !production,
+            fullPaths: !production
+        })
+        .transform(babelify, { presets: ["env"] })
+        .bundle()
+        .pipe(source('head.js'))
+        .pipe(buffer())
+        .pipe(gulpIf(!!production, uglify()))
+        .pipe(gulp.dest(`${config.paths.build}/${config.paths.assets}/js`));
+};
+
 const core = (production = false) => () => {
     return browserify({
             entries: `${config.paths.src.js}/app.js`,
@@ -61,15 +75,16 @@ const polyfills = (production = false) => () => {
 
 const tasks = {
     core,
+    head,
     standalone,
     custom,
     polyfills
 };
 
-for(const subtask of ['core', 'standalone', 'polyfills', 'custom']) {
+for(const subtask of ['head', 'core', 'standalone', 'polyfills', 'custom']) {
 	gulp.task(`js:${subtask}`, tasks[subtask](gulpUtil.env.production));
 }
 
 gulp.task('js', () => {
-	sequence('js:custom', ['js:core', 'js:standalone', 'js:polyfills']);
+	sequence('js:custom', ['js:core', 'js:head', 'js:standalone', 'js:polyfills']);
 });
