@@ -1,7 +1,27 @@
-node_modules
-/build/
-disc.html
-.bowerrc
-.DS_Store
-*.log
+.DS_store
+.*.swp
+.env
+.sass-cache
 .vscode
+.bowerrc
+.npm
+.eslintcache
+.yarn-integrity
+bower_components
+/build
+/artefacts
+
+# ignore Node-specific files and directories
+node_modules/
+npm-debug.log*
+
+# code coverage
+/coverage
+lib-cov
+
+# logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
