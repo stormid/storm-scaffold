@@ -1,20 +1,31 @@
 ## How to run this project
 
 ### Installation
-#### `npm install`
+```npm install```
 
 ### Run
-#### `npm start`
+```npm start```
 
-### Production
-#### `npm run production`
+### Production run
+```npm run production```
+
+### CI build
+Production build, plus generates artefacts and SRI hash json file
+
+```npm run ci```
+
+### Tests
+Jest (https://jestjs.io/docs/en/api) and Puppeteer (https://pptr.dev/) are included, along with a static build accessibility test.
+
+```npm t```
+
 
 ## JS
 The app uses es6 modules that are transpiled then transformed using browserify into a minified single app.js containing the core js used on every page.
 
 Page or component-specific JS files should be loaded asynchronously as required. These files, which need to be browser-ready or UMD, should be placed in src/js/async.
 
-Custom components that require their own build system to generate standalone modules for async import can be added to a 'src/js/custom-components' directory. The easier way to build standalone modules that are consumed by the build is to use https://github.com/mjbp/storm-component-boilerplate.
+Custom components that require their own build system to generate standalone modules for async import can be added to a 'src/js/custom-components' directory. The easiest way to build standalone modules that are consumed by the build is to use https://github.com/mjbp/storm-component-boilerplate.
 
 ## CSS
 SCSS, with a partial structure
@@ -38,36 +49,8 @@ Nunjucks templates, (https://mozilla.github.io/nunjucks/)
 Variables can be set in yml in the head of each template.
 
 ## Gulp Tasks
-The full gulp API can be read at the bottom of the gulpfile.
+The key build tasks should be run via npm scripts, but the full gulp API can be read at the bottom of the gulpfile. 
 
-Add a production flag to run in production mode, and compress everything
-#### `gulp --production`
+Add a production flag to run in production mode, and compress everything.
 
-#### `gulp start`
-
-Builds everything from the ground up, watches for changes and rebuilds as refreshes. 
-
-#### `gulp`
-
-Runs gulp start (see above)
-
-#### `gulp serve`
-
-Starts the local webserver with browsersync, watches for changes to the source JS, SCSS, swig HTML templates and images, and runs the corresponding task.
-
-#### `gulp css`
-
-Compiles the SCSS source files into a single CSS file and creates a minified copy.
-
-#### `gulp js`
-
-Builds and transforms the commonjs files into a single compressed browser-ready JS file, copies and compresses the JS files that are asynchronously loaded, and transforms, minifies and copies JS polyfills
-
-#### `gulp html`
-
-Builds the static HTML from nunjucks templates.
-
-#### `gulp static`
-
-Copies all directories and files from src/static to build/static
-
+```node node_modules/.bin/gulp start --production```
