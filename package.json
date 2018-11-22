@@ -8,9 +8,9 @@
   "scripts": {
     "start": "node_modules/.bin/gulp serve",
     "compile": "node_modules/.bin/gulp compile --production",
+    "ci": "node_modules/.bin/gulp compile --production",
     "watch": "node_modules/.bin/gulp watch",
-    "test": "cross-env NODE_ENV=test node node_modules/jest/bin/jest.js --forceExit",
-    "disc": "discify build/static/js/app.js >disc.html"
+    "test": "cross-env NODE_ENV=test node node_modules/jest/bin/jest.js --forceExit"
   },
   "browserlist": [
     "ie >= 9",
