@@ -67,7 +67,6 @@
     "jest-environment-puppeteer": "^3.4.0",
     "jest-puppeteer": "^2.2.1",
     "puppeteer": "^1.6.0",
-    "run-sequence": "^2.2.1",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0"
   },
