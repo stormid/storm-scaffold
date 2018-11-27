@@ -12,9 +12,9 @@ const sri = () => {
 };
 
 const artefacts = () => {
-        gulp.src(`${config.paths.build}/**/**.*`)
-            .pipe(zip('build.zip'))
-            .pipe(gulp.dest(config.paths.artefacts))
+    return gulp.src(`${config.paths.build}/**/**.*`)
+        .pipe(zip('build.zip'))
+        .pipe(gulp.dest(config.paths.artefacts))
 };
 
 gulp.task('ci:artefacts', artefacts);
