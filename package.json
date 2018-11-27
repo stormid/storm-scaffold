@@ -2,7 +2,7 @@
   "name": "storm-scaffold",
   "version": "1.7.0",
   "description": "Project scaffold",
-  "repository": "https://github.com/storm/storm-scaffold",
+  "repository": "https://github.com/stormid/storm-scaffold",
   "author": "stormid",
   "license": "ISC",
   "scripts": {
