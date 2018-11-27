@@ -3,7 +3,6 @@ const config = require('./tools/gulp.config');
 const gulp = require('gulp');
 const del = require('del');
 const fs = require('fs');
-const sequence = require('run-sequence');
 const browserSync = require('browser-sync');
 
 //gulp css
@@ -21,53 +20,54 @@ require('./tools/js');
 // gulp ci:sri, ci:artefacts
 require('./tools/ci');
 
-gulp.task('clean', () => del([`${config.paths.build}`, `${config.paths.artefacts}`], { force: true }));
+const reload = done => {
+    browserSync.reload();
+    done();
+};
 
-gulp.task('staticAssets', () => gulp.src(`${config.paths.src.staticAssets}/**/*`).pipe(gulp.dest(`${config.paths.build}/${config.paths.assets}`)));
+const clean = () => del([`${config.paths.build}`, `${config.paths.artefacts}`], { force: true });
+
+gulp.task('staticAssets', () =>
+    gulp
+        .src(`${config.paths.src.staticAssets}/**/*`)
+        .pipe(gulp.dest(`${config.paths.build}/${config.paths.assets}`))
+);
 
 gulp.task('robots', cb => {
-	fs.writeFile(`${config.paths.build}/robots.txt`, 'User-agent: *\nDisallow: /', cb);
+    fs.writeFile(`${config.paths.build}/robots.txt`, 'User-agent: *\nDisallow: /', cb);
 });
 
 // const sw = () => gulp.src(`${config.paths.src.js}/sw/*.*`)
 // 					.pipe(gulp.dest(`${config.paths.public}`));
 // 					// .pipe(gulp.dest(config.paths.dest[!!gulpUtil.env.production ? 'production' : 'development'].html));
 
+function watch(reload) {
+    gulp.watch(`${config.paths.src.css}/**/*.scss`, gulp.series('css', reload));
+    gulp.watch(`${config.paths.src.js}/**/*`, gulp.series('js', reload));
+    gulp.watch(`${config.paths.src.img}/**/*`, gulp.series('img', reload));
+    gulp.watch(`${config.paths.src.html}/**/*`, gulp.series('html', reload));
+}
 
-const watch = () => {
-	gulp.watch([`${config.paths.src.css}/**/*.scss`], () => {
-		sequence('css', browserSync.reload);
-	});
-	gulp.watch(`${config.paths.src.js}/**/*`, () => {
-		sequence('js', browserSync.reload);
-	});
-	gulp.watch(`${config.paths.src.img}/**/*`, () => {
-		sequence('img', browserSync.reload);
-	});
-	gulp.watch(`${config.paths.src.html}/**/*`, () => {
-		sequence('html', browserSync.reload);
-	});
+const browserSyncConfig = {
+    notify: false,
+    // https: true,
+    server: [config.paths.build],
+    tunnel: false
 };
 
-gulp.task('serve', () => {
-	sequence('clean', ['css', 'html', 'img', 'staticAssets', 'js'], () => {
-		browserSync({
-			notify: false,
-			// https: true,
-			server: [config.paths.build],
-			tunnel: false
-		});
-		watch();
-	});
-});
+function serve() {
+    browserSync(browserSyncConfig);
+    watch(reload);
+}
 
-//------------------------
-// npm task interface
-//------------------------
-gulp.task('compile', () => {
-	sequence(['js', 'css', 'html', 'img', 'staticAssets'], ['robots', 'ci:artefacts', 'ci:sri']);
-});
-gulp.task('build', () => {
-	sequence('clean', ['js', 'css', 'html', 'img', 'staticAssets']);
-});
-gulp.task('watch', () => { sequence('build', watch); });
+gulp.task('ci', gulp.parallel('robots', 'ci:artefacts', 'ci:sri'));
+
+gulp.task('assets', gulp.series('js', 'css', 'html', 'img', 'staticAssets'));
+
+gulp.task('build', gulp.series(clean, 'assets'));
+
+gulp.task('serve', gulp.series('build', serve));
+
+gulp.task('compile', gulp.series('assets', 'ci'));
+
+gulp.task('watch', gulp.series('build', watch));
