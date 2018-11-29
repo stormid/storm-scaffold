@@ -1,9 +1,11 @@
 {
   "presets": [
-    ["env", {
-      "targets": {
-        "browsers": [">0.25%, not op_mini all"]
-      }
-    }]
-  ]
+    "env"
+  ],
+  "plugins": [
+      ["babel-plugin-transform-react-jsx", {
+          "pragma": "h"
+      }],
+      ["transform-object-rest-spread"]
+    ]
 }
