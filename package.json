@@ -41,6 +41,7 @@
     "del": "^3.0.0",
     "expect-puppeteer": "^3.4.0",
     "express": "^4.16.3",
+    "fs-extra": "^7.0.1",
     "gulp": "^4.0.0",
     "gulp-autoprefixer": "^5.0.0",
     "gulp-clean-css": "^3.9.3",
@@ -66,6 +67,7 @@
     "jest-environment-node": "^23.4.0",
     "jest-environment-puppeteer": "^3.4.0",
     "jest-puppeteer": "^2.2.1",
+    "preact-render-to-string": "^4.1.0",
     "puppeteer": "^1.6.0",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0"

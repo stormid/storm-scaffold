@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Card > Empty matches snapshot 1`] = `
+<div
+  class="card card--empty"
+/>
+`;
+
+exports[`Card > Ghost matches snapshot 1`] = `
+<div
+  class="card"
+>
+  <div
+    class="card__bd"
+  >
+    <div
+      class="card__title"
+      style={
+        Object {
+          "backgroundColor": "#eee",
+          "height": "18px",
+          "width": "30%",
+        }
+      }
+    />
+    <div
+      class="card__summary"
+      style={
+        Object {
+          "backgroundColor": "#eee",
+          "height": "14px",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`Card matches snapshot 1`] = `
+<a
+  class="card"
+  href="#"
+>
+  <div
+    class="card__bd"
+  >
+    <h1
+      class="card__title"
+    >
+      Quick brown fox
+    </h1>
+    <div
+      class="card__summary"
+    >
+      Jumps over the lazy dog
+    </div>
+    Woof
+  </div>
+</a>
+`;

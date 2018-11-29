@@ -6,6 +6,7 @@ const paths = {
 		css: './src/scss',
 		js: './src/js',
 		html: './src/templates',
+		dom: './src/dom',
 		img: './src/img',
 		staticAssets: './src/static-assets'
 	}

@@ -12,7 +12,10 @@ require('./tools/css');
 require('./tools/img');
 
 // gulp html
-require('./tools/html');
+// require('./tools/html');
+
+// gulp dom
+require('./tools/dom');
 
 // gulp js
 require('./tools/js');
@@ -45,7 +48,8 @@ function watch(reload) {
     gulp.watch(`${config.paths.src.css}/**/*.scss`, gulp.series('css', reload));
     gulp.watch(`${config.paths.src.js}/**/*`, gulp.series('js', reload));
     gulp.watch(`${config.paths.src.img}/**/*`, gulp.series('img', reload));
-    gulp.watch(`${config.paths.src.html}/**/*`, gulp.series('html', reload));
+    // gulp.watch(`${config.paths.src.html}/**/*`, gulp.series('html', reload));
+    gulp.watch(`${config.paths.src.dom}/**/*`, gulp.series('dom', reload));
 }
 
 const browserSyncConfig = {
@@ -62,7 +66,7 @@ function serve() {
 
 gulp.task('ci', gulp.parallel('robots', 'ci:artefacts', 'ci:sri'));
 
-gulp.task('assets', gulp.series('js', 'css', 'html', 'img', 'staticAssets'));
+gulp.task('assets', gulp.series('js', 'css', 'dom', 'img', 'staticAssets'));
 
 gulp.task('build', gulp.series(clean, 'assets'));
 
