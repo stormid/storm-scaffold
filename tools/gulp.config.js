@@ -10,6 +10,7 @@ const paths = {
 		staticAssets: './src/static-assets'
 	}
 };
+
 const banner = [
 	'/**',
 	' * @name <%= pkg.name %>',
