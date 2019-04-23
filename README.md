@@ -15,7 +15,7 @@ Production build, plus generates artefacts and SRI hash json file
 ```npm run ci```
 
 ### Tests
-Jest (https://jestjs.io/docs/en/api) and Puppeteer (https://pptr.dev/) are included, along with a static build accessibility test.
+Jest (https://jestjs.io/docs/en/api) is included.
 
 ```npm t```
 
