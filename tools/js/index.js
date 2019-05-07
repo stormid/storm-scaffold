@@ -1,5 +1,4 @@
 const gulp = require('gulp');
-const uglify = require('gulp-uglify');
 const rename = require('gulp-rename');
 const babelify = require('babelify');
 const browserify = require('browserify');
@@ -10,6 +9,7 @@ const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 const config = require('../gulp.config');
 const gulpUtil = require('gulp-util');
+const gulpTerser = require('gulp-terser');
 
 const head = (production = false) => () => {
     return browserify({
@@ -21,7 +21,7 @@ const head = (production = false) => () => {
         .bundle()
         .pipe(source('head.js'))
         .pipe(buffer())
-        .pipe(gulpIf(!!production, uglify()))
+        .pipe(gulpIf(!!production, gulpTerser()))
         .pipe(gulp.dest(`${config.paths.build}/${config.paths.assets}/js`));
 };
 
@@ -35,14 +35,14 @@ const core = (production = false) => () => {
         .bundle()
         .pipe(source('app.js'))
         .pipe(buffer())
-        .pipe(gulpIf(!!production, uglify()))
+        .pipe(gulpIf(!!production, gulpTerser()))
         .pipe(gulp.dest(`${config.paths.build}/${config.paths.assets}/js`));
 };
 
 const standalone = (production = false) => () => {
     return gulp
         .src(`${config.paths.src.js}/async/**/*`)
-        .pipe(gulpIf(!!production, uglify()))
+        .pipe(gulpIf(!!production, gulpTerser()))
         .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest(`${config.paths.build}/${config.paths.assets}/js/async`));
 };
@@ -61,7 +61,7 @@ const custom = (production = false) => done => {
 
     return gulp
         .src(customComponents)
-        .pipe(gulpIf(!!production, uglify()))
+        .pipe(gulpIf(!!production, gulpTerser()))
         .pipe(
             rename(path => {
                 path.basename = path.basename.replace('.standalone', '.min');
@@ -79,7 +79,7 @@ const polyfills = (production = false) => () => {
         .bundle()
         .pipe(source('index.js'))
         .pipe(buffer())
-        .pipe(gulpIf(!!production, uglify()))
+        .pipe(gulpIf(!!production, gulpTerser()))
         .pipe(
             rename({
                 basename: 'polyfills',
